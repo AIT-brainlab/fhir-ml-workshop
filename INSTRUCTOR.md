@@ -47,8 +47,8 @@ is the job.** Everything downstream is a library call.
    minutes. Bring two or three USB sticks carrying a pre-populated
    `~/.cache/uv` (`uv cache dir` prints the path) so stragglers can run
    `uv sync --offline`.
-4. Have the GitHub **Download ZIP** link ready. Windows laptops frequently have
-   no git.
+4. Have the **Download ZIP** link ready — Windows laptops frequently have no
+   git: https://github.com/AIT-brainlab/fhir-ml-workshop/archive/refs/heads/main.zip
 5. `data/patients.csv`, `data/fhir/` and `uv.lock` are committed, so nothing
    else downloads during class.
 6. `models/model.joblib` is intentionally **not** committed — students must run

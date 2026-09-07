@@ -48,15 +48,15 @@ You do **not** need Python installed first, and you do **not** need `pip`. The
 installer is a standalone binary, and uv downloads the correct Python (3.12)
 for you in the next step.
 
-*No git on your machine?* Use the green **Code → Download ZIP** button on the
-repository page instead of `git clone`, and unzip it.
+*No git on your machine?* Open https://github.com/AIT-brainlab/fhir-ml-workshop
+and use the green **Code → Download ZIP** button instead, then unzip it.
 
 ---
 
 ## Step 0b — Get the code and build the environment
 
 ```bash
-git clone <REPO-URL> fhir-ml-workshop
+git clone https://github.com/AIT-brainlab/fhir-ml-workshop.git
 cd fhir-ml-workshop
 uv sync
 ```

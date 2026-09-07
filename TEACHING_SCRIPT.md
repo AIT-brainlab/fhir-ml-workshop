@@ -74,7 +74,7 @@ Write on the whiteboard before they sit down:
 
 ```
 1.  github.com/astral-sh/uv        <- install this FIRST
-2.  git clone <URL>
+2.  git clone https://github.com/AIT-brainlab/fhir-ml-workshop.git
 3.  cd fhir-ml-workshop
 4.  uv sync                        <- only works inside the folder
 ```
