@@ -1,0 +1,441 @@
+{
+  "resourceType": "Bundle",
+  "id": "bundle-P0009",
+  "type": "collection",
+  "timestamp": "1995-06-15T09:00:00+07:00",
+  "entry": [
+    {
+      "fullUrl": "http://gip-nvsu.example.org/fhir/Patient/P0009",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "P0009",
+        "identifier": [
+          {
+            "system": "http://gip-nvsu.example.org/fhir/sid/workshop-mrn",
+            "value": "P0009"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "http://gip-nvsu.example.org/fhir/Observation/P0009-radius",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "P0009-radius",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "imaging",
+                "display": "Imaging"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://gip-nvsu.example.org/fhir/CodeSystem/fna-morphometry",
+              "code": "radius",
+              "display": "Nucleus radius (mean)"
+            }
+          ],
+          "text": "Nucleus radius (mean)"
+        },
+        "subject": {
+          "reference": "Patient/P0009"
+        },
+        "effectiveDateTime": "1995-06-15",
+        "valueQuantity": {
+          "value": 13.0,
+          "unit": "pixel"
+        }
+      }
+    },
+    {
+      "fullUrl": "http://gip-nvsu.example.org/fhir/Observation/P0009-texture",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "P0009-texture",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "imaging",
+                "display": "Imaging"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://gip-nvsu.example.org/fhir/CodeSystem/fna-morphometry",
+              "code": "texture",
+              "display": "Nucleus texture, SD of grey-scale (mean)"
+            }
+          ],
+          "text": "Nucleus texture, SD of grey-scale (mean)"
+        },
+        "subject": {
+          "reference": "Patient/P0009"
+        },
+        "effectiveDateTime": "1995-06-15",
+        "valueQuantity": {
+          "value": 21.82,
+          "unit": "1",
+          "system": "http://unitsofmeasure.org",
+          "code": "1"
+        }
+      }
+    },
+    {
+      "fullUrl": "http://gip-nvsu.example.org/fhir/Observation/P0009-perimeter",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "P0009-perimeter",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "imaging",
+                "display": "Imaging"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://gip-nvsu.example.org/fhir/CodeSystem/fna-morphometry",
+              "code": "perimeter",
+              "display": "Nucleus perimeter (mean)"
+            }
+          ],
+          "text": "Nucleus perimeter (mean)"
+        },
+        "subject": {
+          "reference": "Patient/P0009"
+        },
+        "effectiveDateTime": "1995-06-15",
+        "valueQuantity": {
+          "value": 87.5,
+          "unit": "pixel"
+        }
+      }
+    },
+    {
+      "fullUrl": "http://gip-nvsu.example.org/fhir/Observation/P0009-area",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "P0009-area",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "imaging",
+                "display": "Imaging"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://gip-nvsu.example.org/fhir/CodeSystem/fna-morphometry",
+              "code": "area",
+              "display": "Nucleus area (mean)"
+            }
+          ],
+          "text": "Nucleus area (mean)"
+        },
+        "subject": {
+          "reference": "Patient/P0009"
+        },
+        "effectiveDateTime": "1995-06-15",
+        "valueQuantity": {
+          "value": 519.8,
+          "unit": "pixel2"
+        }
+      }
+    },
+    {
+      "fullUrl": "http://gip-nvsu.example.org/fhir/Observation/P0009-smoothness",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "P0009-smoothness",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "imaging",
+                "display": "Imaging"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://gip-nvsu.example.org/fhir/CodeSystem/fna-morphometry",
+              "code": "smoothness",
+              "display": "Nucleus smoothness (mean)"
+            }
+          ],
+          "text": "Nucleus smoothness (mean)"
+        },
+        "subject": {
+          "reference": "Patient/P0009"
+        },
+        "effectiveDateTime": "1995-06-15",
+        "valueQuantity": {
+          "value": 0.1273,
+          "unit": "1",
+          "system": "http://unitsofmeasure.org",
+          "code": "1"
+        }
+      }
+    },
+    {
+      "fullUrl": "http://gip-nvsu.example.org/fhir/Observation/P0009-compactness",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "P0009-compactness",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "imaging",
+                "display": "Imaging"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://gip-nvsu.example.org/fhir/CodeSystem/fna-morphometry",
+              "code": "compactness",
+              "display": "Nucleus compactness (mean)"
+            }
+          ],
+          "text": "Nucleus compactness (mean)"
+        },
+        "subject": {
+          "reference": "Patient/P0009"
+        },
+        "effectiveDateTime": "1995-06-15",
+        "valueQuantity": {
+          "value": 0.1932,
+          "unit": "1",
+          "system": "http://unitsofmeasure.org",
+          "code": "1"
+        }
+      }
+    },
+    {
+      "fullUrl": "http://gip-nvsu.example.org/fhir/Observation/P0009-concavity",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "P0009-concavity",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "imaging",
+                "display": "Imaging"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://gip-nvsu.example.org/fhir/CodeSystem/fna-morphometry",
+              "code": "concavity",
+              "display": "Nucleus concavity (mean)"
+            }
+          ],
+          "text": "Nucleus concavity (mean)"
+        },
+        "subject": {
+          "reference": "Patient/P0009"
+        },
+        "effectiveDateTime": "1995-06-15",
+        "valueQuantity": {
+          "value": 0.1859,
+          "unit": "1",
+          "system": "http://unitsofmeasure.org",
+          "code": "1"
+        }
+      }
+    },
+    {
+      "fullUrl": "http://gip-nvsu.example.org/fhir/Observation/P0009-concave_points",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "P0009-concave_points",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "imaging",
+                "display": "Imaging"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://gip-nvsu.example.org/fhir/CodeSystem/fna-morphometry",
+              "code": "concave_points",
+              "display": "Nucleus concave points (mean)"
+            }
+          ],
+          "text": "Nucleus concave points (mean)"
+        },
+        "subject": {
+          "reference": "Patient/P0009"
+        },
+        "effectiveDateTime": "1995-06-15",
+        "valueQuantity": {
+          "value": 0.09353,
+          "unit": "1",
+          "system": "http://unitsofmeasure.org",
+          "code": "1"
+        }
+      }
+    },
+    {
+      "fullUrl": "http://gip-nvsu.example.org/fhir/Observation/P0009-symmetry",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "P0009-symmetry",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "imaging",
+                "display": "Imaging"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://gip-nvsu.example.org/fhir/CodeSystem/fna-morphometry",
+              "code": "symmetry",
+              "display": "Nucleus symmetry (mean)"
+            }
+          ],
+          "text": "Nucleus symmetry (mean)"
+        },
+        "subject": {
+          "reference": "Patient/P0009"
+        },
+        "effectiveDateTime": "1995-06-15",
+        "valueQuantity": {
+          "value": 0.235,
+          "unit": "1",
+          "system": "http://unitsofmeasure.org",
+          "code": "1"
+        }
+      }
+    },
+    {
+      "fullUrl": "http://gip-nvsu.example.org/fhir/Observation/P0009-fractal_dimension",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "P0009-fractal_dimension",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "imaging",
+                "display": "Imaging"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://gip-nvsu.example.org/fhir/CodeSystem/fna-morphometry",
+              "code": "fractal_dimension",
+              "display": "Nucleus fractal dimension (mean)"
+            }
+          ],
+          "text": "Nucleus fractal dimension (mean)"
+        },
+        "subject": {
+          "reference": "Patient/P0009"
+        },
+        "effectiveDateTime": "1995-06-15",
+        "valueQuantity": {
+          "value": 0.07389,
+          "unit": "1",
+          "system": "http://unitsofmeasure.org",
+          "code": "1"
+        }
+      }
+    },
+    {
+      "fullUrl": "http://gip-nvsu.example.org/fhir/Condition/P0009-dx",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "P0009-dx",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://gip-nvsu.example.org/fhir/CodeSystem/breast-mass-diagnosis",
+              "code": "malignant",
+              "display": "Malignant breast mass (biopsy confirmed)"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/P0009"
+        },
+        "recordedDate": "1995-06-15"
+      }
+    }
+  ]
+}

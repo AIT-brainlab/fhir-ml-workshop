@@ -1,0 +1,260 @@
+{
+  "seed": 42,
+  "test_size": 0.2,
+  "threshold": 0.5,
+  "fhir": {
+    "n_bundles": 20,
+    "example_id": "P0001",
+    "resources_in_example": 12,
+    "n_patient": 1,
+    "n_observation": 10,
+    "n_condition": 1,
+    "incomplete": {
+      "patient": "P0010",
+      "missing": "texture"
+    }
+  },
+  "cohort": {
+    "n": 569,
+    "n_malignant": 212,
+    "n_benign": 357,
+    "pct_malignant": 37.3,
+    "pct_benign": 62.7,
+    "n_features_raw": 10,
+    "n_features_total": 12,
+    "n_test": 114
+  },
+  "models": {
+    "logit": {
+      "name": "Logistic Regression",
+      "accuracy": 0.93,
+      "precision": 0.886,
+      "recall": 0.929,
+      "roc_auc": 0.987,
+      "confusion": {
+        "tn": 67,
+        "fp": 5,
+        "fn": 3,
+        "tp": 39
+      },
+      "missed": 3,
+      "false_alarms": 5,
+      "detected": 39
+    },
+    "forest": {
+      "name": "Random Forest",
+      "accuracy": 0.93,
+      "precision": 0.925,
+      "recall": 0.881,
+      "roc_auc": 0.984,
+      "confusion": {
+        "tn": 69,
+        "fp": 3,
+        "fn": 5,
+        "tp": 37
+      },
+      "missed": 5,
+      "false_alarms": 3,
+      "detected": 37
+    }
+  },
+  "selected": "logit",
+  "threshold_cohort": {
+    "0.20": {
+      "flagged": 244,
+      "missed": 7,
+      "false_alarms": 39
+    },
+    "0.50": {
+      "flagged": 202,
+      "missed": 20,
+      "false_alarms": 10
+    },
+    "0.80": {
+      "flagged": 179,
+      "missed": 34,
+      "false_alarms": 1
+    }
+  },
+  "flip_case": {
+    "patient": "P0216",
+    "probability": 0.2164,
+    "actual": "malignant",
+    "low": 0.2,
+    "high": 0.5
+  },
+  "clustering": {
+    "2": {
+      "ari": 0.646,
+      "silhouette": 0.395
+    },
+    "3": {
+      "ari": 0.483,
+      "silhouette": 0.332
+    },
+    "5": {
+      "ari": 0.324,
+      "silhouette": 0.217
+    }
+  },
+  "cv": {
+    "logit": {
+      "folds": 5,
+      "mean": 0.9,
+      "std": 0.04,
+      "low": 0.853,
+      "high": 0.941
+    },
+    "forest": {
+      "folds": 5,
+      "mean": 0.9,
+      "std": 0.048,
+      "low": 0.824,
+      "high": 0.971
+    }
+  },
+  "ablations": {
+    "model": "Logistic Regression",
+    "engineered_names": [
+      "compactness_ratio",
+      "concavity_per_radius"
+    ],
+    "threshold30": {
+      "recall": {
+        "baseline": 0.929,
+        "now": 0.976,
+        "delta": 0.047
+      },
+      "precision": {
+        "baseline": 0.886,
+        "now": 0.854,
+        "delta": -0.032
+      },
+      "accuracy": {
+        "baseline": 0.93,
+        "now": 0.93,
+        "delta": 0.0
+      },
+      "roc_auc": {
+        "baseline": 0.987,
+        "now": 0.984,
+        "delta": -0.003
+      },
+      "missed": {
+        "baseline": 3,
+        "now": 1,
+        "delta": -2
+      },
+      "false_alarms": {
+        "baseline": 5,
+        "now": 7,
+        "delta": 2
+      }
+    },
+    "no_engineered": {
+      "recall": {
+        "baseline": 0.929,
+        "now": 0.929,
+        "delta": 0.0
+      },
+      "precision": {
+        "baseline": 0.886,
+        "now": 0.886,
+        "delta": 0.0
+      },
+      "accuracy": {
+        "baseline": 0.93,
+        "now": 0.93,
+        "delta": 0.0
+      },
+      "roc_auc": {
+        "baseline": 0.987,
+        "now": 0.984,
+        "delta": -0.003
+      },
+      "missed": {
+        "baseline": 3,
+        "now": 3,
+        "delta": 0
+      },
+      "false_alarms": {
+        "baseline": 5,
+        "now": 5,
+        "delta": 0
+      }
+    },
+    "starved": {
+      "recall": {
+        "baseline": 0.929,
+        "now": 0.876,
+        "delta": -0.053
+      },
+      "precision": {
+        "baseline": 0.886,
+        "now": 0.961,
+        "delta": 0.075
+      },
+      "accuracy": {
+        "baseline": 0.93,
+        "now": 0.941,
+        "delta": 0.011
+      },
+      "roc_auc": {
+        "baseline": 0.987,
+        "now": 0.985,
+        "delta": -0.002
+      },
+      "missed": {
+        "baseline": 3,
+        "now": 21,
+        "delta": 18
+      },
+      "false_alarms": {
+        "baseline": 5,
+        "now": 6,
+        "delta": 1
+      }
+    },
+    "missing30": {
+      "recall": {
+        "baseline": 0.929,
+        "now": 0.881,
+        "delta": -0.048
+      },
+      "precision": {
+        "baseline": 0.886,
+        "now": 0.881,
+        "delta": -0.005
+      },
+      "accuracy": {
+        "baseline": 0.93,
+        "now": 0.912,
+        "delta": -0.018
+      },
+      "roc_auc": {
+        "baseline": 0.987,
+        "now": 0.982,
+        "delta": -0.005
+      },
+      "missed": {
+        "baseline": 3,
+        "now": 5,
+        "delta": 2
+      },
+      "false_alarms": {
+        "baseline": 5,
+        "now": 5,
+        "delta": 0
+      }
+    },
+    "starved_test_size": 0.8,
+    "starved_n_train": 113,
+    "starved_n_test": 456,
+    "missing30_fraction": 0.3,
+    "missing30_column": "texture"
+  },
+  "env": {
+    "n_packages": 66,
+    "python": "3.12"
+  }
+}

@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# Workshop outputs - students generate these by running the scripts
+models/*.joblib
+reports/*.png
+reports/*.json
+
+# Slide tooling - the Canva export is 23 MB and is re-fetched when rebuilding
+slides/ait-template.pptx
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+.ipynb_checkpoints/
+
+# Office lock files, created while a deck is open
+~$*
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Generated slide imagery - already embedded in the .pptx
+slides/figures/
+
+# macOS
+.DS_Store
