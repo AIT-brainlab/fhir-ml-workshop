@@ -52,7 +52,7 @@ it read like an exam.
 ## Before anyone arrives
 
 ```bash
-cd health-ai-workshop
+cd fhir-ml-workshop
 uv sync
 uv run python scripts/03_train_model.py     # records reports/baseline.json
 uv run uvicorn app.api:app --reload         # leave running in a spare terminal
@@ -75,7 +75,7 @@ Write on the whiteboard before they sit down:
 ```
 1.  github.com/astral-sh/uv        <- install this FIRST
 2.  git clone <URL>
-3.  cd health-ai-workshop
+3.  cd fhir-ml-workshop
 4.  uv sync                        <- only works inside the folder
 ```
 

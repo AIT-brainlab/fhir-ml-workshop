@@ -1,4 +1,4 @@
-# Machine Learning for Health Data — Hands-on Workshop
+# FHIR to Model — a hands-on machine learning workshop
 
 A two-hour session. You start from FHIR Bundles, turn them into a table, train
 a model on that table, serve it on your own laptop, and write the result back
@@ -56,8 +56,8 @@ repository page instead of `git clone`, and unzip it.
 ## Step 0b — Get the code and build the environment
 
 ```bash
-git clone <REPO-URL> health-ai-workshop
-cd health-ai-workshop
+git clone <REPO-URL> fhir-ml-workshop
+cd fhir-ml-workshop
 uv sync
 ```
 
@@ -271,7 +271,7 @@ column that is missing.
 ## Folder structure
 
 ```
-health-ai-workshop/
+fhir-ml-workshop/
 ├── README.md              <- you are here
 ├── EXERCISES.md           <- the knobs, and what to notice when you turn them
 ├── TEACHING_SCRIPT.md     <- instructor only: minute-by-minute running order

@@ -2,7 +2,7 @@
 Build the workshop deck on top of the AIT Canva template.
 
 Input : ait-template.pptx  (29 pages exported from Canva)
-Output: health-ai-workshop/slides/from-fhir-to-a-table.pptx
+Output: fhir-ml-workshop/slides/from-fhir-to-a-table.pptx
 
 Keeps every AIT design element - photos, logo, colours, shapes - and only
 swaps the placeholder text. Slides carrying rasterised dummy charts (16, 18)
@@ -174,7 +174,7 @@ TEXT = {
             "\n"
             "2.  Close and reopen your terminal, then check:   uv --version\n"
             "\n"
-            "3.  git clone <repo>     cd health-ai-workshop\n"
+            "3.  git clone <repo>     cd fhir-ml-workshop\n"
             "\n"
             "4.  uv sync\n"
             "\n"
