@@ -46,8 +46,11 @@ By the end of this session, participants will be able to:
 [10:00 - 10:20]  Module 1: Orientation & Foundations of AI in Health (20m)
                  (Including AIT Telehealth & Raman Glucose POC Case Study)
 [10:20 - 10:45]  Module 2: Health Data Ecosystems & Clinical ICT (25m)
+                 (Distributed Systems, The N(N-1)/2 Trap, Hospital Topology & Silos)
 [10:45 - 11:20]  Module 3: Digital Health Standards: HL7 v2 to FHIR R4 (35m)
-[11:20 - 11:45]  Module 4: AI-Readiness & The Data Mismatch (25m)
+                 (OSI Layer 7, 1989 Context, RESTful Web Standards, Vocabularies & AIT Case Study)
+[11:20 - 11:45]  Module 4: AI-Readiness, Classical ML & The GenAI Frontier (25m)
+                 (Impedance Mismatch, Pipelines, LLMs, RAG, MCP & AI-Native Standards)
 [11:45 - 12:00]  Module 5: The Bridge to Hands-on & Tech Checkpoint (15m)
 ```
 
@@ -55,7 +58,7 @@ By the end of this session, participants will be able to:
 
 ## Slide-by-Slide Storyboard (`.pptx`)
 
-The presentation deck consists of **25 slides** (matching the Canva master template 1-to-1), structured to maintain a crisp 4–5 minute pace per slide with built-in discussion points.
+The presentation deck consists of **27 slides** ([`slides-morning/orientation-and-health-ai-foundations.pptx`](orientation-and-health-ai-foundations.pptx)), structured to maintain a crisp 4–5 minute pace per slide with built-in engineering discussion points.
 
 ### Module 1: Orientation & Foundations of AI in Health (10:00 – 10:20)
 
@@ -68,7 +71,7 @@ The presentation deck consists of **25 slides** (matching the Canva master templ
 #### Slide 2: The Two Halves of Today
 - **Title:** The Two Halves of Today: Foundations to Hands-On
 - **Visual:** Two-column workflow diagram:
-  - *Morning (10:00–12:00):* Clinical workflows → Hospital systems → HL7 v2 → FHIR R4 → AI-readiness.
+  - *Morning (10:00–12:00):* Clinical workflows → Hospital systems → HL7 v2 → FHIR R4 → AI-readiness & GenAI frontiers.
   - *Afternoon (14:00–16:00):* FHIR Bundles → Feature Extraction → Pipeline (Impute + Scale) → Logistic Regression & Random Forest → Evaluation → FHIR Output.
 - **Key Talking Point:** "In health AI, training the model is a library call. Extracting, understanding, and standardising the data is 80% of the job."
 
@@ -97,7 +100,7 @@ The presentation deck consists of **25 slides** (matching the Canva master templ
 ### Module 2: Health Data Ecosystems & Clinical ICT (10:20 – 10:45)
 
 #### Slide 6: The Hospital IT Alphabet Soup
-- **Title:** The Clinical Data Ecosystem
+- **Title:** The Clinical Data Ecosystem: Four Core Subsystems
 - **Visual:** Architectural map showing:
   - **HIS / EHR:** Hospital Information System / Electronic Health Record (core patient master)
   - **LIS:** Laboratory Information System (blood tests, pathology, biopsy)
@@ -110,9 +113,9 @@ The presentation deck consists of **25 slides** (matching the Canva master templ
 - **Visual:** Patient journey timeline (Admission → Triage → Lab Order → Lab Result → Pathology → Discharge).
 - **Key Talking Point:** Each stop along the journey writes data in different formats, on different clocks, often with different patient identifiers.
 
-#### Slide 8: The Interoperability Crisis
-- **Title:** The Interoperability Dilemma
-- **Visual:** Spaghetti integration diagram: $N$ systems requiring $N \times (N-1) / 2$ point-to-point custom interfaces.
+#### Slide 8: The Interoperability Crisis: The $N(N-1)/2$ Trap
+- **Title:** The Healthcare Interoperability Crisis
+- **Visual:** Spaghetti integration diagram: $N$ systems requiring $N \times (N-1) / 2$ point-to-point custom interfaces vs. Hub-and-Spoke.
 - **Key Talking Point:** Hospital integrations historically relied on custom point-to-point code. Upgrading one system broke twelve others.
 
 #### Slide 9: Syntactic vs. Semantic Interoperability
@@ -131,10 +134,10 @@ The presentation deck consists of **25 slides** (matching the Canva master templ
 
 ### Module 3: Digital Health Standards: HL7 v2 to FHIR (10:45 – 11:20)
 
-#### Slide 11: The Workhorse: HL7 Version 2
-- **Title:** HL7 Version 2: The Messaging Workhorse (1989–Present)
-- **Visual:** Breakdown of an HL7 v2 message pipe-and-hat format (`MSH|...`, `PID|...`, `OBR|...`, `OBX|...`).
-- **Key Talking Point:** HL7 v2 is event-driven messaging over MLLP/TCP. It still powers over 90% of internal hospital interfaces today.
+#### Slide 11: OSI Layer 7 & The HL7 Mandate
+- **Title:** OSI Layer 7 & The HL7 Mandate
+- **Visual:** OSI 7-layer stack diagram emphasizing Layer 7 (Application Meaning) over Layers 1–4 (Packet Transport).
+- **Key Talking Point:** TCP/IP solved moving bytes between computers. But what do those bytes *mean*? In 1987, HL7 was founded specifically to standardize Layer 7 for healthcare.
 
 #### Slide 12: Anatomy of an HL7 v2 Lab Message (`ORU^R01`)
 - **Title:** Anatomy of an HL7 v2 Message
@@ -143,12 +146,12 @@ The presentation deck consists of **25 slides** (matching the Canva master templ
   - `PID` (Patient Identification: ID, DOB, Sex)
   - `OBR` (Observation Request: Order info)
   - `OBX` (Observation Result: Test name, value, units, abnormal flag)
-- **Key Talking Point:** Delimiters: `|` separates fields, `^` separates components. Human-readable if you know the spec, but brittle.
+- **Key Talking Point:** Delimiters: `|` separates fields, `^` separates components. Streaming ASCII parsable in $O(1)$ memory buffers.
 
-#### Slide 13: Why HL7 v2 Broke at Scale: The "Z-Segment" Trap
-- **Title:** Why HL7 v2 Needs Modernisation
-- **Visual:** Diagram of two hospitals sending "identical" HL7 v2 messages with divergent custom fields and Z-segments (`ZBE`, `ZPD`).
-- **Key Talking Point:** "When you've seen one HL7 v2 implementation... you've seen *one* HL7 v2 implementation." High integration maintenance overhead.
+#### Slide 13: Technological Relativity: Why HL7 v2 in 1989
+- **Title:** Technological Relativity: Why HL7 v2 in 1989
+- **Visual:** Historical computing context (1989: No web, no JSON, 1–4 MB RAM, 10 Mbps coax) vs. Modern integration debt (Z-segments, no REST APIs).
+- **Key Talking Point:** "HL7 v2 was an engineering triumph for 1989 hardware. But 30 years of loose optionality created massive integration debt."
 
 #### Slide 14: Enter HL7 FHIR (Fast Healthcare Interoperability Resources)
 - **Title:** The Modern Standard: HL7 FHIR (R4)
@@ -173,26 +176,31 @@ The presentation deck consists of **25 slides** (matching the Canva master templ
   - **ICD-10:** Disease classification and billing categories.
 - **Key Talking Point:** `Observation.code` maps to LOINC. That code becomes our dataframe column name in the afternoon.
 
+#### Slide 18: AIT Case Study: Raman Spectroscopy in FHIR R4
+- **Title:** AIT Case Study: Raman Glucose in FHIR R4
+- **Visual:** Real FHIR JSON observation with LOINC `2339-0` (Glucose in Blood) and SNOMED CT `439401001` (Raman spectroscopy method).
+- **Key Talking Point:** Demonstrates how edge hardware built at AIT integrates directly into global medical standards.
+
 ---
 
-### Module 4: AI-Readiness in Health Systems (11:20 – 11:45)
+### Module 4: AI-Readiness, Classical ML & The GenAI Frontier (11:20 – 11:45)
 
-#### Slide 18: What Makes Health Data "AI-Ready"?
-- **Title:** What is "AI-Readiness"?
-- **Visual:** The 4 pillars: Completeness, Semantic Consistency, Temporal Fidelity, Provenance.
-- **Key Talking Point:** Having terabytes of clinical data is useless if codes change midway or units aren't harmonised.
+#### Slide 19: The New Dilemma: Is FHIR R4 Actually "AI-Ready"?
+- **Title:** The New Dilemma: Is FHIR R4 Actually "AI-Ready"?
+- **Visual:** The 4 pillars of AI-Readiness: Completeness, Semantic Fidelity, Temporal Integrity, Provenance.
+- **Key Talking Point:** FHIR was built for Online Transaction Processing (OLTP — fetching one patient chart). ML requires Online Analytical Processing (OLAP — scanning millions of patient records).
 
-#### Slide 19: Realities of Clinical Data: Informative Missingness
+#### Slide 20: Realities of Clinical Data: Informative Missingness
 - **Title:** Clinical Reality 1: Informative Missingness
 - **Visual:** Chart comparing "Missing Completely at Random" (MCAR) vs. "Informative Missingness" in medicine.
 - **Key Talking Point:** In healthcare, data is not missing at random. A troponin level is only measured if the doctor suspects a heart attack. The *absence* of a test is clinical information.
 
-#### Slide 20: Realities of Clinical Data: Class Imbalance & Leakage
-- **Title:** Clinical Reality 2: Class Imbalance & Label Leakage
-- **Visual:** Majority class illustration (63% Benign baseline = 63% accuracy by doing nothing). Label leakage example (a biopsy order date after diagnosis).
+#### Slide 21: Realities of Clinical Data: Class Imbalance & Evaluation
+- **Title:** Clinical Reality 2: Class Imbalance & Evaluation Pitfalls
+- **Visual:** Majority class illustration (63% Benign baseline = 63% accuracy by doing nothing). ROC-AUC vs. Precision-Recall curves.
 - **Key Talking Point:** If 95% of screening mammograms are benign, an unweighted model predicting "benign" every time achieves 95% accuracy while killing patients.
 
-#### Slide 21: The Fundamental Impedance Mismatch
+#### Slide 22: The Fundamental Impedance Mismatch
 - **Title:** The Data Mismatch: FHIR Events vs. ML Matrices
 - **Visual:** Graphic transformation:
   - Left: Hierarchical, nested, event-based FHIR Bundle.
@@ -200,32 +208,37 @@ The presentation deck consists of **25 slides** (matching the Canva master templ
   - Right: Flat 2D NumPy/Pandas Matrix ($X \in \mathbb{R}^{N \times D}$, $y \in \{0, 1\}$).
 - **Key Talking Point:** "Nothing in scikit-learn, XGBoost, or PyTorch can read a FHIR Bundle. The flattening step is where decisions on joins, missingness, and aggregation must be made."
 
-#### Slide 22: Feature Engineering & Preprocessing Pipelines
+#### Slide 23: Feature Engineering & Preprocessing Pipelines
 - **Title:** Safe Preprocessing: Preventing Data Leakage
 - **Visual:** Scikit-learn Pipeline schematic: `SimpleImputer` → `StandardScaler` → `Classifier`.
 - **Key Talking Point:** Why imputers and scalers must be fit strictly on training splits, never across the whole cohort.
+
+#### Slide 24: Closing the Classical Loop: Outputting Predictions as FHIR
+- **Title:** Closing the Loop: Outputting Predictions as FHIR
+- **Visual:** Diagram of ML inference wrapped into a FHIR `RiskAssessment` and `Observation` resource.
+- **Key Talking Point:** An AI model is useless if its predictions cannot flow back into the hospital's clinical workflow.
+
+#### Slide 25: The GenAI Era: LLMs, Agents, RAG & Context Formats
+- **Title:** LLMs, Clinical Agents & Context Formats
+- **Visual:** 3-card layout:
+  - *The Token Bloat Trap:* Raw FHIR JSON consumes 300–500 tokens per observation, burning 50k+ tokens on schema metadata.
+  - *Emerging Context Formats:* Markdown tables (.md) reduce token overhead by 60–75%; Vector RAG indexes clinical narratives.
+  - *Agentic Tool-Calling (MCP):* Model Context Protocol tools allow clinical copilots to query structured patient data on demand.
+- **Key Talking Point:** Generative AI does not want 50,000 tokens of raw JSON; it wants token-efficient Markdown tables and scoped MCP tools.
+
+#### Slide 26: The Next Frontier: Towards AI-Native Health Data Standards
+- **Title:** Towards AI-Native Health Data Standards
+- **Visual:** Two-column architecture comparison:
+  - *The 3 Eras:* 1989 v2 (Sockets) → 2014 FHIR (REST) → 2026+ AI-Native (Vectors & MCP).
+  - *The Dual-Stack Architecture:* FHIR as System of Record (legal, auditable) + AI Feature/Vector Store as System of Intelligence.
+- **Key Talking Point:** Just as FHIR replaced v2 for the web era, healthcare is approaching an inflection point requiring an AI-native data layer.
 
 ---
 
 ### Module 5: Bridge to the Afternoon & Hands-On Checkpoint (11:45 – 12:00)
 
-#### Slide 23: The Afternoon Pipeline Preview
-- **Title:** Afternoon Preview: The 5-Step Pipeline
-- **Visual:** Workflow diagram corresponding to the workshop scripts:
-  - `01_fhir_to_table.py` (Parse FHIR Bundles → `patients.csv`)
-  - `02_explore_data.py` (Class balance, distributions, correlations)
-  - `03_train_model.py` (Pipelines, Logistic Regression vs. Random Forest, ROC-AUC)
-  - `04_cluster_patients.py` (Unsupervised K-Means clustering)
-  - `app/` (Streamlit interactive UI + FastAPI serving + FHIR export)
-- **Key Talking Point:** You will run all of this on your own laptops.
-
-#### Slide 24: Closing the Loop: AI Results Back as FHIR
-- **Title:** Closing the Loop: Outputting Predictions as FHIR
-- **Visual:** Diagram of ML inference wrapped into a FHIR `RiskAssessment` and `Observation` resource.
-- **Key Talking Point:** An AI model is useless if its predictions cannot flow back into the hospital's clinical workflow.
-
-#### Slide 25: Pre-Lunch Tech Check & Instructions
-- **Title:** Tech Check Before Lunch
+#### Slide 27: Pre-Lunch Tech Check & Instructions
+- **Title:** Tech Check Before Lunch (Library Studio Room)
 - **Visual:** Step-by-step terminal checklist:
   - `cd fhir-ml-workshop`
   - `uv sync`

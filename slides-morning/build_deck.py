@@ -630,7 +630,7 @@ def build_slide_11(prs):
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_slide_background(slide, prs, dark=True)
 
-    b = add_card(slide, Inches(0.9), Inches(1.8), Inches(4.5), Inches(0.45), bg_color=MED_GREEN, border_color=None)
+    b = add_card(slide, Inches(0.9), Inches(1.8), Inches(4.8), Inches(0.45), bg_color=MED_GREEN, border_color=None)
     tf_b = b.text_frame
     tf_b.margin_left = Inches(0.2)
     p_b = tf_b.paragraphs[0]
@@ -641,12 +641,12 @@ def build_slide_11(prs):
     tf_t = t_box.text_frame
     tf_t.word_wrap = True
     p_t = tf_t.paragraphs[0]
-    p_t.text = "From HL7 v2 to FHIR R4"
-    p_t.font.bold = True; p_t.font.size = Pt(38); p_t.font.color.rgb = TEXT_WHITE
+    p_t.text = "OSI Layer 7 & The HL7 Mandate"
+    p_t.font.bold = True; p_t.font.size = Pt(36); p_t.font.color.rgb = TEXT_WHITE
 
     p_sub = tf_t.add_paragraph()
-    p_sub.text = "How 35 years of medical IT evolved from 1989 serial delimiters to modern RESTful web APIs"
-    p_sub.font.size = Pt(17); p_sub.font.color.rgb = LIME_GREEN
+    p_sub.text = "Why networking solved moving packets (Layers 1–4), but healthcare required standardizing Application Meaning (Layer 7)"
+    p_sub.font.size = Pt(16); p_sub.font.color.rgb = LIME_GREEN
     p_sub.space_before = Pt(12)
 
     c = add_card(slide, Inches(0.9), Inches(5.0), Inches(11.5), Inches(1.6), bg_color=MED_GREEN, border_color=None)
@@ -657,7 +657,7 @@ def build_slide_11(prs):
     p1.font.bold = True; p1.font.size = Pt(13); p1.font.color.rgb = LIME_GREEN
 
     p2 = tf_c.add_paragraph()
-    p2.text = "In HL7 v2, you find a value by counting pipe delimiters in a line. In FHIR, you query a standardized URI endpoint and parse standard JSON."
+    p2.text = "In HL7 v2 (1989), you read a lab value by counting pipe delimiters in a line. In FHIR (2014), you query a RESTful URI endpoint and parse standard JSON."
     p2.font.bold = True; p2.font.size = Pt(14); p2.font.color.rgb = TEXT_WHITE
     p2.space_before = Pt(4)
 
@@ -716,20 +716,20 @@ def build_slide_12(prs):
 
 
 def build_slide_13(prs):
-    """Why HL7 v2 Broke at Scale (3 Cards)"""
+    """Technological Relativity: Why HL7 v2 in 1989 (3 Cards)"""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_slide_background(slide, prs)
-    add_header(slide, "Standards Evolution", "Why HL7 v2 Broke at Scale: The Integration Debt",
-               "\"When you've seen one HL7 v2 implementation... you've seen ONE implementation.\"")
+    add_header(slide, "Standards Evolution", "Technological Relativity: Why HL7 v2 in 1989",
+               "An engineering triumph for 1989 hardware that accumulated 30 years of Z-segment integration debt")
 
     flaws = [
+        ("The Context of 1989", "Why Not JSON / REST?",
+         "The Web didn't exist (HTTP in 1991, JSON in 2001). Hardware was 1–4 MB RAM and 10 Mbps coax. Delimiter-separated ASCII allowed O(1) streaming directly into C buffers over raw TCP sockets without memory bloat.",
+         MED_GREEN),
         ("The 'Z-Segment' Trap", "Non-Standard Custom Extensions",
          "HL7 v2 was so loosely specified that vendors added proprietary custom segments (ZBE, ZPD, ZAL). A message from Hospital A could not be parsed by Hospital B without bespoke translation code.",
          ALERT_RED),
-        ("Optionality Chaos", "No Enforceable Schema",
-         "Nearly every field in HL7 v2 was optional. Fields could be omitted or swapped without violating the specification. Parsers broke unpredictably on minor hospital software updates.",
-         MED_GREEN),
-        ("No Standard Web API", "Point-to-Point Socket Piping",
+        ("The Modern Debt", "Point-to-Point Socket Piping",
          "HL7 v2 runs over MLLP (raw TCP sockets). There are no URLs, no HTTP status codes, no authentication standards, and no query capabilities. Required costly interface engines (Mirth, Cloverleaf).",
          DARK_GREEN)
     ]
@@ -959,11 +959,11 @@ def build_slide_18(prs):
 
 
 def build_slide_19(prs):
-    """The Four Pillars of AI-Readiness (4 Cards)"""
+    """The New Dilemma: Is FHIR Actually AI-Ready? (4 Cards)"""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_slide_background(slide, prs)
-    add_header(slide, "Health AI Readiness", "The Four Pillars of AI-Readiness in Clinical Data",
-               "Having gigabytes of healthcare records does not make them fit for machine learning")
+    add_header(slide, "Health AI Readiness", "The New Dilemma: Is FHIR R4 Actually \"AI-Ready\"?",
+               "Why transactional healthcare records (OLTP) require four strict pillars to become fit for ML (OLAP)")
 
     pillars = [
         ("01. Completeness", "Presence of Critical Confounders",
@@ -1217,6 +1217,104 @@ def build_slide_24(prs):
 
 
 def build_slide_25(prs):
+    """The GenAI Era: LLMs, Agents, RAG & Context Formats (3 Cards)"""
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    add_slide_background(slide, prs)
+    add_header(slide, "The Generative AI Era", "LLMs, Clinical Agents & Context Formats",
+               "Why modern clinical AI assistants consume Markdown, RAG, and MCP rather than raw FHIR JSON")
+
+    cards = [
+        ("The Token Bloat Trap", "Raw FHIR in LLM Contexts",
+         "A single FHIR Observation consumes 300–500 tokens of nested schema boilerplate (`resourceType`, `system`, `coding`).\n\nDumping an entire patient chart burns 50,000+ tokens, diluting clinical signal and increasing hallucination risks.",
+         ALERT_RED),
+        ("Emerging Context Formats", "Markdown & Vector RAG",
+         "• Markdown (.md): Transforming FHIR JSON into clean markdown tables reduces token overhead by 60–75% while boosting LLM reasoning.\n\n• Clinical RAG: Semantic search over vector databases (e.g. pgvector, Chroma) retrieves relevant clinical notes and guidelines.",
+         MED_GREEN),
+        ("Agentic Tool-Calling", "Model Context Protocol (MCP)",
+         "Instead of large prompt dumps, autonomous clinical agents query structured tools on-demand:\n\n• get_patient_labs(id, 'glucose')\n• check_drug_interaction(rx_a, rx_b)\n\nEnsures scoped, auditable, and deterministic tool execution.",
+         LIME_GREEN)
+    ]
+
+    for i, (title, sub, body, col) in enumerate(cards):
+        left = Inches(0.8) + i * Inches(3.95)
+        c = add_card(slide, left, Inches(2.0), Inches(3.75), Inches(4.7))
+        tf = c.text_frame
+        tf.margin_left = tf.margin_right = tf.margin_top = Inches(0.3)
+
+        p = tf.paragraphs[0]
+        p.text = title
+        p.font.bold = True; p.font.size = Pt(16); p.font.color.rgb = col
+
+        p = tf.add_paragraph()
+        p.text = sub
+        p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = DARK_GREEN
+        p.space_before = Pt(4)
+
+        p = tf.add_paragraph()
+        p.text = body
+        p.font.size = Pt(10.5); p.font.color.rgb = TEXT_DARK
+        p.space_before = Pt(10)
+
+
+def build_slide_26(prs):
+    """The Next Frontier: Towards AI-Native Health Standards"""
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    add_slide_background(slide, prs)
+    add_header(slide, "The Next Evolution", "Towards AI-Native Health Data Standards",
+               "Will healthcare need a new standard designed for machine learning and autonomous agents?")
+
+    c1 = add_card(slide, Inches(0.8), Inches(2.0), Inches(5.6), Inches(4.8))
+    tf1 = c1.text_frame
+    tf1.margin_left = tf1.margin_right = tf1.margin_top = Inches(0.35)
+
+    p = tf1.paragraphs[0]
+    p.text = "THE THREE ERAS OF HEALTH DATA"
+    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = MED_GREEN
+
+    p = tf1.add_paragraph()
+    p.text = "From Hardware Sockets to Autonomous Agents"
+    p.font.bold = True; p.font.size = Pt(18); p.font.color.rgb = DARK_GREEN
+    p.space_before = Pt(6)
+
+    eras = [
+        ("Era 1: 1989–2011 (Local Machines)", "HL7 v2: Pipe-delimited ASCII strings over TCP sockets for local hospital LANs."),
+        ("Era 2: 2014–2025 (Web & Mobile)", "HL7 FHIR: JSON REST APIs and web standards for apps, clinicians, and portals."),
+        ("Era 3: 2026+ (Artificial Intelligence)", "AI-Native Stack: Vector embeddings, token-optimized Markdown, and Agentic MCP tool protocols.")
+    ]
+    for h, d in eras:
+        p = tf1.add_paragraph()
+        p.text = f"• {h}:\n"
+        p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = TEXT_DARK
+        p.space_before = Pt(10)
+        run = p.add_run(); run.text = d; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
+
+    c2 = add_card(slide, Inches(6.8), Inches(2.0), Inches(5.7), Inches(4.8))
+    tf2 = c2.text_frame
+    tf2.margin_left = tf2.margin_right = tf2.margin_top = Inches(0.35)
+
+    p = tf2.paragraphs[0]
+    p.text = "THE EMERGING SOLUTION"
+    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = LIME_GREEN
+
+    p = tf2.add_paragraph()
+    p.text = "The Dual-Stack Health Architecture"
+    p.font.bold = True; p.font.size = Pt(18); p.font.color.rgb = DARK_GREEN
+    p.space_before = Pt(6)
+
+    layers = [
+        ("Layer A · System of Record (FHIR)", "FHIR remains the authoritative, legally audited, and human-verified patient ledger for billing, medication safety, and clinical charts."),
+        ("Layer B · System of Intelligence (AI Store)", "High-performance vector stores and feature stores (e.g. Feast, pgvector) continuously ingest FHIR streams, serving ML models and LLM agents in milliseconds."),
+        ("Health MCP Protocol Standard", "Standardizing tool schemas so any clinical AI agent can query and propose treatment orders across any hospital safely.")
+    ]
+    for h, d in layers:
+        p = tf2.add_paragraph()
+        p.text = f"• {h}:\n"
+        p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = TEXT_DARK
+        p.space_before = Pt(10)
+        run = p.add_run(); run.text = d; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
+
+
+def build_slide_27(prs):
     """Pre-Lunch Tech Check (3 Cards)"""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_slide_background(slide, prs)
@@ -1258,7 +1356,7 @@ def build_slide_25(prs):
 # -----------------------------------------------------------------------------
 
 def main():
-    print("Building clean 25-slide presentation deck for Morning Theory Session...")
+    print("Building clean 27-slide presentation deck for Morning Theory Session...")
     prs = create_deck()
 
     builders = [
@@ -1267,6 +1365,7 @@ def main():
         build_slide_11, build_slide_12, build_slide_13, build_slide_14, build_slide_15,
         build_slide_16, build_slide_17, build_slide_18, build_slide_19, build_slide_20,
         build_slide_21, build_slide_22, build_slide_23, build_slide_24, build_slide_25,
+        build_slide_26, build_slide_27,
     ]
 
     for idx, fn in enumerate(builders, 1):
