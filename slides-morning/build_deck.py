@@ -1,12 +1,14 @@
 """
 Build a clean, high-quality, professional PowerPoint deck for the Morning Theory Session.
 
+Curriculum Structure: "2 + 1" Phase Architecture
+- Phase 1: History of Medical & Hospital IT Systems (Pre-1960 to Today)
+- Phase 2: Evolution of Clinical Data Modalities for ML & AI (Tabular, Spatial, Time-Series, Text/LLMs)
+- Phase +1: AIT Research in Action — Telehealth & WP1 Raman Glucose POC (Dr. Chaklam Spotlight)
+
 Venue: Library Studio Room
 Audience: 20 undergraduate engineering students (IT, Agriculture, Mechanical)
 Output: slides-morning/orientation-and-health-ai-foundations.pptx
-
-Built from scratch with python-pptx using official AIT brand colors, typography,
-and structured card-based layouts. 100% free of leftover afternoon figures or text.
 """
 
 from pathlib import Path
@@ -14,7 +16,6 @@ from pptx import Presentation
 from pptx.util import Inches, Pt
 from pptx.dml.color import RGBColor
 from pptx.enum.shapes import MSO_SHAPE
-from pptx.enum.text import PP_ALIGN
 
 HERE = Path(__file__).resolve().parent
 DST_DECK = HERE / "orientation-and-health-ai-foundations.pptx"
@@ -51,7 +52,6 @@ def add_slide_background(slide, prs, dark=False):
 
 
 def add_header(slide, tag_text: str, title_text: str, subtitle_text: str = None, dark=False):
-    # Top Category Tag
     tag_box = slide.shapes.add_textbox(Inches(0.8), Inches(0.4), Inches(8.5), Inches(0.35))
     tf_tag = tag_box.text_frame
     tf_tag.word_wrap = True
@@ -63,7 +63,6 @@ def add_header(slide, tag_text: str, title_text: str, subtitle_text: str = None,
     p_tag.font.bold = True
     p_tag.font.color.rgb = LIME_GREEN if dark else MED_GREEN
 
-    # Title
     title_box = slide.shapes.add_textbox(Inches(0.8), Inches(0.72), Inches(9.8), Inches(0.65))
     tf_t = title_box.text_frame
     tf_t.word_wrap = True
@@ -75,7 +74,6 @@ def add_header(slide, tag_text: str, title_text: str, subtitle_text: str = None,
     p_t.font.bold = True
     p_t.font.color.rgb = TEXT_WHITE if dark else DARK_GREEN
 
-    # Subtitle
     if subtitle_text:
         sub_box = slide.shapes.add_textbox(Inches(0.8), Inches(1.38), Inches(10.0), Inches(0.4))
         tf_s = sub_box.text_frame
@@ -87,7 +85,6 @@ def add_header(slide, tag_text: str, title_text: str, subtitle_text: str = None,
         p_s.font.size = Pt(12)
         p_s.font.color.rgb = LIME_GREEN if dark else TEXT_MUTED
 
-    # Logo on top right
     if LOGO_PATH.exists():
         slide.shapes.add_picture(str(LOGO_PATH), Inches(11.1), Inches(0.45), width=Inches(1.5))
 
@@ -104,9 +101,9 @@ def add_card(slide, left, top, width, height, bg_color=CARD_BG, border_color=CAR
     return card
 
 
-# -----------------------------------------------------------------------------
-# SLIDE BUILDERS
-# -----------------------------------------------------------------------------
+# =============================================================================
+# PROLOGUE & WELCOME
+# =============================================================================
 
 def build_slide_01(prs):
     """Cover Slide"""
@@ -116,389 +113,140 @@ def build_slide_01(prs):
     if LOGO_PATH.exists():
         slide.shapes.add_picture(str(LOGO_PATH), Inches(0.9), Inches(0.8), width=Inches(2.5))
 
-    # Badge
-    b = add_card(slide, Inches(0.9), Inches(2.2), Inches(5.8), Inches(0.45), bg_color=MED_GREEN, border_color=None)
+    b = add_card(slide, Inches(0.9), Inches(2.2), Inches(6.2), Inches(0.45), bg_color=MED_GREEN, border_color=None)
     tf_b = b.text_frame
     tf_b.margin_left = Inches(0.2)
     p_b = tf_b.paragraphs[0]
     p_b.text = "AIT BRAIN LAB · MEDICAL ICT & HEALTH AI WORKSHOP"
-    p_b.font.name = "Arial"
-    p_b.font.size = Pt(10)
-    p_b.font.bold = True
-    p_b.font.color.rgb = TEXT_WHITE
+    p_b.font.bold = True; p_b.font.size = Pt(10); p_b.font.color.rgb = TEXT_WHITE
 
-    # Title
     t_box = slide.shapes.add_textbox(Inches(0.9), Inches(2.8), Inches(11.5), Inches(1.8))
     tf_t = t_box.text_frame
     tf_t.word_wrap = True
     p_t = tf_t.paragraphs[0]
     p_t.text = "Orientation & Intro to AI in Health Foundations"
-    p_t.font.name = "Arial"
-    p_t.font.size = Pt(38)
-    p_t.font.bold = True
-    p_t.font.color.rgb = TEXT_WHITE
+    p_t.font.bold = True; p_t.font.size = Pt(38); p_t.font.color.rgb = TEXT_WHITE
 
-    # Subtitle
     p_sub = tf_t.add_paragraph()
-    p_sub.text = "Health Data Ecosystems, Digital Health Standards (HL7 v2, FHIR R4), and AI-Readiness"
-    p_sub.font.name = "Arial"
-    p_sub.font.size = Pt(17)
-    p_sub.font.color.rgb = LIME_GREEN
+    p_sub.text = "Hospital IT History, Modern Standards (HL7 v2, FHIR R4), and Clinical AI Modalities"
+    p_sub.font.size = Pt(17); p_sub.font.color.rgb = LIME_GREEN
     p_sub.space_before = Pt(12)
 
-    # Info card at bottom
     info = add_card(slide, Inches(0.9), Inches(5.2), Inches(11.5), Inches(1.4), bg_color=MED_GREEN, border_color=None)
     tf_i = info.text_frame
-    tf_i.margin_left = Inches(0.3)
-    tf_i.margin_top = Inches(0.2)
+    tf_i.margin_left = Inches(0.3); tf_i.margin_top = Inches(0.2)
     p1 = tf_i.paragraphs[0]
     p1.text = "Morning Theory Session: 10:00 – 12:00  |  Venue: Library Studio Room"
-    p1.font.name = "Arial"
-    p1.font.size = Pt(14)
-    p1.font.bold = True
-    p1.font.color.rgb = TEXT_WHITE
+    p1.font.bold = True; p1.font.size = Pt(14); p1.font.color.rgb = TEXT_WHITE
 
     p2 = tf_i.add_paragraph()
     p2.text = "Audience: 20 Undergraduate Engineering Students (IT, Agricultural Engineering, Mechanical Engineering)"
-    p2.font.name = "Arial"
-    p2.font.size = Pt(12)
-    p2.font.color.rgb = LIME_GREEN
+    p2.font.size = Pt(12); p2.font.color.rgb = LIME_GREEN
     p2.space_before = Pt(6)
 
 
 def build_slide_02(prs):
-    """The Two Halves of Today (Two-Column)"""
+    """The 2 + 1 Session Architecture"""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_slide_background(slide, prs)
-    add_header(slide, "Workshop Structure", "The Two Halves of Today: Foundations to Hands-On",
-               "Why healthcare machine learning is 80% data curation and standardisation")
+    add_header(slide, "Workshop Roadmap", "The 2 + 1 Session Architecture",
+               "A structured journey from medical computing history to cutting-edge AI and AIT research")
 
-    # Left Column: Morning
-    c1 = add_card(slide, Inches(0.8), Inches(2.0), Inches(5.6), Inches(4.8))
-    tf1 = c1.text_frame
-    tf1.margin_left = tf1.margin_right = tf1.margin_top = Inches(0.35)
-    
-    p = tf1.paragraphs[0]
-    p.text = "MORNING (10:00 – 12:00)"
-    p.font.name = "Arial"; p.font.size = Pt(12); p.font.bold = True; p.font.color.rgb = MED_GREEN
-    
-    p = tf1.add_paragraph()
-    p.text = "Health Foundations & Standards"
-    p.font.name = "Arial"; p.font.size = Pt(18); p.font.bold = True; p.font.color.rgb = DARK_GREEN
-    p.space_before = Pt(6)
-
-    bullets = [
-        ("Clinical IT Landscape", "How hospitals generate patient telemetry (EHR, LIS, RIS/PACS)."),
-        ("Legacy Standards (HL7 v2)", "Message-based pipe-and-hat protocols powering hospitals since 1989."),
-        ("Modern Standard (FHIR R4)", "Web APIs, JSON payloads, resources, and coded vocabularies."),
-        ("AI-Readiness", "Why machine learning cannot directly consume clinical event streams."),
-        ("AIT Telehealth Case Study", "Connecting physical sensors (Raman glucose) to clinical standards.")
-    ]
-    for b_title, b_desc in bullets:
-        p = tf1.add_paragraph()
-        p.text = f"• {b_title}: "
-        p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = TEXT_DARK
-        p.space_before = Pt(10)
-        run = p.add_run()
-        run.text = b_desc
-        run.font.bold = False; run.font.color.rgb = TEXT_MUTED
-
-    # Right Column: Afternoon
-    c2 = add_card(slide, Inches(6.8), Inches(2.0), Inches(5.7), Inches(4.8))
-    tf2 = c2.text_frame
-    tf2.margin_left = tf2.margin_right = tf2.margin_top = Inches(0.35)
-    
-    p = tf2.paragraphs[0]
-    p.text = "AFTERNOON (14:00 – 16:00)"
-    p.font.name = "Arial"; p.font.size = Pt(12); p.font.bold = True; p.font.color.rgb = LIME_GREEN
-    
-    p = tf2.add_paragraph()
-    p.text = "From FHIR to Model (Hands-On)"
-    p.font.name = "Arial"; p.font.size = Pt(18); p.font.bold = True; p.font.color.rgb = DARK_GREEN
-    p.space_before = Pt(6)
-
-    bullets_pm = [
-        ("Step 1 · Flatten FHIR", "Read real FHIR Bundles into a tabular dataframe."),
-        ("Step 2 · Data Profiling", "Analyse class imbalance, missingness, and diagnostic baselines."),
-        ("Step 3 · Train Pipelines", "Fit Logistic Regression & Random Forest; sweep thresholds."),
-        ("Step 4 · Unsupervised ML", "Discover natural patient clusters with K-Means."),
-        ("Step 5 · Serve & FHIR Out", "Run interactive Streamlit UI, FastAPI service, and export predictions back to FHIR.")
-    ]
-    for b_title, b_desc in bullets_pm:
-        p = tf2.add_paragraph()
-        p.text = f"• {b_title}: "
-        p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = TEXT_DARK
-        p.space_before = Pt(10)
-        run = p.add_run()
-        run.text = b_desc
-        run.font.bold = False; run.font.color.rgb = TEXT_MUTED
-
-
-def build_slide_03(prs):
-    """AIT Research in Action: Telehealth & Assistive Systems (4 Cards)"""
-    slide = prs.slides.add_slide(prs.slide_layouts[6])
-    add_slide_background(slide, prs)
-    add_header(slide, "Research in Action", "AIT Telehealth & Assistive Systems Project",
-               "Four work packages connecting physical sensors and robotics to clinical cloud infrastructure")
-
-    wps = [
-        ("WP1: Optical Glucose Sensing",
-         "Non-Invasive Raman Sensor",
-         "Measures blood glucose concentration without skin pricks using optical Raman laser spectroscopy.",
-         "POC App: github.com/akraradets/BloodGlucose-App\nEdge ML calibration models.",
-         LIME_GREEN),
-        ("WP2: Activity & Fall Telemetry",
-         "Computer Vision & Wi-Fi CSI",
-         "Continuous indoor monitoring for elderly and disabled residents without intrusive wearable tags.",
-         "Analyzes micro-Doppler Wi-Fi channel state information (CSI) & vision.",
+    phases = [
+        ("PHASE 1 (45 MINS)", "History of Hospital IT",
+         "How healthcare evolved from paper charts and 1960s mainframes to HL7 v2 and modern FHIR R4 web standards.\n\n• Pre-1960 Analog Paper & Tubes\n• 1960s Mainframes & MUMPS\n• 1980s Sockets & HL7 Delimiters\n• 2014+ FHIR REST APIs",
          MED_GREEN),
-        ("WP3: Remote Physical Therapy",
-         "Robotic Haptic Rehab",
-         "Bilateral force-feedback robotic exoskeleton for remote upper-limb stroke and mobility rehabilitation.",
-         "Allows physical therapists to guide patients over internet links.",
+        ("PHASE 2 (45 MINS)", "Evolution of AI Modalities",
+         "How medical data transforms into mathematical representations across four core AI paradigms.\n\n• 1. Tabular (Classical ML)\n• 2. Spatial / Images (Vision)\n• 3. Time-Series (Telemetry)\n• 4. Text & LLMs (RAG / MCP)",
          DARK_GREEN),
-        ("WP4: Telehealth Cloud Platform",
-         "Data Integration & FHIR",
-         "Centralized healthcare platform aggregating multi-sensor event streams into standard medical formats.",
-         "Real-time clinician dashboards, alert thresholds, and EHR integration.",
-         MED_GREEN),
+        ("PHASE +1 (20 MINS)", "AIT Research in Action",
+         "Dedicated spotlight for Prof. Chaklam Silpasuwanchai and the AIT Telehealth Project.\n\n• Telehealth & Assistive Systems\n• WP1 Raman Spectroscopy POC\n• Mobile App (BloodGlucose-App)\n• Real-World FHIR R4 Mapping",
+         LIME_GREEN)
     ]
 
-    card_w = Inches(2.7)
-    card_h = Inches(4.7)
-    for i, (wp_tag, wp_title, wp_body, wp_tech, tag_col) in enumerate(wps):
-        left = Inches(0.8) + i * Inches(2.95)
-        c = add_card(slide, left, Inches(2.0), card_w, card_h)
+    for i, (badge, title, body, col) in enumerate(phases):
+        left = Inches(0.8) + i * Inches(3.95)
+        c = add_card(slide, left, Inches(2.0), Inches(3.75), Inches(4.8))
         tf = c.text_frame
-        tf.margin_left = tf.margin_right = tf.margin_top = Inches(0.25)
+        tf.margin_left = tf.margin_right = tf.margin_top = Inches(0.3)
 
         p = tf.paragraphs[0]
-        p.text = wp_tag.upper()
-        p.font.name = "Arial"; p.font.size = Pt(10); p.font.bold = True; p.font.color.rgb = tag_col
+        p.text = badge
+        p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = col
 
         p = tf.add_paragraph()
-        p.text = wp_title
-        p.font.name = "Arial"; p.font.size = Pt(14); p.font.bold = True; p.font.color.rgb = DARK_GREEN
-        p.space_before = Pt(6)
+        p.text = title
+        p.font.bold = True; p.font.size = Pt(16); p.font.color.rgb = DARK_GREEN
+        p.space_before = Pt(4)
 
         p = tf.add_paragraph()
-        p.text = wp_body
-        p.font.name = "Arial"; p.font.size = Pt(10.5); p.font.color.rgb = TEXT_DARK
-        p.space_before = Pt(10)
-
-        p = tf.add_paragraph()
-        p.text = wp_tech
-        p.font.name = "Arial"; p.font.size = Pt(9.5); p.font.color.rgb = TEXT_MUTED
+        p.text = body
+        p.font.size = Pt(11); p.font.color.rgb = TEXT_DARK
         p.space_before = Pt(12)
 
 
-def build_slide_04(prs):
-    """Why Health AI is Not Consumer Tech"""
+# =============================================================================
+# PHASE 1: HISTORY OF MEDICAL & HOSPITAL IT SYSTEMS
+# =============================================================================
+
+def build_slide_03(prs):
+    """Pre-1960: The Analog Era"""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_slide_background(slide, prs)
-    add_header(slide, "Clinical AI Foundations", "Why Health AI is Not Consumer Tech",
-               "Asymmetric error penalties: why conventional accuracy is dangerous in clinical decisions")
-
-    # Left Card: Clinical Diagnostics
-    c1 = add_card(slide, Inches(0.8), Inches(2.0), Inches(5.6), Inches(4.8), border_color=ALERT_RED)
-    tf1 = c1.text_frame
-    tf1.margin_left = tf1.margin_right = tf1.margin_top = Inches(0.35)
-
-    p = tf1.paragraphs[0]
-    p.text = "HIGH ASYMMETRY / HIGH STAKES"
-    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = ALERT_RED
-
-    p = tf1.add_paragraph()
-    p.text = "Clinical Diagnostic ML"
-    p.font.bold = True; p.font.size = Pt(18); p.font.color.rgb = DARK_GREEN
-    p.space_before = Pt(6)
-
-    items = [
-        ("False Negative (Missed Cancer)", "A malignant tumor is classified benign. Patient is sent home. Tumor grows untreated for 12 months. Catastrophic outcome."),
-        ("False Positive (False Alarm)", "A benign cyst is flagged malignant. Patient receives an extra ultrasound or biopsy. Anxiety and modest cost, but safe."),
-        ("Metric Requirement", "Accuracy is meaningless here. We must optimize Recall (Sensitivity) and manage the threshold deliberately.")
-    ]
-    for h, desc in items:
-        p = tf1.add_paragraph()
-        p.text = f"• {h}:\n"
-        p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = TEXT_DARK
-        p.space_before = Pt(10)
-        run = p.add_run()
-        run.text = desc
-        run.font.bold = False; run.font.color.rgb = TEXT_MUTED
-
-    # Right Card: Consumer Tech
-    c2 = add_card(slide, Inches(6.8), Inches(2.0), Inches(5.7), Inches(4.8))
-    tf2 = c2.text_frame
-    tf2.margin_left = tf2.margin_right = tf2.margin_top = Inches(0.35)
-
-    p = tf2.paragraphs[0]
-    p.text = "SYMMETRIC / LOW STAKES"
-    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = TEXT_MUTED
-
-    p = tf2.add_paragraph()
-    p.text = "Consumer Recommenders & Ads"
-    p.font.bold = True; p.font.size = Pt(18); p.font.color.rgb = DARK_GREEN
-    p.space_before = Pt(6)
-
-    items2 = [
-        ("False Negative (Skipped Song)", "A user is not recommended a track they might have liked. Zero tangible harm; user picks another song."),
-        ("False Positive (Irrelevant Ad)", "User sees an advert for running shoes they do not want. User scrolls past. Penalty is negligible."),
-        ("Metric Requirement", "Click-through rate (CTR) and Top-K Precision are fine. Mistakes do not cause physical injury.")
-    ]
-    for h, desc in items2:
-        p = tf2.add_paragraph()
-        p.text = f"• {h}:\n"
-        p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = TEXT_DARK
-        p.space_before = Pt(10)
-        run = p.add_run()
-        run.text = desc
-        run.font.bold = False; run.font.color.rgb = TEXT_MUTED
-
-
-def build_slide_05(prs):
-    """Prediction vs. Clinical Decision Support"""
-    slide = prs.slides.add_slide(prs.slide_layouts[6])
-    add_slide_background(slide, prs)
-    add_header(slide, "Human-In-The-Loop", "Prediction vs. Clinical Decision Support (CDS)",
-               "Why medical algorithms triage and assist rather than make autonomous clinical decrees")
+    add_header(slide, "Phase 1 · History of Hospital IT", "Pre-1960: How Hospitals Kept Records Before Digital",
+               "Physical charts, pneumatic vacuum tubes, and the dangers of lost medical memory")
 
     c = add_card(slide, Inches(0.8), Inches(2.0), Inches(11.7), Inches(4.8))
     tf = c.text_frame
     tf.margin_left = tf.margin_right = tf.margin_top = Inches(0.4)
 
     p = tf.paragraphs[0]
-    p.text = "THE CLINICAL REALITY OF AI DEPLOYMENT"
-    p.font.bold = True; p.font.size = Pt(12); p.font.color.rgb = MED_GREEN
+    p.text = "THE ANALOG HEALTHCARE SYSTEM"
+    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = MED_GREEN
 
     p = tf.add_paragraph()
-    p.text = "AI Models Do Not Replace Doctors — They Triage Attention"
+    p.text = "Paper Folders, Bed Clipboards, and Vacuum Tubes"
     p.font.bold = True; p.font.size = Pt(20); p.font.color.rgb = DARK_GREEN
     p.space_before = Pt(6)
 
     points = [
-        ("Autonomous AI vs. Assistive AI", "In consumer autonomous driving, the car steers. In healthcare, regulatory bodies (FDA, EMA) treat diagnostic ML strictly as Software as a Medical Device (SaMD) operating as decision support with a licensed clinician in the loop."),
-        ("Risk Stratification", "Instead of outputting a binary 'healthy vs sick', models assign calibrated risk probabilities. High-risk cases are bumped to the top of the radiologist's queue, reducing time-to-treatment for acute patients."),
-        ("Engineering Analogy (Predictive Maintenance)", "For mechanical or agricultural engineering students: think of clinical AI as an anomaly detection telemetry system. The vibration sensor flags a bearing defect; the maintenance engineer decides when to shut down the turbine.")
+        ("The Basement Record Room", "Patient histories lived as physical paper sheets in cardboard folders filed in massive hospital basements. Retrieving a record required orderlies to manually locate and pull folders."),
+        ("Clipboards at the Foot of the Bed", "Vital signs (temperature, pulse, blood pressure) and medication doses were hand-scribbled by nurses onto paper flowsheets hanging on patient beds."),
+        ("Pneumatic Tube Transport", "Blood vials and paper requisition forms were loaded into brass canisters and propelled through hospital pneumatic vacuum tubes directly into the laboratory."),
+        ("The Severe Failure Mode", "Records were frequently misfiled, stained, illegible, or lost in fires. If a patient moved to another town or hospital, their clinical history vanished completely.")
     ]
     for t, b in points:
         p = tf.add_paragraph()
-        p.text = f"{t}: "
-        p.font.bold = True; p.font.size = Pt(12); p.font.color.rgb = TEXT_DARK
-        p.space_before = Pt(14)
-        run = p.add_run()
-        run.text = b
-        run.font.bold = False; run.font.color.rgb = TEXT_MUTED
-
-
-def build_slide_06(prs):
-    """The Clinical Data Ecosystem (4 Subsystems)"""
-    slide = prs.slides.add_slide(prs.slide_layouts[6])
-    add_slide_background(slide, prs)
-    add_header(slide, "Hospital IT Architecture", "The Clinical Data Ecosystem: Four Core Subsystems",
-               "Patient data is generated across independent departments, databases, and vendor hardware")
-
-    subsystems = [
-        ("01. EHR / EMR", "Electronic Health Record",
-         "The central patient master record: clinical encounter notes, problem lists, allergies, prescriptions, and vital signs.",
-         "Vendor Examples: Epic, Cerner, Meditech"),
-        ("02. LIS", "Laboratory Information",
-         "Processes blood assays, pathology specimens, biopsies, and microbial cultures. Generates numeric test results and units.",
-         "Biopsy morphometry data originates here"),
-        ("03. RIS & PACS", "Radiology & Imaging",
-         "Radiology Information System (orders/reports) and Picture Archiving System (DICOM image storage for CT, MRI, X-Ray).",
-         "Stores multi-gigabyte imaging studies"),
-        ("04. Billing & Admin", "Administrative & Claims",
-         "Hospital enterprise resource planning: insurance billing, bed management, and standardized ICD-10 diagnostic billing codes.",
-         "High data volume, financial governance")
-    ]
-
-    for i, (code, title, body, sub) in enumerate(subsystems):
-        left = Inches(0.8) + i * Inches(2.95)
-        c = add_card(slide, left, Inches(2.0), Inches(2.75), Inches(4.7))
-        tf = c.text_frame
-        tf.margin_left = tf.margin_right = tf.margin_top = Inches(0.25)
-
-        p = tf.paragraphs[0]
-        p.text = code
-        p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = MED_GREEN
-
-        p = tf.add_paragraph()
-        p.text = title
-        p.font.bold = True; p.font.size = Pt(14); p.font.color.rgb = DARK_GREEN
-        p.space_before = Pt(6)
-
-        p = tf.add_paragraph()
-        p.text = body
-        p.font.size = Pt(10.5); p.font.color.rgb = TEXT_DARK
+        p.text = f"• {t}: "
+        p.font.bold = True; p.font.size = Pt(11.5); p.font.color.rgb = TEXT_DARK
         p.space_before = Pt(10)
-
-        p = tf.add_paragraph()
-        p.text = sub
-        p.font.size = Pt(9.5); p.font.color.rgb = TEXT_MUTED
-        p.space_before = Pt(12)
+        run = p.add_run(); run.text = b; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
 
 
-def build_slide_07(prs):
-    """The Patient Journey (5 Steps)"""
+def build_slide_04(prs):
+    """The 1960s: Mainframes & MUMPS"""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_slide_background(slide, prs)
-    add_header(slide, "Clinical Workflow", "The Patient Journey: Fragmented Event Streams Over Time",
-               "Data is recorded asynchronously across separate departmental clocks and software systems")
-
-    steps = [
-        ("01. Triage & Admission", "Demographics, admission vitals, presenting complaint logged in EHR."),
-        ("02. Physician Orders", "Doctor examines patient; orders blood panel (LIS) and mammogram (RIS)."),
-        ("03. Testing & Execution", "Lab analyzes fine needle aspirate (biopsy); radiologist captures scans."),
-        ("04. Pathologist Review", "Cell nuclei morphometry measured and signed off as benign or malignant."),
-        ("05. Discharge & Billing", "Treatment plan documented, medications dispensed, claim submitted.")
-    ]
-
-    for i, (title, desc) in enumerate(steps):
-        left = Inches(0.8) + i * Inches(2.38)
-        c = add_card(slide, left, Inches(2.0), Inches(2.2), Inches(4.7))
-        tf = c.text_frame
-        tf.margin_left = tf.margin_right = tf.margin_top = Inches(0.25)
-
-        p = tf.paragraphs[0]
-        p.text = f"STEP {i+1}"
-        p.font.bold = True; p.font.size = Pt(10); p.font.color.rgb = LIME_GREEN
-
-        p = tf.add_paragraph()
-        p.text = title
-        p.font.bold = True; p.font.size = Pt(13); p.font.color.rgb = DARK_GREEN
-        p.space_before = Pt(6)
-
-        p = tf.add_paragraph()
-        p.text = desc
-        p.font.size = Pt(10.5); p.font.color.rgb = TEXT_DARK
-        p.space_before = Pt(10)
-
-
-def build_slide_08(prs):
-    """The Interoperability Crisis"""
-    slide = prs.slides.add_slide(prs.slide_layouts[6])
-    add_slide_background(slide, prs)
-    add_header(slide, "The Core Dilemma", "The Healthcare Interoperability Crisis",
-               "Why hospital systems struggle to communicate without international data standards")
+    add_header(slide, "Phase 1 · History of Hospital IT", "The 1960s: Mainframes, Magnetic Tapes & MUMPS",
+               "The birth of digital healthcare computing and the operating system that still runs today")
 
     c1 = add_card(slide, Inches(0.8), Inches(2.0), Inches(5.6), Inches(4.8))
     tf1 = c1.text_frame
     tf1.margin_left = tf1.margin_right = tf1.margin_top = Inches(0.35)
 
     p = tf1.paragraphs[0]
-    p.text = "THE POINT-TO-POINT TRAP"
-    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = ALERT_RED
+    p.text = "HARDWARE & SNEAKERNET"
+    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = MED_GREEN
 
     p = tf1.add_paragraph()
-    p.text = "N(N-1)/2 Spaghetti Integration"
+    p.text = "IBM Mainframes & Punch Cards"
     p.font.bold = True; p.font.size = Pt(18); p.font.color.rgb = DARK_GREEN
     p.space_before = Pt(6)
 
     bullets = [
-        ("Proprietary Data Silos", "Historically, every medical software vendor stored data in bespoke schemas without standard APIs."),
-        ("Custom Interfaces", "To connect an EHR to a Lab system, engineers wrote custom translation code. Connecting 10 systems required 45 custom bridges."),
-        ("High Fragility", "Upgrading a single hospital subsystem frequently broke dozens of fragile custom interfaces, causing immense maintenance overhead.")
+        ("Mainframe Era", "Hospitals installed giant IBM 360/370 systems. Data was entered on 80-column Hollerith punch cards and 9-track magnetic tapes."),
+        ("The Sneakernet", "No computer networks existed. To submit billing to Medicare or Blue Cross, technicians backed up data to tape reels, loaded them into car trunks, and physically drove them across town."),
+        ("Centralized Processing", "Computing was strictly batch-oriented. Doctors could not view real-time records at the bedside.")
     ]
     for h, d in bullets:
         p = tf1.add_paragraph()
@@ -512,18 +260,18 @@ def build_slide_08(prs):
     tf2.margin_left = tf2.margin_right = tf2.margin_top = Inches(0.35)
 
     p = tf2.paragraphs[0]
-    p.text = "WHAT STANDARDS SOLVE"
+    p.text = "SOFTWARE REVOLUTION"
     p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = LIME_GREEN
 
     p = tf2.add_paragraph()
-    p.text = "Hub-and-Spoke Universal Interoperability"
+    p.text = "1966: MUMPS at Mass General"
     p.font.bold = True; p.font.size = Pt(18); p.font.color.rgb = DARK_GREEN
     p.space_before = Pt(6)
 
     bullets2 = [
-        ("The 'USB' of Healthcare", "Every system connects to one standard protocol (FHIR). Connecting N systems requires only N interfaces."),
-        ("Clinical Continuity", "When a patient changes clinics, their allergy and medication history follows them without manual data reentry."),
-        ("Democratizing Health AI", "Algorithms can plug directly into standard FHIR feeds instead of being re-engineered for every hospital database.")
+        ("Created for Medicine", "Neil Pappalardo and Dr. Octo Barnett built MUMPS (Mass General Multi-Programming System) specifically for sparse medical records."),
+        ("Hierarchical Tree Globals", "Used dynamic sparse trees (^PATIENT(id, 'LAB', 'GLUCOSE') = 105) rather than rigid relational SQL tables."),
+        ("The Modern Legacy", "MUMPS powered the US Veterans Affairs VistA network. Today, Epic Systems (the world's largest EHR company) still runs its core backend on an advanced MUMPS engine (Caché / IRIS)!")
     ]
     for h, d in bullets2:
         p = tf2.add_paragraph()
@@ -533,33 +281,69 @@ def build_slide_08(prs):
         run = p.add_run(); run.text = d; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
 
 
-def build_slide_09(prs):
-    """Syntactic vs. Semantic Interoperability"""
+def build_slide_05(prs):
+    """The 1970s: Departmental Silos & The First Standards"""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_slide_background(slide, prs)
-    add_header(slide, "Core Informatics Concepts", "Syntactic vs. Semantic Interoperability",
-               "Transporting raw bytes versus agreeing on clinical meaning")
+    add_header(slide, "Phase 1 · History of Hospital IT", "The 1970s: Departmental Silos & Early Standards",
+               "Minicomputers fragmented the hospital into specialized islands; ASTM invented pipe delimiters")
+
+    steps = [
+        ("Minicomputers", "DEC PDP-11 & VAX",
+         "Departments broke away from the central mainframe. Pathology, Radiology, and Pharmacy bought dedicated minicomputers running isolated software."),
+        ("ASTM Committee E31", "The Ancestor of HL7",
+         "ASTM standardized automated blood analyzer serial communication (ASTM E1238). Crucially, ASTM invented the pipe and caret delimiter syntax (| and ^)!"),
+        ("UB-82 Billing", "Financial Standardization",
+         "National Uniform Billing Committee created UB-82 paper and fixed-width ASCII tape claim formats. Standardized billing codes, but zero clinical clinical depth.")
+    ]
+
+    for i, (title, sub, body) in enumerate(steps):
+        left = Inches(0.8) + i * Inches(3.95)
+        c = add_card(slide, left, Inches(2.0), Inches(3.75), Inches(4.8))
+        tf = c.text_frame
+        tf.margin_left = tf.margin_right = tf.margin_top = Inches(0.3)
+
+        p = tf.paragraphs[0]
+        p.text = title
+        p.font.bold = True; p.font.size = Pt(15); p.font.color.rgb = MED_GREEN
+
+        p = tf.add_paragraph()
+        p.text = sub
+        p.font.bold = True; p.font.size = Pt(12); p.font.color.rgb = DARK_GREEN
+        p.space_before = Pt(4)
+
+        p = tf.add_paragraph()
+        p.text = body
+        p.font.size = Pt(11); p.font.color.rgb = TEXT_DARK
+        p.space_before = Pt(12)
+
+
+def build_slide_06(prs):
+    """The 1980s: The Networking Crisis"""
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    add_slide_background(slide, prs)
+    add_header(slide, "Phase 1 · History of Hospital IT", "The 1980s: Local Networks & The Integration Crisis",
+               "Ethernet connected the hardware, but software was trapped in quadratic complexity")
 
     c1 = add_card(slide, Inches(0.8), Inches(2.0), Inches(5.6), Inches(4.8))
     tf1 = c1.text_frame
     tf1.margin_left = tf1.margin_right = tf1.margin_top = Inches(0.35)
 
     p = tf1.paragraphs[0]
-    p.text = "LEVEL 1 · THE WIRE FORMAT"
-    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = MED_GREEN
+    p.text = "THE INTEGRATION SPAGHETTI"
+    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = ALERT_RED
 
     p = tf1.add_paragraph()
-    p.text = "Syntactic Interoperability"
+    p.text = "The N(N-1)/2 Point-to-Point Trap"
     p.font.bold = True; p.font.size = Pt(18); p.font.color.rgb = DARK_GREEN
     p.space_before = Pt(6)
 
-    items = [
-        ("Definition", "Both systems can successfully parse the incoming data structure (e.g. valid JSON, XML, or delimiter-separated strings)."),
-        ("The Guarantee", "The data packets arrive intact over TCP/IP and decode without syntax errors."),
-        ("The IT Analogy", "Two web services exchange valid JSON with curly braces and key-value pairs."),
-        ("The Limitation", "Syntactic success does NOT mean the receiving system understands what the fields mean!")
+    bullets = [
+        ("Quadratic Explosion", "Every medical vendor used a bespoke schema. Connecting 10 departmental systems required 45 custom interfaces. Connecting 50 required 1,225 bridges!"),
+        ("ACR-NEMA 50-Pin Cable", "In 1985, CT and MRI scanners required a custom, thick 50-pin copper cable running directly from scanner to console before DICOM existed."),
+        ("Brittle Fragility", "Upgrading a single blood analyzer broke dozens of unmaintained point-to-point translation scripts.")
     ]
-    for h, d in items:
+    for h, d in bullets:
         p = tf1.add_paragraph()
         p.text = f"• {h}: "
         p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = TEXT_DARK
@@ -571,20 +355,20 @@ def build_slide_09(prs):
     tf2.margin_left = tf2.margin_right = tf2.margin_top = Inches(0.35)
 
     p = tf2.paragraphs[0]
-    p.text = "LEVEL 2 · THE CLINICAL MEANING"
+    p.text = "THE ARCHITECTURAL GAP"
     p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = LIME_GREEN
 
     p = tf2.add_paragraph()
-    p.text = "Semantic Interoperability"
+    p.text = "OSI Layers 1–4 vs. Layer 7"
     p.font.bold = True; p.font.size = Pt(18); p.font.color.rgb = DARK_GREEN
     p.space_before = Pt(6)
 
-    items2 = [
-        ("Definition", "Both systems unambiguously agree on the medical meaning of the numbers and codes."),
-        ("Standard Vocabularies", "Code '21908-9' in LOINC means 'mean cell nucleus radius, measured in microns' across all clinics worldwide."),
-        ("The Health AI Barrier", "If Hospital A calls glucose 'GLU' and Hospital B calls it 'Blood_Sugar_mg', ML models fail. Semantic harmonization is mandatory.")
+    bullets2 = [
+        ("TCP/IP Solved Moving Packets", "Layers 1 through 4 (Ethernet, IP, TCP) successfully routed raw bytes from Computer A to Computer B."),
+        ("What Do the Bytes Mean?", "When a blood machine sent packets to an EHR, the receiving software had no idea whether the payload was a patient's potassium or a billing invoice."),
+        ("The Layer 7 Mandate", "Healthcare desperately needed an agreement at the OSI Application Layer (Layer 7). That realization sparked the creation of HL7.")
     ]
-    for h, d in items2:
+    for h, d in bullets2:
         p = tf2.add_paragraph()
         p.text = f"• {h}: "
         p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = TEXT_DARK
@@ -592,94 +376,60 @@ def build_slide_09(prs):
         run = p.add_run(); run.text = d; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
 
 
-def build_slide_10(prs):
-    """Why Relational Tables Fail at Scale"""
+def build_slide_07(prs):
+    """1987-1989: The Birth of HL7"""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_slide_background(slide, prs)
-    add_header(slide, "Data Modeling", "Why Traditional Relational Tables Fail in Healthcare",
-               "Sparse, variable-length event histories cannot fit into static SQL tables")
+    add_header(slide, "Phase 1 · History of Hospital IT", "1987–1989: The Birth of HL7 (Health Level Seven)",
+               "A grassroots group at the University of Pennsylvania solves hospital communication")
 
-    c = add_card(slide, Inches(0.8), Inches(2.0), Inches(11.7), Inches(4.8))
-    tf = c.text_frame
-    tf.margin_left = tf.margin_right = tf.margin_top = Inches(0.4)
-
-    p = tf.paragraphs[0]
-    p.text = "THE DATABASE IMPASSE"
-    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = ALERT_RED
-
-    p = tf.add_paragraph()
-    p.text = "Healthcare Data is an Event Graph, Not a Flat Spreadsheet"
-    p.font.bold = True; p.font.size = Pt(20); p.font.color.rgb = DARK_GREEN
-    p.space_before = Pt(6)
-
-    points = [
-        ("Extreme Sparsity", "A healthy 20-year-old has 2 medical encounters and 3 lab tests in 5 years. A chronic diabetes patient has 400 lab tests, 50 prescriptions, and 30 specialist consultations. A static SQL table would need thousands of columns, 99% of which are NULL."),
-        ("Variable-Length Event Streams", "Every lab test, imaging exam, or medication change is an asynchronous event with its own timestamp, performing clinician, and calibrated instrument."),
-        ("Graph-Linked Architecture", "Modern health data standards (FHIR) model healthcare as a graph of resources linked by explicit references (Observation points to Patient; Condition points to DiagnosticReport).")
+    milestones = [
+        ("MARCH 1987", "Committee Formed at HUP",
+         "Dr. Sam Schultz (Hospital of the University of Pennsylvania) and Dr. Ed Hammond (Duke) convene hospital IT leaders to bypass slow academic standards."),
+        ("OCTOBER 1987", "HL7 Version 1.0 (Draft)",
+         "An 84-page working draft covering basic Admission, Discharge, Transfer (ADT). Syncs patient room assignments over raw TCP sockets via MLLP framing."),
+        ("1989", "HL7 Version 2.1 (Commercial)",
+         "First production standard widely adopted by major commercial vendors (Baxter, SMS, Sunquest). Becomes the global workhorse of medicine.")
     ]
-    for t, b in points:
+
+    for i, (date, title, body) in enumerate(milestones):
+        left = Inches(0.8) + i * Inches(3.95)
+        c = add_card(slide, left, Inches(2.0), Inches(3.75), Inches(4.8))
+        tf = c.text_frame
+        tf.margin_left = tf.margin_right = tf.margin_top = Inches(0.3)
+
+        p = tf.paragraphs[0]
+        p.text = date
+        p.font.bold = True; p.font.size = Pt(14); p.font.color.rgb = LIME_GREEN
+
         p = tf.add_paragraph()
-        p.text = f"{t}: "
-        p.font.bold = True; p.font.size = Pt(12); p.font.color.rgb = TEXT_DARK
-        p.space_before = Pt(14)
-        run = p.add_run(); run.text = b; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
+        p.text = title
+        p.font.bold = True; p.font.size = Pt(15); p.font.color.rgb = DARK_GREEN
+        p.space_before = Pt(4)
+
+        p = tf.add_paragraph()
+        p.text = body
+        p.font.size = Pt(11); p.font.color.rgb = TEXT_DARK
+        p.space_before = Pt(12)
 
 
-def build_slide_11(prs):
-    """Module 3 Header: Digital Health Standards"""
-    slide = prs.slides.add_slide(prs.slide_layouts[6])
-    add_slide_background(slide, prs, dark=True)
-
-    b = add_card(slide, Inches(0.9), Inches(1.8), Inches(4.8), Inches(0.45), bg_color=MED_GREEN, border_color=None)
-    tf_b = b.text_frame
-    tf_b.margin_left = Inches(0.2)
-    p_b = tf_b.paragraphs[0]
-    p_b.text = "MODULE 3 · DIGITAL HEALTH STANDARDS"
-    p_b.font.bold = True; p_b.font.size = Pt(10); p_b.font.color.rgb = TEXT_WHITE
-
-    t_box = slide.shapes.add_textbox(Inches(0.9), Inches(2.5), Inches(11.5), Inches(2.2))
-    tf_t = t_box.text_frame
-    tf_t.word_wrap = True
-    p_t = tf_t.paragraphs[0]
-    p_t.text = "OSI Layer 7 & The HL7 Mandate"
-    p_t.font.bold = True; p_t.font.size = Pt(36); p_t.font.color.rgb = TEXT_WHITE
-
-    p_sub = tf_t.add_paragraph()
-    p_sub.text = "Why networking solved moving packets (Layers 1–4), but healthcare required standardizing Application Meaning (Layer 7)"
-    p_sub.font.size = Pt(16); p_sub.font.color.rgb = LIME_GREEN
-    p_sub.space_before = Pt(12)
-
-    c = add_card(slide, Inches(0.9), Inches(5.0), Inches(11.5), Inches(1.6), bg_color=MED_GREEN, border_color=None)
-    tf_c = c.text_frame
-    tf_c.margin_left = Inches(0.3); tf_c.margin_top = Inches(0.2)
-    p1 = tf_c.paragraphs[0]
-    p1.text = "The Key Shift in One Sentence:"
-    p1.font.bold = True; p1.font.size = Pt(13); p1.font.color.rgb = LIME_GREEN
-
-    p2 = tf_c.add_paragraph()
-    p2.text = "In HL7 v2 (1989), you read a lab value by counting pipe delimiters in a line. In FHIR (2014), you query a RESTful URI endpoint and parse standard JSON."
-    p2.font.bold = True; p2.font.size = Pt(14); p2.font.color.rgb = TEXT_WHITE
-    p2.space_before = Pt(4)
-
-
-def build_slide_12(prs):
+def build_slide_08(prs):
     """Anatomy of an HL7 v2 Message (Code Panel)"""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_slide_background(slide, prs)
-    add_header(slide, "Digital Health Standards", "Anatomy of an HL7 v2 Message",
+    add_header(slide, "Phase 1 · History of Hospital IT", "Anatomy of an HL7 v2 Message (`ORU^R01`)",
                "The pipe-and-hat (| and ^) ASCII format powering hospital messaging since 1989")
 
-    # Left: Explanation
     c1 = add_card(slide, Inches(0.8), Inches(2.0), Inches(4.8), Inches(4.8))
     tf1 = c1.text_frame
     tf1.margin_left = tf1.margin_right = tf1.margin_top = Inches(0.3)
 
     p = tf1.paragraphs[0]
-    p.text = "MESSAGE STRUCTURE"
+    p.text = "SEGMENT STRUCTURE"
     p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = MED_GREEN
 
     segments = [
-        ("MSH (Message Header)", "Carries sending application, facility, message type (ORU^R01 lab result), and timestamp."),
+        ("MSH (Message Header)", "Carries sending application, facility, message trigger (ORU^R01 lab result), and timestamp."),
         ("PID (Patient Identification)", "Carries patient identifier (MRN), patient name, date of birth, and biological sex."),
         ("OBR (Observation Request)", "Identifies the lab order, ordering physician, and specimen accession number."),
         ("OBX (Observation Result)", "The actual test result: LOINC code, numeric measurement, units (um), and normal flag.")
@@ -691,7 +441,6 @@ def build_slide_12(prs):
         p.space_before = Pt(8)
         run = p.add_run(); run.text = desc; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
 
-    # Right: Dark Code Box
     c2 = add_card(slide, Inches(5.9), Inches(2.0), Inches(6.6), Inches(4.8), bg_color=DARK_PANEL, border_color=None)
     tf2 = c2.text_frame
     tf2.margin_left = tf2.margin_right = tf2.margin_top = Inches(0.3)
@@ -715,16 +464,16 @@ def build_slide_12(prs):
         p.space_before = Pt(8)
 
 
-def build_slide_13(prs):
-    """Technological Relativity: Why HL7 v2 in 1989 (3 Cards)"""
+def build_slide_09(prs):
+    """Technological Relativity: Why HL7 v2 in 1989"""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_slide_background(slide, prs)
-    add_header(slide, "Standards Evolution", "Technological Relativity: Why HL7 v2 in 1989",
+    add_header(slide, "Phase 1 · History of Hospital IT", "Technological Relativity: Why HL7 v2 in 1989",
                "An engineering triumph for 1989 hardware that accumulated 30 years of Z-segment integration debt")
 
     flaws = [
         ("The Context of 1989", "Why Not JSON / REST?",
-         "The Web didn't exist (HTTP in 1991, JSON in 2001). Hardware was 1–4 MB RAM and 10 Mbps coax. Delimiter-separated ASCII allowed O(1) streaming directly into C buffers over raw TCP sockets without memory bloat.",
+         "The Web didn't exist (HTTP came in 1991, JSON in 2001). Hardware was 1–4 MB RAM and 10 Mbps coax. Delimiter-separated ASCII allowed O(1) streaming directly into C buffers over raw TCP sockets without memory bloat.",
          MED_GREEN),
         ("The 'Z-Segment' Trap", "Non-Standard Custom Extensions",
          "HL7 v2 was so loosely specified that vendors added proprietary custom segments (ZBE, ZPD, ZAL). A message from Hospital A could not be parsed by Hospital B without bespoke translation code.",
@@ -736,7 +485,7 @@ def build_slide_13(prs):
 
     for i, (title, sub, body, col) in enumerate(flaws):
         left = Inches(0.8) + i * Inches(3.95)
-        c = add_card(slide, left, Inches(2.0), Inches(3.75), Inches(4.7))
+        c = add_card(slide, left, Inches(2.0), Inches(3.75), Inches(4.8))
         tf = c.text_frame
         tf.margin_left = tf.margin_right = tf.margin_top = Inches(0.3)
 
@@ -755,311 +504,286 @@ def build_slide_13(prs):
         p.space_before = Pt(12)
 
 
-def build_slide_14(prs):
-    """Enter HL7 FHIR R4"""
+def build_slide_10(prs):
+    """2003: The HL7 v3 Cautionary Tale"""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_slide_background(slide, prs)
-    add_header(slide, "Modern Interoperability", "Enter HL7 FHIR (Fast Healthcare Interoperability Resources)",
-               "Reinventing healthcare communication using the open foundations of the modern internet")
+    add_header(slide, "Phase 1 · History of Hospital IT", "2003: The Cautionary Tale of HL7 Version 3",
+               "The mathematically 'perfect' XML standard that software engineers completely rejected")
 
     c = add_card(slide, Inches(0.8), Inches(2.0), Inches(11.7), Inches(4.8))
     tf = c.text_frame
     tf.margin_left = tf.margin_right = tf.margin_top = Inches(0.4)
 
     p = tf.paragraphs[0]
-    p.text = "THE MODERN HEALTH DATA STANDARD (FHIR R4 NORMATIVE)"
-    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = LIME_GREEN
+    p.text = "THE DANGERS OF OVER-ENGINEERING"
+    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = ALERT_RED
 
     p = tf.add_paragraph()
-    p.text = "Standard Web Architecture for Clinical Computing"
-    p.font.bold = True; p.font.size = Pt(20); p.font.color.rgb = DARK_GREEN
-    p.space_before = Pt(6)
-
-    pillars = [
-        ("Web-Native Technologies", "Built on HTTP REST verbs (GET, POST, PUT, DELETE), JSON and XML representations, and OAuth2 security (SMART on FHIR). Any software engineer can build against it immediately."),
-        ("The '80/20' Rule", "Instead of attempting to model every rare edge-case in medical history, FHIR standardizes the 80% of data concepts common across all healthcare. The remaining 20% is handled through structured, schema-validated Extensions."),
-        ("Normative Stability (R4)", "Published in 2019, the core clinical resources (Patient, Observation, Condition) are normative—meaning future FHIR versions will never break backwards compatibility.")
-    ]
-    for h, b in pillars:
-        p = tf.add_paragraph()
-        p.text = f"{h}: "
-        p.font.bold = True; p.font.size = Pt(12); p.font.color.rgb = TEXT_DARK
-        p.space_before = Pt(12)
-        run = p.add_run(); run.text = b; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
-
-
-def build_slide_15(prs):
-    """Four Core FHIR Building Blocks (4 Cards)"""
-    slide = prs.slides.add_slide(prs.slide_layouts[6])
-    add_slide_background(slide, prs)
-    add_header(slide, "FHIR Architecture", "Four Core FHIR Building Blocks",
-               "How clinical concepts are modularized, addressed, and queried in modern health ICT")
-
-    blocks = [
-        ("01. Resources", "Modular Clinical Entities",
-         "Standardized data schemas for medical concepts: Patient, Observation (tests/vitals), Condition (diagnoses), DiagnosticReport, Medication.",
-         MED_GREEN),
-        ("02. Logical IDs", "Unambiguous URI Addressing",
-         "Every resource has a unique logical identity within the server (e.g., Patient/P0001 or Observation/obs-cell-radius-01).",
-         LIME_GREEN),
-        ("03. References", "Explicit Typed Pointers",
-         "Resources link to each other via explicit reference fields: Observation.subject points to Patient/P0001; Condition.encounter points to Encounter/E102.",
-         DARK_GREEN),
-        ("04. REST Operations", "Standard HTTP Verbs",
-         "Query with GET /Observation?subject=Patient/P0001; create with POST /Observation; update with PUT. Uses standard HTTP 200/404 response codes.",
-         MED_GREEN)
-    ]
-
-    for i, (code, title, desc, col) in enumerate(blocks):
-        left = Inches(0.8) + i * Inches(2.95)
-        c = add_card(slide, left, Inches(2.0), Inches(2.75), Inches(4.7))
-        tf = c.text_frame
-        tf.margin_left = tf.margin_right = tf.margin_top = Inches(0.25)
-
-        p = tf.paragraphs[0]
-        p.text = code
-        p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = col
-
-        p = tf.add_paragraph()
-        p.text = title
-        p.font.bold = True; p.font.size = Pt(13); p.font.color.rgb = DARK_GREEN
-        p.space_before = Pt(6)
-
-        p = tf.add_paragraph()
-        p.text = desc
-        p.font.size = Pt(10.5); p.font.color.rgb = TEXT_DARK
-        p.space_before = Pt(10)
-
-
-def build_slide_16(prs):
-    """FHIR Bundles: Packaging Records"""
-    slide = prs.slides.add_slide(prs.slide_layouts[6])
-    add_slide_background(slide, prs)
-    add_header(slide, "Data Structures", "FHIR Bundles: Packaging Clinical Encounters",
-               "How multi-resource patient histories travel together across network boundaries")
-
-    c = add_card(slide, Inches(0.8), Inches(2.0), Inches(11.7), Inches(4.8))
-    tf = c.text_frame
-    tf.margin_left = tf.margin_right = tf.margin_top = Inches(0.4)
-
-    p = tf.paragraphs[0]
-    p.text = "THE ENVELOPE FOR HEALTHCARE DATA"
-    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = LIME_GREEN
-
-    p = tf.add_paragraph()
-    p.text = "Bundles Package Collections of Resources into One Document"
+    p.text = "How Abstract Modeling Alienated Real-World Developers"
     p.font.bold = True; p.font.size = Pt(20); p.font.color.rgb = DARK_GREEN
     p.space_before = Pt(6)
 
     points = [
-        ("Bundle Types", "FHIR Bundles serve multiple purposes: 'searchset' returns query results, 'transaction' guarantees all-or-nothing database commits, and 'collection' transports static clinical records."),
-        ("Anatomy of an Afternoon Bundle", "In this afternoon's workshop, every file in data/fhir/ (e.g., P0001.json) is a real FHIR R4 collection Bundle. Each bundle carries: 1 Patient resource, 10 Observation resources (cell nucleus morphometry), and 1 Condition resource (the ground-truth biopsy outcome)."),
-        ("The Joining Job", "The afternoon script (scripts/01_fhir_to_table.py) walks each Bundle, matches Observation.subject to the Patient ID, extracts the numeric value, and produces a single row per patient.")
+        ("The Reference Information Model (RIM)", "HL7 attempted to create an all-encompassing, mathematically pure object-oriented model of all medicine. Everything was modeled as an Act, Entity, or Role."),
+        ("Massive XML Overhead", "A simple patient temperature reading required thousands of lines of deeply nested XML tags, schemas, and abstract classes. Parsing was agonizingly slow on 2003 hardware."),
+        ("The Developer Rebellion", "Software engineers refused to adopt it. It was too difficult to learn and implement without multimillion-dollar consulting contracts. Hospitals stuck with HL7 v2, cementing v3 as a famous software failure."),
+        ("The Engineering Lesson", "In computing, pragmatic, developer-friendly designs always beat theoretically 'pure' but unusable standards.")
     ]
     for t, b in points:
         p = tf.add_paragraph()
-        p.text = f"{t}: "
-        p.font.bold = True; p.font.size = Pt(12); p.font.color.rgb = TEXT_DARK
-        p.space_before = Pt(12)
+        p.text = f"• {t}: "
+        p.font.bold = True; p.font.size = Pt(11.5); p.font.color.rgb = TEXT_DARK
+        p.space_before = Pt(10)
         run = p.add_run(); run.text = b; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
 
 
-def build_slide_17(prs):
-    """Coded Vocabularies: The Semantic Glue (3 Cards)"""
+def build_slide_11(prs):
+    """2014-Today: Enter HL7 FHIR"""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_slide_background(slide, prs)
-    add_header(slide, "Medical Terminologies", "The Semantic Glue: Standard Coded Vocabularies",
-               "Without standard terminologies, computers cannot understand what measurements represent")
+    add_header(slide, "Phase 1 · History of Hospital IT", "2014–Today: Enter HL7 FHIR (Built for the Web)",
+               "Grahame Grieve redesigns healthcare data around HTTP REST, JSON, and web standards")
 
-    vocabs = [
-        ("LOINC", "What Was Measured or Tested",
-         "Logical Observation Identifiers Names and Codes. Standardizes laboratory assays, clinical observations, and vital signs.\n\nExample: Code 21908-9 specifies 'Mean radius of cell nuclei'. In Step 1, this LOINC code becomes our dataframe column name!"),
-        ("SNOMED CT", "Clinical Findings & Anatomy",
-         "Systematized Nomenclature of Medicine. Comprehensive clinical terminology covering diseases, symptoms, anatomical sites, and surgical procedures.\n\nExample: Code 439401001 specifies 'Raman spectroscopy' as a diagnostic testing method."),
-        ("ICD-10", "Epidemiology & Hospital Billing",
-         "International Classification of Diseases (WHO). Standardizes disease classification, mortality reporting, and insurance claims.\n\nExample: Code C50.9 denotes 'Malignant neoplasm of breast, unspecified'." )
+    cards = [
+        ("Web-Native Standards", "HTTP, REST & JSON",
+         "Built entirely on modern internet protocols. Developers query standard URLs (GET /Patient/P0001) and receive clean, human-readable JSON payloads."),
+        ("The '80/20 Rule'", "Pragmatic Scope",
+         "FHIR standardizes only the 80% of data concepts common across all healthcare globally. The remaining 20% edge cases are handled through explicitly validated Extensions."),
+        ("Normative Stability", "FHIR R4 (2019)",
+         "In 2019, FHIR Release 4 achieved Normative status. Core resources (Patient, Observation, Condition) are frozen with guaranteed permanent backwards compatibility.")
     ]
 
-    for i, (title, sub, body) in enumerate(vocabs):
+    for i, (title, sub, body) in enumerate(cards):
         left = Inches(0.8) + i * Inches(3.95)
-        c = add_card(slide, left, Inches(2.0), Inches(3.75), Inches(4.7))
+        c = add_card(slide, left, Inches(2.0), Inches(3.75), Inches(4.8))
         tf = c.text_frame
         tf.margin_left = tf.margin_right = tf.margin_top = Inches(0.3)
 
         p = tf.paragraphs[0]
         p.text = title
-        p.font.bold = True; p.font.size = Pt(18); p.font.color.rgb = DARK_GREEN
+        p.font.bold = True; p.font.size = Pt(15); p.font.color.rgb = LIME_GREEN
 
         p = tf.add_paragraph()
         p.text = sub
-        p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = LIME_GREEN
+        p.font.bold = True; p.font.size = Pt(12); p.font.color.rgb = DARK_GREEN
         p.space_before = Pt(4)
 
         p = tf.add_paragraph()
         p.text = body
-        p.font.size = Pt(10.5); p.font.color.rgb = TEXT_DARK
+        p.font.size = Pt(11); p.font.color.rgb = TEXT_DARK
         p.space_before = Pt(12)
 
 
-def build_slide_18(prs):
-    """AIT Case Study: Raman Glucose in FHIR (Code Panel)"""
+def build_slide_12(prs):
+    """Core FHIR Architecture: Resources & References"""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_slide_background(slide, prs)
-    add_header(slide, "AIT Case Study", "Connecting Sensor Telemetry to FHIR: Raman Glucose",
-               "How a reading from the AIT BloodGlucose-App POC is serialized into a standard FHIR Observation")
+    add_header(slide, "Phase 1 · History of Hospital IT", "Core FHIR Architecture: Resources, References & Bundles",
+               "Modular clinical building blocks interconnected by unambiguous logical references")
 
-    # Left: Explanation
-    c1 = add_card(slide, Inches(0.8), Inches(2.0), Inches(4.8), Inches(4.8))
-    tf1 = c1.text_frame
-    tf1.margin_left = tf1.margin_right = tf1.margin_top = Inches(0.3)
-
-    p = tf1.paragraphs[0]
-    p.text = "THE SENSOR-TO-STANDARD BRIDGE"
-    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = LIME_GREEN
-
-    p = tf1.add_paragraph()
-    p.text = "From Laser Optics to Standard JSON"
-    p.font.bold = True; p.font.size = Pt(16); p.font.color.rgb = DARK_GREEN
-    p.space_before = Pt(4)
-
-    steps = [
-        ("1. Optical Sensing", "Raman spectrometer captures molecular vibrational scattering from human tissue."),
-        ("2. Edge ML Calibration", "BloodGlucose-App algorithms estimate blood glucose concentration (118 mg/dL)."),
-        ("3. Standard LOINC Code", "LOINC 2339-0 unambiguously identifies the measurement as 'Glucose in Blood'."),
-        ("4. Method Metadata", "SNOMED CT 439401001 documents that the non-invasive method was Raman spectroscopy.")
-    ]
-    for h, d in steps:
-        p = tf1.add_paragraph()
-        p.text = f"• {h}: "
-        p.font.bold = True; p.font.size = Pt(10.5); p.font.color.rgb = TEXT_DARK
-        p.space_before = Pt(8)
-        run = p.add_run(); run.text = d; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
-
-    # Right: FHIR Observation JSON in Dark Box
-    c2 = add_card(slide, Inches(5.9), Inches(2.0), Inches(6.6), Inches(4.8), bg_color=DARK_PANEL, border_color=None)
-    tf2 = c2.text_frame
-    tf2.margin_left = tf2.margin_right = tf2.margin_top = Inches(0.25)
-
-    p = tf2.paragraphs[0]
-    p.text = "// Standard FHIR R4 Observation Resource"
-    p.font.name = "Courier New"; p.font.size = Pt(10); p.font.color.rgb = LIME_GREEN
-
-    json_lines = [
-        '{\n  "resourceType": "Observation",\n  "id": "obs-glucose-raman-ait-001",\n  "status": "final",',
-        '  "code": {\n    "coding": [{\n      "system": "http://loinc.org",\n      "code": "2339-0",\n      "display": "Glucose in Blood"\n    }]\n  },',
-        '  "subject": { "reference": "Patient/P0001" },\n  "effectiveDateTime": "2026-09-09T10:30:00+07:00",',
-        '  "valueQuantity": {\n    "value": 118,\n    "unit": "mg/dL",\n    "system": "http://unitsofmeasure.org",\n    "code": "mg/dL"\n  },',
-        '  "method": {\n    "coding": [{\n      "system": "http://snomed.info/sct",\n      "code": "439401001",\n      "display": "Raman spectroscopy"\n    }]\n  }\n}'
-    ]
-    for snippet in json_lines:
-        p = tf2.add_paragraph()
-        p.text = snippet
-        p.font.name = "Courier New"; p.font.size = Pt(9); p.font.color.rgb = CODE_GREEN
-        p.space_before = Pt(4)
-
-
-def build_slide_19(prs):
-    """The New Dilemma: Is FHIR Actually AI-Ready? (4 Cards)"""
-    slide = prs.slides.add_slide(prs.slide_layouts[6])
-    add_slide_background(slide, prs)
-    add_header(slide, "Health AI Readiness", "The New Dilemma: Is FHIR R4 Actually \"AI-Ready\"?",
-               "Why transactional healthcare records (OLTP) require four strict pillars to become fit for ML (OLAP)")
-
-    pillars = [
-        ("01. Completeness", "Presence of Critical Confounders",
-         "Are essential clinical confounders (patient age, biological sex, comorbidities) recorded alongside the lab measurements?",
+    quads = [
+        ("Patient Resource", "Demographics & Master ID",
+         "The root subject. Contains biological sex, birthdate, identifier MRN, and contact info. Every clinical observation links here.",
+         DARK_GREEN),
+        ("Observation Resource", "Measurements & Vitals",
+         "Clinical measurements: lab tests, vital signs, biopsy metrics. Contains coded LOINC tag, timestamp, and numeric value with UCUM units.",
          MED_GREEN),
-        ("02. Semantic Fidelity", "Harmonized Units & Coding",
-         "Are measurement units identical across all clinical sites? Did one clinic report in mg/dL while another reported in mmol/L?",
+        ("Condition Resource", "Clinical Diagnoses",
+         "Active health problems or diagnoses. Links to Patient and contains ICD-10 or SNOMED CT problem codes with clinical status (active/resolved).",
          LIME_GREEN),
-        ("03. Temporal Integrity", "Strict Time-Sequence Ordering",
-         "Do feature observations strictly precede the diagnostic outcome? (Including post-diagnosis drugs leaks future labels).",
-         ALERT_RED),
-        ("04. Provenance", "Understanding Selection Bias",
-         "How was the patient cohort selected? Does the dataset represent the community, or only severe tertiary-care referrals?",
-         DARK_GREEN)
+        ("Bundle Resource", "Packaging Patient Records",
+         "A container resource holding multiple items. In this afternoon's lab, data/fhir/P0001.json is a Bundle packing 1 Patient, 10 Observations, and 1 Condition.",
+         ALERT_RED)
     ]
 
-    for i, (code, title, desc, col) in enumerate(pillars):
-        left = Inches(0.8) + i * Inches(2.95)
-        c = add_card(slide, left, Inches(2.0), Inches(2.75), Inches(4.7))
+    for i, (title, sub, desc, col) in enumerate(quads):
+        row = i // 2
+        col_idx = i % 2
+        left = Inches(0.8) + col_idx * Inches(5.95)
+        top = Inches(2.0) + row * Inches(2.45)
+        c = add_card(slide, left, top, Inches(5.75), Inches(2.3))
         tf = c.text_frame
         tf.margin_left = tf.margin_right = tf.margin_top = Inches(0.25)
 
         p = tf.paragraphs[0]
-        p.text = code
-        p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = col
+        p.text = title
+        p.font.bold = True; p.font.size = Pt(14); p.font.color.rgb = col
 
         p = tf.add_paragraph()
-        p.text = title
-        p.font.bold = True; p.font.size = Pt(13); p.font.color.rgb = DARK_GREEN
-        p.space_before = Pt(6)
+        p.text = sub
+        p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = DARK_GREEN
+        p.space_before = Pt(2)
 
         p = tf.add_paragraph()
         p.text = desc
-        p.font.size = Pt(10.5); p.font.color.rgb = TEXT_DARK
-        p.space_before = Pt(10)
+        p.font.size = Pt(10); p.font.color.rgb = TEXT_DARK
+        p.space_before = Pt(6)
 
 
-def build_slide_20(prs):
-    """Clinical Realities: Informative Missingness"""
+def build_slide_13(prs):
+    """Coded Vocabularies: The Semantic Glue"""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_slide_background(slide, prs)
-    add_header(slide, "Data Quality Realities", "Clinical Reality 1: Informative Missingness",
-               "Absence of evidence is not evidence of absence in medical records")
+    add_header(slide, "Phase 1 · History of Hospital IT", "Coded Vocabularies: The Semantic Glue",
+               "FHIR provides the grammatical schema; medical terminologies provide the dictionary")
 
-    c = add_card(slide, Inches(0.8), Inches(2.0), Inches(11.7), Inches(4.8))
-    tf = c.text_frame
-    tf.margin_left = tf.margin_right = tf.margin_top = Inches(0.4)
-
-    p = tf.paragraphs[0]
-    p.text = "TESTS ARE NOT ORDERED AT RANDOM"
-    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = ALERT_RED
-
-    p = tf.add_paragraph()
-    p.text = "The Missingness Itself is Clinical Information"
-    p.font.bold = True; p.font.size = Pt(20); p.font.color.rgb = DARK_GREEN
-    p.space_before = Pt(6)
-
-    points = [
-        ("Doctors Order Tests for Sick Patients", "In physical telemetry (e.g. soil sensors or vibration gauges), missing data is often random hardware packet loss. In healthcare, a troponin test or a biopsy is only ordered when a doctor suspects severe disease. Healthy patients are missing tests precisely because they are healthy!"),
-        ("The Imputation Trap", "Imputing a missing test with the population mean or median falsely assigns a sick value to a healthy patient, distorting the classification boundary."),
-        ("Afternoon Demonstration", "In Step 1 (scripts/01_fhir_to_table.py --drop area), patient P0010 comes back with a missing value. The pipeline doesn't crash; it handles missingness safely via scikit-learn's SimpleImputer.")
+    vocabs = [
+        ("LOINC", "Logical Observation Identifiers",
+         "The universal dictionary for lab assays and measurements.\n\n• Code 2339-0: Blood Glucose\n• Code 21908-9: Mean Cell Radius\n\nBecomes column headers in ML feature matrices.",
+         MED_GREEN),
+        ("SNOMED CT", "Systematized Nomenclature",
+         "The global clinical terminology for findings, body sites, and procedures.\n\n• Code 439401001: Raman spectroscopy\n• Code 44054006: Ductal carcinoma\n\nDefines precise anatomical and procedural meaning.",
+         DARK_GREEN),
+        ("ICD-10 / ICD-11", "Disease Classification",
+         "The World Health Organization standard for diagnoses and epidemiology.\n\n• Code C50.9: Malignant breast tumor\n• Code E11.9: Type 2 diabetes\n\nUsed globally for insurance claims and disease surveillance.",
+         LIME_GREEN)
     ]
-    for t, b in points:
+
+    for i, (title, sub, body, col) in enumerate(vocabs):
+        left = Inches(0.8) + i * Inches(3.95)
+        c = add_card(slide, left, Inches(2.0), Inches(3.75), Inches(4.8))
+        tf = c.text_frame
+        tf.margin_left = tf.margin_right = tf.margin_top = Inches(0.3)
+
+        p = tf.paragraphs[0]
+        p.text = title
+        p.font.bold = True; p.font.size = Pt(18); p.font.color.rgb = col
+
         p = tf.add_paragraph()
-        p.text = f"{t}: "
-        p.font.bold = True; p.font.size = Pt(12); p.font.color.rgb = TEXT_DARK
+        p.text = sub
+        p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = DARK_GREEN
+        p.space_before = Pt(4)
+
+        p = tf.add_paragraph()
+        p.text = body
+        p.font.size = Pt(11); p.font.color.rgb = TEXT_DARK
         p.space_before = Pt(12)
-        run = p.add_run(); run.text = b; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
 
 
-def build_slide_21(prs):
-    """Clinical Realities: Class Imbalance & Leakage"""
+def build_slide_14(prs):
+    """Global Adoption Spectrum"""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_slide_background(slide, prs)
-    add_header(slide, "Evaluation Pitfalls", "Clinical Reality 2: Class Imbalance & Label Leakage",
-               "Why naive accuracy scores lie, and how feature leakage ruins clinical models")
+    add_header(slide, "Phase 1 · History of Hospital IT", "Global Adoption: From Federal Law to Thailand",
+               "Where FHIR is legally mandated, and the reality of legacy hospital engines")
 
     c1 = add_card(slide, Inches(0.8), Inches(2.0), Inches(5.6), Inches(4.8))
     tf1 = c1.text_frame
     tf1.margin_left = tf1.margin_right = tf1.margin_top = Inches(0.35)
 
     p = tf1.paragraphs[0]
-    p.text = "THE ACCURACY TRAP"
-    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = ALERT_RED
+    p.text = "MANDATED BY LAW"
+    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = MED_GREEN
 
     p = tf1.add_paragraph()
-    p.text = "62.7% Majority-Class Baseline"
+    p.text = "United States & Europe"
     p.font.bold = True; p.font.size = Pt(18); p.font.color.rgb = DARK_GREEN
     p.space_before = Pt(6)
 
-    items = [
-        ("The Naive Classifier", "In our cohort of 569 patients, 357 are benign (62.7%) and 212 are malignant (37.3%)."),
-        ("Doing Nothing is 62.7% Accurate", "A dummy model predicting 'benign' every single time is already 62.7% accurate, but completely useless—it kills every cancer patient!"),
-        ("The Lesson", "Never report raw accuracy alone in healthcare. We evaluate ROC-AUC, Sensitivity (Recall), and False Negatives.")
+    bullets = [
+        ("US 21st Century Cures Act", "Made clinical 'data blocking' illegal. Certified hospital software MUST expose standardized FHIR APIs (SMART on FHIR). Apple Health connects directly to thousands of US clinics via FHIR."),
+        ("European Health Data Space (EHDS)", "Mandates cross-border clinical record exchange across all EU member states using FHIR.")
     ]
-    for h, d in items:
+    for h, d in bullets:
+        p = tf1.add_paragraph()
+        p.text = f"• {h}:\n"
+        p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = TEXT_DARK
+        p.space_before = Pt(10)
+        run = p.add_run(); run.text = d; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
+
+    c2 = add_card(slide, Inches(6.8), Inches(2.0), Inches(5.7), Inches(4.8))
+    tf2 = c2.text_frame
+    tf2.margin_left = tf2.margin_right = tf2.margin_top = Inches(0.35)
+
+    p = tf2.paragraphs[0]
+    p.text = "LOCAL & REGIONAL REALITY"
+    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = LIME_GREEN
+
+    p = tf2.add_paragraph()
+    p.text = "Thailand & Legacy Systems"
+    p.font.bold = True; p.font.size = Pt(18); p.font.color.rgb = DARK_GREEN
+    p.space_before = Pt(6)
+
+    bullets2 = [
+        ("Thailand MOPH Initiatives", "The Ministry of Public Health and Thai health-tech agencies are actively implementing FHIR-based Health Information Exchanges (HIE) for national universal coverage digital claims."),
+        ("The Hybrid Reality", "Replacing hospital databases costs millions. Many provincial hospitals still run HL7 v2 and MySQL engines; FHIR is deployed as an API Gateway wrapper sitting on top.")
+    ]
+    for h, d in bullets2:
+        p = tf2.add_paragraph()
+        p.text = f"• {h}:\n"
+        p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = TEXT_DARK
+        p.space_before = Pt(10)
+        run = p.add_run(); run.text = d; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
+
+
+# =============================================================================
+# PHASE 2: EVOLUTION OF CLINICAL DATA MODALITIES FOR ML & AI
+# =============================================================================
+
+def build_slide_15(prs):
+    """Phase 2 Section Header"""
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    add_slide_background(slide, prs, dark=True)
+
+    b = add_card(slide, Inches(0.9), Inches(1.8), Inches(6.0), Inches(0.45), bg_color=MED_GREEN, border_color=None)
+    tf_b = b.text_frame
+    tf_b.margin_left = Inches(0.2)
+    p_b = tf_b.paragraphs[0]
+    p_b.text = "PHASE 2 · CLINICAL DATA MODALITIES FOR AI"
+    p_b.font.bold = True; p_b.font.size = Pt(10); p_b.font.color.rgb = TEXT_WHITE
+
+    t_box = slide.shapes.add_textbox(Inches(0.9), Inches(2.5), Inches(11.5), Inches(2.2))
+    tf_t = t_box.text_frame
+    tf_t.word_wrap = True
+    p_t = tf_t.paragraphs[0]
+    p_t.text = "The Four Modalities of Health AI"
+    p_t.font.bold = True; p_t.font.size = Pt(38); p_t.font.color.rgb = TEXT_WHITE
+
+    p_sub = tf_t.add_paragraph()
+    p_sub.text = "From 2D Tabular Feature Matrices to Spatial Tensors, Signal Telemetry, and LLM Agents"
+    p_sub.font.size = Pt(17); p_sub.font.color.rgb = LIME_GREEN
+    p_sub.space_before = Pt(12)
+
+    c = add_card(slide, Inches(0.9), Inches(5.0), Inches(11.5), Inches(1.6), bg_color=MED_GREEN, border_color=None)
+    tf_c = c.text_frame
+    tf_c.margin_left = Inches(0.3); tf_c.margin_top = Inches(0.2)
+    p1 = tf_c.paragraphs[0]
+    p1.text = "Different Math, Different Algorithms:"
+    p1.font.bold = True; p1.font.size = Pt(13); p1.font.color.rgb = LIME_GREEN
+
+    p2 = tf_c.add_paragraph()
+    p2.text = "There is no single 'Health AI algorithm.' Tabular data requires gradient trees; radiology requires 3D convolution; telemetry requires temporal state spaces; notes require LLMs."
+    p2.font.bold = True; p2.font.size = Pt(13.5); p2.font.color.rgb = TEXT_WHITE
+    p2.space_before = Pt(4)
+
+
+def build_slide_16(prs):
+    """Modality 1: Tabular Data (Classical ML)"""
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    add_slide_background(slide, prs)
+    add_header(slide, "Phase 2 · Modality 1", "Tabular Data: The Classical Machine Learning Engine",
+               "Structured numeric matrices powering clinical risk stratification and lab assays")
+
+    c1 = add_card(slide, Inches(0.8), Inches(2.0), Inches(5.6), Inches(4.8))
+    tf1 = c1.text_frame
+    tf1.margin_left = tf1.margin_right = tf1.margin_top = Inches(0.35)
+
+    p = tf1.paragraphs[0]
+    p.text = "DATA REPRESENTATION"
+    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = MED_GREEN
+
+    p = tf1.add_paragraph()
+    p.text = "2D Matrices: X in R^{N x D}"
+    p.font.bold = True; p.font.size = Pt(18); p.font.color.rgb = DARK_GREEN
+    p.space_before = Pt(6)
+
+    bullets = [
+        ("Clinical Sources", "Automated lab panels (glucose, creatinine), vital signs, cell morphometry from biopsies, and patient demographics."),
+        ("Mathematical Structure", "A rectangular table of N patients (rows) by D features (columns). Targets y in {0, 1}."),
+        ("Strict Requirements", "Every cell must be a valid float. Algorithms cannot handle raw nested JSON or string codes without preprocessing.")
+    ]
+    for h, d in bullets:
         p = tf1.add_paragraph()
         p.text = f"• {h}: "
         p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = TEXT_DARK
@@ -1071,20 +795,262 @@ def build_slide_21(prs):
     tf2.margin_left = tf2.margin_right = tf2.margin_top = Inches(0.35)
 
     p = tf2.paragraphs[0]
-    p.text = "FEATURE LEAKAGE"
-    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = ALERT_RED
+    p.text = "ALGORITHMS & WORKSHOP LINK"
+    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = LIME_GREEN
 
     p = tf2.add_paragraph()
-    p.text = "Leaking the Future Into Features"
+    p.text = "Afternoon Workshop Focus"
     p.font.bold = True; p.font.size = Pt(18); p.font.color.rgb = DARK_GREEN
     p.space_before = Pt(6)
 
-    items2 = [
-        ("The Symptom", "Model scores 99.8% accuracy on training data, but fails immediately in real-world clinic trials."),
-        ("The Cause", "Accidentally including features recorded after the diagnosis: e.g. 'oncologist consultation date' or 'prescribed chemotherapy drug'."),
-        ("Rule of Thumb", "Input features MUST only reflect information available to the clinician at the exact moment of decision.")
+    bullets2 = [
+        ("Core Models", "Logistic Regression, Random Forests, XGBoost, and k-Means Clustering."),
+        ("Step 1 (Flatten FHIR)", "In scripts/01_fhir_to_table.py, we parse real FHIR bundles and extract LOINC observations into tabular columns."),
+        ("Step 3 (Train Pipelines)", "We fit Logistic Regression and Random Forest models to predict malignancy from 30 cell nucleus features.")
     ]
-    for h, d in items2:
+    for h, d in bullets2:
+        p = tf2.add_paragraph()
+        p.text = f"• {h}: "
+        p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = TEXT_DARK
+        p.space_before = Pt(10)
+        run = p.add_run(); run.text = d; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
+
+
+def build_slide_17(prs):
+    """Modality 2: Spatial & Imaging Data"""
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    add_slide_background(slide, prs)
+    add_header(slide, "Phase 2 · Modality 2", "Spatial & Imaging Data: Computer Vision in Medicine",
+               "Radiographs, 3D CT/MRI scans, and gigapixel histology whole-slide images")
+
+    c = add_card(slide, Inches(0.8), Inches(2.0), Inches(11.7), Inches(4.8))
+    tf = c.text_frame
+    tf.margin_left = tf.margin_right = tf.margin_top = Inches(0.4)
+
+    p = tf.paragraphs[0]
+    p.text = "HIGH-DIMENSIONAL SPATIAL TENSORS"
+    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = MED_GREEN
+
+    p = tf.add_paragraph()
+    p.text = "From 2D X-Rays to 3D/4D Volumetric Tensors"
+    p.font.bold = True; p.font.size = Pt(20); p.font.color.rgb = DARK_GREEN
+    p.space_before = Pt(6)
+
+    points = [
+        ("The DICOM Standard", "Medical images are not simple JPEGs. They are DICOM files storing calibrated pixel arrays alongside spatial metadata (slice thickness, magnetic field strength, patient positioning)."),
+        ("Mathematical Format", "Tensors in R^{C x D x H x W} where C = Channels/Sequences, D = Depth/Slices, H, W = Image dimensions. Whole Slide Images (WSI) reach 100,000 x 100,000 pixels."),
+        ("AI Architectures", "Convolutional Neural Networks (ResNet, EfficientNet), Vision Transformers (ViT), and U-Net encoder-decoder models for anatomical tumor segmentation."),
+        ("Clinical Challenge", "Multi-gigabyte file sizes, spatial resolution vs compute memory trade-offs, and requirement for expert radiologist pixel-level annotations.")
+    ]
+    for t, b in points:
+        p = tf.add_paragraph()
+        p.text = f"• {t}: "
+        p.font.bold = True; p.font.size = Pt(11.5); p.font.color.rgb = TEXT_DARK
+        p.space_before = Pt(10)
+        run = p.add_run(); run.text = b; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
+
+
+def build_slide_18(prs):
+    """Modality 3: Time-Series & Continuous Telemetry"""
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    add_slide_background(slide, prs)
+    add_header(slide, "Phase 2 · Modality 3", "Time-Series & Telemetry: Continuous Physiological Streams",
+               "High-frequency sensor waveforms from ICU monitors, ECG leads, and wearable devices")
+
+    c = add_card(slide, Inches(0.8), Inches(2.0), Inches(11.7), Inches(4.8))
+    tf = c.text_frame
+    tf.margin_left = tf.margin_right = tf.margin_top = Inches(0.4)
+
+    p = tf.paragraphs[0]
+    p.text = "SEQUENTIAL TEMPORAL SIGNALS"
+    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = LIME_GREEN
+
+    p = tf.add_paragraph()
+    p.text = "Streaming Signals at 250 Hz to 1 Sample/Hour"
+    p.font.bold = True; p.font.size = Pt(20); p.font.color.rgb = DARK_GREEN
+    p.space_before = Pt(6)
+
+    points = [
+        ("Clinical Telemetry Streams", "12-lead Electrocardiography (ECG), continuous arterial blood pressure in ICUs, pulse oximetry (PPG), and Continuous Glucose Monitors (CGM)."),
+        ("Mathematical Representation", "1D sequential arrays x(t) sampled at high frequency. Processed via sliding windows, Fast Fourier Transforms (FFT), or Continuous Wavelet Transforms."),
+        ("Algorithms", "Recurrent Neural Networks (LSTMs), 1D Temporal Convolutional Networks (TCN), and modern State Space Models (Mamba) for predicting acute sepsis 6 hours in advance."),
+        ("Engineering Reality", "Sensor motion artifacts, loose electrodes, and non-stationary baseline drift require heavy digital signal processing before ML.")
+    ]
+    for t, b in points:
+        p = tf.add_paragraph()
+        p.text = f"• {t}: "
+        p.font.bold = True; p.font.size = Pt(11.5); p.font.color.rgb = TEXT_DARK
+        p.space_before = Pt(10)
+        run = p.add_run(); run.text = b; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
+
+
+def build_slide_19(prs):
+    """Modality 4: Unstructured Text & Clinical Notes"""
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    add_slide_background(slide, prs)
+    add_header(slide, "Phase 2 · Modality 4", "Unstructured Text: What 90% of People Mean by 'AI'",
+               "Physician progress notes, discharge summaries, operative logs, and clinical LLMs")
+
+    c1 = add_card(slide, Inches(0.8), Inches(2.0), Inches(5.6), Inches(4.8))
+    tf1 = c1.text_frame
+    tf1.margin_left = tf1.margin_right = tf1.margin_top = Inches(0.35)
+
+    p = tf1.paragraphs[0]
+    p.text = "THE UNSTRUCTURED MAJORITY"
+    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = MED_GREEN
+
+    p = tf1.add_paragraph()
+    p.text = "80% of Health Data Lives in Text"
+    p.font.bold = True; p.font.size = Pt(18); p.font.color.rgb = DARK_GREEN
+    p.space_before = Pt(6)
+
+    bullets = [
+        ("Clinical Narratives", "Doctors do not fill out structured dropdown forms; they write narrative stories explaining clinical reasoning, nuance, and history."),
+        ("Complex Medical Jargon", "Heavy abbreviations ('sob' = shortness of breath, not an insult!), medical shorthand, and typos make rule-based parsers fail."),
+        ("Rich Hidden Signal", "Social determinants of health (living alone, smoking history) are only documented in free-text clinical notes.")
+    ]
+    for h, d in bullets:
+        p = tf1.add_paragraph()
+        p.text = f"• {h}: "
+        p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = TEXT_DARK
+        p.space_before = Pt(10)
+        run = p.add_run(); run.text = d; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
+
+    c2 = add_card(slide, Inches(6.8), Inches(2.0), Inches(5.7), Inches(4.8))
+    tf2 = c2.text_frame
+    tf2.margin_left = tf2.margin_right = tf2.margin_top = Inches(0.35)
+
+    p = tf2.paragraphs[0]
+    p.text = "THE GENAI PARADIGM"
+    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = LIME_GREEN
+
+    p = tf2.add_paragraph()
+    p.text = "Clinical LLMs & Copilots"
+    p.font.bold = True; p.font.size = Pt(18); p.font.color.rgb = DARK_GREEN
+    p.space_before = Pt(6)
+
+    bullets2 = [
+        ("Medical Foundation Models", "Specialized models (Med-PaLM 2, BioGPT, ClinicalBERT) trained on medical literature and clinical corpora."),
+        ("Ambient Clinical Scribing", "Microphones listen to doctor-patient conversation in real time and automatically draft the clinical note into the EHR."),
+        ("Clinical Question Answering", "Synthesizing complex multi-year patient records into concise diagnostic briefings for busy clinicians.")
+    ]
+    for h, d in bullets2:
+        p = tf2.add_paragraph()
+        p.text = f"• {h}: "
+        p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = TEXT_DARK
+        p.space_before = Pt(10)
+        run = p.add_run(); run.text = d; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
+
+
+def build_slide_20(prs):
+    """The Formatting Dilemma for LLMs: Token Bloat vs. Markdown"""
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    add_slide_background(slide, prs)
+    add_header(slide, "Phase 2 · LLMs & Formats", "The Formatting Dilemma: Why LLMs Choke on Raw FHIR",
+               "Nested JSON metadata dilutes clinical signal; Markdown tables provide the cure")
+
+    c1 = add_card(slide, Inches(0.8), Inches(2.0), Inches(5.6), Inches(4.8), border_color=ALERT_RED)
+    tf1 = c1.text_frame
+    tf1.margin_left = tf1.margin_right = tf1.margin_top = Inches(0.35)
+
+    p = tf1.paragraphs[0]
+    p.text = "THE RAW JSON TRAP"
+    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = ALERT_RED
+
+    p = tf1.add_paragraph()
+    p.text = "Token Bloat & Hallucination"
+    p.font.bold = True; p.font.size = Pt(18); p.font.color.rgb = DARK_GREEN
+    p.space_before = Pt(6)
+
+    bullets = [
+        ("Severe Token Overhead", "A single FHIR Observation consumes 300–500 tokens of nested boilerplate (resourceType, meta, system, coding). A patient chart burns 50,000+ tokens!"),
+        ("Diluted Clinical Signal", "The critical clinical number ('Glucose: 118') is buried inside hundreds of curly braces, degrading LLM attention."),
+        ("Hallucination Risk", "High token boilerplate increases the probability that an LLM misassociates a test value with the wrong timestamp.")
+    ]
+    for h, d in bullets:
+        p = tf1.add_paragraph()
+        p.text = f"• {h}: "
+        p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = TEXT_DARK
+        p.space_before = Pt(10)
+        run = p.add_run(); run.text = d; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
+
+    c2 = add_card(slide, Inches(6.8), Inches(2.0), Inches(5.7), Inches(4.8))
+    tf2 = c2.text_frame
+    tf2.margin_left = tf2.margin_right = tf2.margin_top = Inches(0.35)
+
+    p = tf2.paragraphs[0]
+    p.text = "THE MODERN SOLUTION"
+    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = LIME_GREEN
+
+    p = tf2.add_paragraph()
+    p.text = "Clean Markdown (.md) Tables"
+    p.font.bold = True; p.font.size = Pt(18); p.font.color.rgb = DARK_GREEN
+    p.space_before = Pt(6)
+
+    bullets2 = [
+        ("60–75% Token Reduction", "Converting FHIR resources into clean Markdown tables preserves semantic clarity while stripping thousands of redundant JSON lines."),
+        ("Superior LLM Recall", "Foundation models are pre-trained heavily on Markdown tables and bulleted text, leading to faster inference and zero syntactic hallucinations."),
+        ("Clean Architecture", "FHIR remains the backend database protocol; Markdown is the token-efficient presentation layer for LLM prompts.")
+    ]
+    for h, d in bullets2:
+        p = tf2.add_paragraph()
+        p.text = f"• {h}: "
+        p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = TEXT_DARK
+        p.space_before = Pt(10)
+        run = p.add_run(); run.text = d; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
+
+
+def build_slide_21(prs):
+    """Clinical AI Agents & Tool Calling: MCP & RAG"""
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    add_slide_background(slide, prs)
+    add_header(slide, "Phase 2 · AI Agents", "Clinical AI Agents: RAG & Model Context Protocol (MCP)",
+               "Moving from passive chatbots to autonomous clinical copilots with deterministic tools")
+
+    c1 = add_card(slide, Inches(0.8), Inches(2.0), Inches(5.6), Inches(4.8))
+    tf1 = c1.text_frame
+    tf1.margin_left = tf1.margin_right = tf1.margin_top = Inches(0.35)
+
+    p = tf1.paragraphs[0]
+    p.text = "KNOWLEDGE RETRIEVAL"
+    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = MED_GREEN
+
+    p = tf1.add_paragraph()
+    p.text = "Clinical RAG & Vector DBs"
+    p.font.bold = True; p.font.size = Pt(18); p.font.color.rgb = DARK_GREEN
+    p.space_before = Pt(6)
+
+    bullets = [
+        ("Semantic Embeddings", "Clinical narrative notes and medical guidelines are chunked and converted into vector embeddings via clinical embedding models."),
+        ("Vector Databases", "Stored in high-speed vector stores (pgvector, Chroma, Pinecone) for sub-millisecond similarity search."),
+        ("Grounded Answers", "When an agent answers a question, it retrieves the top-3 most relevant patient notes and clinical trial guidelines to prevent hallucinations.")
+    ]
+    for h, d in bullets:
+        p = tf1.add_paragraph()
+        p.text = f"• {h}: "
+        p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = TEXT_DARK
+        p.space_before = Pt(10)
+        run = p.add_run(); run.text = d; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
+
+    c2 = add_card(slide, Inches(6.8), Inches(2.0), Inches(5.7), Inches(4.8))
+    tf2 = c2.text_frame
+    tf2.margin_left = tf2.margin_right = tf2.margin_top = Inches(0.35)
+
+    p = tf2.paragraphs[0]
+    p.text = "DETERMINISTIC ACTION"
+    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = LIME_GREEN
+
+    p = tf2.add_paragraph()
+    p.text = "Model Context Protocol (MCP)"
+    p.font.bold = True; p.font.size = Pt(18); p.font.color.rgb = DARK_GREEN
+    p.space_before = Pt(6)
+
+    bullets2 = [
+        ("Tool-Calling Paradigm", "Agents do not guess; they invoke structured tools: get_patient_labs(patient_id='P0001', code='2339-0')."),
+        ("Scoped & Auditable", "Every action an agent takes is logged, authenticated, and constrained by role-based access control."),
+        ("The Future Standard", "MCP provides the open protocol for connecting AI agents to hospital databases and diagnostic instruments safely.")
+    ]
+    for h, d in bullets2:
         p = tf2.add_paragraph()
         p.text = f"• {h}: "
         p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = TEXT_DARK
@@ -1093,10 +1059,10 @@ def build_slide_21(prs):
 
 
 def build_slide_22(prs):
-    """The Data Impedance Mismatch (Two-Column)"""
+    """The Data Impedance Mismatch"""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_slide_background(slide, prs)
-    add_header(slide, "The Core Technical Gap", "The Data Impedance Mismatch",
+    add_header(slide, "Phase 2 · Data Architecture", "The Fundamental Data Impedance Mismatch",
                "Why machine learning frameworks cannot directly ingest clinical FHIR standards")
 
     c1 = add_card(slide, Inches(0.8), Inches(2.0), Inches(5.6), Inches(4.8))
@@ -1151,117 +1117,67 @@ def build_slide_22(prs):
 
 
 def build_slide_23(prs):
-    """Safe Preprocessing Pipelines"""
+    """Clinical Realities: Missingness & Imbalance"""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_slide_background(slide, prs)
-    add_header(slide, "ML Engineering", "Safe Preprocessing Pipelines in Scikit-Learn",
-               "Preventing data leakage by encapsulating imputation, scaling, and classification")
+    add_header(slide, "Phase 2 · Data Realities", "Clinical Realities: Informative Missingness & Class Imbalance",
+               "Healthcare data is not sampled at random; absence of evidence is clinical information")
 
-    c = add_card(slide, Inches(0.8), Inches(2.0), Inches(11.7), Inches(4.8))
-    tf = c.text_frame
-    tf.margin_left = tf.margin_right = tf.margin_top = Inches(0.4)
+    c1 = add_card(slide, Inches(0.8), Inches(2.0), Inches(5.6), Inches(4.8), border_color=ALERT_RED)
+    tf1 = c1.text_frame
+    tf1.margin_left = tf1.margin_right = tf1.margin_top = Inches(0.35)
 
-    p = tf.paragraphs[0]
-    p.text = "THE GOLD STANDARD: FITTING INSIDE THE FOLD"
-    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = LIME_GREEN
+    p = tf1.paragraphs[0]
+    p.text = "DATA QUALITY REALITY"
+    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = ALERT_RED
 
-    p = tf.add_paragraph()
-    p.text = "Never Compute Statistics Across the Whole Cohort Before Splitting"
-    p.font.bold = True; p.font.size = Pt(20); p.font.color.rgb = DARK_GREEN
+    p = tf1.add_paragraph()
+    p.text = "Informative Missingness"
+    p.font.bold = True; p.font.size = Pt(18); p.font.color.rgb = DARK_GREEN
     p.space_before = Pt(6)
 
-    points = [
-        ("The Common Bug", "Calculating the median to impute missing values or standardizing features using the mean of all 569 patients before splitting into train/test sets leaks information from the future."),
-        ("The Scikit-Learn Pipeline", "We bundle SimpleImputer -> StandardScaler -> Classifier into a single Pipeline object. During cross-validation, the imputer and scaler learn parameters strictly from the training folds."),
-        ("Exporting as One Artifact", "When saving models to disk (models/model.joblib in Step 3), we save the entire Pipeline. Serving new incoming FHIR patients requires zero external preprocessing scripts.")
+    bullets = [
+        ("Tests Ordered for Sick Patients", "In sensors, missing data is hardware loss. In medicine, a troponin test or biopsy is ordered because disease is suspected! Healthy patients lack tests because they are healthy."),
+        ("The Imputation Trap", "Imputing missing values with population mean assigns sick values to healthy people. Must be handled deliberately via SimpleImputer inside cross-validation folds.")
     ]
-    for t, b in points:
-        p = tf.add_paragraph()
-        p.text = f"{t}: "
-        p.font.bold = True; p.font.size = Pt(12); p.font.color.rgb = TEXT_DARK
-        p.space_before = Pt(12)
-        run = p.add_run(); run.text = b; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
+    for h, d in bullets:
+        p = tf1.add_paragraph()
+        p.text = f"• {h}:\n"
+        p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = TEXT_DARK
+        p.space_before = Pt(10)
+        run = p.add_run(); run.text = d; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
+
+    c2 = add_card(slide, Inches(6.8), Inches(2.0), Inches(5.7), Inches(4.8))
+    tf2 = c2.text_frame
+    tf2.margin_left = tf2.margin_right = tf2.margin_top = Inches(0.35)
+
+    p = tf2.paragraphs[0]
+    p.text = "EVALUATION PITFALL"
+    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = LIME_GREEN
+
+    p = tf2.add_paragraph()
+    p.text = "Class Imbalance (63% Trap)"
+    p.font.bold = True; p.font.size = Pt(18); p.font.color.rgb = DARK_GREEN
+    p.space_before = Pt(6)
+
+    bullets2 = [
+        ("The Baseline Illusion", "In cancer screening, 63% (or 95%) of patients are benign. A dummy model predicting 'benign' every time achieves 63% accuracy while failing 100% of cancer cases!"),
+        ("Metric Requirements", "Accuracy is dangerous. We evaluate models using Recall (Sensitivity), ROC-AUC, and tune the classification threshold deliberately.")
+    ]
+    for h, d in bullets2:
+        p = tf2.add_paragraph()
+        p.text = f"• {h}:\n"
+        p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = TEXT_DARK
+        p.space_before = Pt(10)
+        run = p.add_run(); run.text = d; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
 
 
 def build_slide_24(prs):
-    """Closing the Loop: Predictions Back as FHIR"""
+    """Towards AI-Native Health Data Standards"""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_slide_background(slide, prs)
-    add_header(slide, "Clinical Deployment", "Closing the Loop: Predictions Back as FHIR",
-               "An AI model that cannot write back to the clinical workflow has zero clinical utility")
-
-    c = add_card(slide, Inches(0.8), Inches(2.0), Inches(11.7), Inches(4.8))
-    tf = c.text_frame
-    tf.margin_left = tf.margin_right = tf.margin_top = Inches(0.4)
-
-    p = tf.paragraphs[0]
-    p.text = "STEP 5 IN THE AFTERNOON WORKSHOP"
-    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = LIME_GREEN
-
-    p = tf.add_paragraph()
-    p.text = "Writing Model Inference Directly Into the Electronic Health Record"
-    p.font.bold = True; p.font.size = Pt(20); p.font.color.rgb = DARK_GREEN
-    p.space_before = Pt(6)
-
-    points = [
-        ("The Deployment Gap", "A trained machine learning model trapped inside a Jupyter notebook saves zero lives. Clinicians will never open a Python console."),
-        ("Standard Clinical Output", "In Step 5c of this afternoon's hands-on session, clicking 'Send to record' in the Streamlit application serializes the predicted cancer probability into a valid FHIR RiskAssessment and Observation resource."),
-        ("Seamless EHR Integration", "Because the prediction is returned as a standard FHIR resource, any modern EHR can consume the risk score without knowing or caring that it was generated by scikit-learn.")
-    ]
-    for t, b in points:
-        p = tf.add_paragraph()
-        p.text = f"{t}: "
-        p.font.bold = True; p.font.size = Pt(12); p.font.color.rgb = TEXT_DARK
-        p.space_before = Pt(12)
-        run = p.add_run(); run.text = b; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
-
-
-def build_slide_25(prs):
-    """The GenAI Era: LLMs, Agents, RAG & Context Formats (3 Cards)"""
-    slide = prs.slides.add_slide(prs.slide_layouts[6])
-    add_slide_background(slide, prs)
-    add_header(slide, "The Generative AI Era", "LLMs, Clinical Agents & Context Formats",
-               "Why modern clinical AI assistants consume Markdown, RAG, and MCP rather than raw FHIR JSON")
-
-    cards = [
-        ("The Token Bloat Trap", "Raw FHIR in LLM Contexts",
-         "A single FHIR Observation consumes 300–500 tokens of nested schema boilerplate (`resourceType`, `system`, `coding`).\n\nDumping an entire patient chart burns 50,000+ tokens, diluting clinical signal and increasing hallucination risks.",
-         ALERT_RED),
-        ("Emerging Context Formats", "Markdown & Vector RAG",
-         "• Markdown (.md): Transforming FHIR JSON into clean markdown tables reduces token overhead by 60–75% while boosting LLM reasoning.\n\n• Clinical RAG: Semantic search over vector databases (e.g. pgvector, Chroma) retrieves relevant clinical notes and guidelines.",
-         MED_GREEN),
-        ("Agentic Tool-Calling", "Model Context Protocol (MCP)",
-         "Instead of large prompt dumps, autonomous clinical agents query structured tools on-demand:\n\n• get_patient_labs(id, 'glucose')\n• check_drug_interaction(rx_a, rx_b)\n\nEnsures scoped, auditable, and deterministic tool execution.",
-         LIME_GREEN)
-    ]
-
-    for i, (title, sub, body, col) in enumerate(cards):
-        left = Inches(0.8) + i * Inches(3.95)
-        c = add_card(slide, left, Inches(2.0), Inches(3.75), Inches(4.7))
-        tf = c.text_frame
-        tf.margin_left = tf.margin_right = tf.margin_top = Inches(0.3)
-
-        p = tf.paragraphs[0]
-        p.text = title
-        p.font.bold = True; p.font.size = Pt(16); p.font.color.rgb = col
-
-        p = tf.add_paragraph()
-        p.text = sub
-        p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = DARK_GREEN
-        p.space_before = Pt(4)
-
-        p = tf.add_paragraph()
-        p.text = body
-        p.font.size = Pt(10.5); p.font.color.rgb = TEXT_DARK
-        p.space_before = Pt(10)
-
-
-def build_slide_26(prs):
-    """The Next Frontier: Towards AI-Native Health Standards"""
-    slide = prs.slides.add_slide(prs.slide_layouts[6])
-    add_slide_background(slide, prs)
-    add_header(slide, "The Next Evolution", "Towards AI-Native Health Data Standards",
-               "Will healthcare need a new standard designed for machine learning and autonomous agents?")
+    add_header(slide, "Phase 2 · Future Architecture", "Towards AI-Native Health Data Standards",
+               "The emerging Dual-Stack Architecture uniting legal compliance and continuous learning")
 
     c1 = add_card(slide, Inches(0.8), Inches(2.0), Inches(5.6), Inches(4.8))
     tf1 = c1.text_frame
@@ -1272,7 +1188,7 @@ def build_slide_26(prs):
     p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = MED_GREEN
 
     p = tf1.add_paragraph()
-    p.text = "From Hardware Sockets to Autonomous Agents"
+    p.text = "From Sockets to Autonomous AI"
     p.font.bold = True; p.font.size = Pt(18); p.font.color.rgb = DARK_GREEN
     p.space_before = Pt(6)
 
@@ -1293,11 +1209,11 @@ def build_slide_26(prs):
     tf2.margin_left = tf2.margin_right = tf2.margin_top = Inches(0.35)
 
     p = tf2.paragraphs[0]
-    p.text = "THE EMERGING SOLUTION"
+    p.text = "THE DUAL-STACK SOLUTION"
     p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = LIME_GREEN
 
     p = tf2.add_paragraph()
-    p.text = "The Dual-Stack Health Architecture"
+    p.text = "Record Layer + Intelligence Layer"
     p.font.bold = True; p.font.size = Pt(18); p.font.color.rgb = DARK_GREEN
     p.space_before = Pt(6)
 
@@ -1314,49 +1230,257 @@ def build_slide_26(prs):
         run = p.add_run(); run.text = d; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
 
 
-def build_slide_27(prs):
-    """Pre-Lunch Tech Check (3 Cards)"""
+# =============================================================================
+# PHASE +1: AIT RESEARCH IN ACTION — TELEHEALTH & WP1 (CHAKLAM SPOTLIGHT)
+# =============================================================================
+
+def build_slide_25(prs):
+    """Phase +1 Section Header: AIT Research in Action"""
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    add_slide_background(slide, prs, dark=True)
+
+    b = add_card(slide, Inches(0.9), Inches(1.8), Inches(6.2), Inches(0.45), bg_color=MED_GREEN, border_color=None)
+    tf_b = b.text_frame
+    tf_b.margin_left = Inches(0.2)
+    p_b = tf_b.paragraphs[0]
+    p_b.text = "PHASE +1 · AIT RESEARCH IN ACTION (CHAKLAM'S SPOTLIGHT)"
+    p_b.font.bold = True; p_b.font.size = Pt(10); p_b.font.color.rgb = TEXT_WHITE
+
+    t_box = slide.shapes.add_textbox(Inches(0.9), Inches(2.5), Inches(11.5), Inches(2.2))
+    tf_t = t_box.text_frame
+    tf_t.word_wrap = True
+    p_t = tf_t.paragraphs[0]
+    p_t.text = "Telehealth & Assistive Systems"
+    p_t.font.bold = True; p_t.font.size = Pt(38); p_t.font.color.rgb = TEXT_WHITE
+
+    p_sub = tf_t.add_paragraph()
+    p_sub.text = "Monitoring and Assistive Systems for Elderly and Disabled People — Prof. Chaklam Silpasuwanchai"
+    p_sub.font.size = Pt(17); p_sub.font.color.rgb = LIME_GREEN
+    p_sub.space_before = Pt(12)
+
+    c = add_card(slide, Inches(0.9), Inches(5.0), Inches(11.5), Inches(1.6), bg_color=MED_GREEN, border_color=None)
+    tf_c = c.text_frame
+    tf_c.margin_left = Inches(0.3); tf_c.margin_top = Inches(0.2)
+    p1 = tf_c.paragraphs[0]
+    p1.text = "Grounding Theory in Real AIT Systems Engineering:"
+    p1.font.bold = True; p1.font.size = Pt(13); p1.font.color.rgb = LIME_GREEN
+
+    p2 = tf_c.add_paragraph()
+    p2.text = "Connecting optical Raman laser sensors, computer vision telemetry, and haptic rehabilitation robotics to global clinical standards and FHIR microservices."
+    p2.font.bold = True; p2.font.size = Pt(13.5); p2.font.color.rgb = TEXT_WHITE
+    p2.space_before = Pt(4)
+
+
+def build_slide_26(prs):
+    """The AIT Telehealth Project: Four Work Packages"""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_slide_background(slide, prs)
-    add_header(slide, "Lunch Checkpoint", "Tech Check Before Lunch (Library Studio Room)",
+    add_header(slide, "Phase +1 · AIT Spotlight", "AIT Telehealth Project: Four Work Packages",
+               "Bridging physical sensor engineering, edge robotics, and secure clinical cloud platforms")
+
+    wps = [
+        ("WP1: Optical Glucose Sensing",
+         "Non-Invasive Raman Sensor",
+         "Measures blood glucose without skin pricks using 785nm optical Raman laser spectroscopy.",
+         "POC App: github.com/akraradets/BloodGlucose-App\nEdge ML calibration models.",
+         LIME_GREEN),
+        ("WP2: Activity & Fall Telemetry",
+         "Computer Vision & Wi-Fi CSI",
+         "Monitors elderly mobility and detects falls in real time using privacy-preserving camera feeds and Wi-Fi disturbance.",
+         "Continuous spatial & time-series AI\nEdge inference on embedded hardware.",
+         MED_GREEN),
+        ("WP3: Remote Haptic Therapy",
+         "Robotic Physical Rehabilitation",
+         "Upper-limb rehabilitation device providing programmable force-feedback for stroke patient recovery.",
+         "Bi-directional physical telemetry\nRemote clinician tele-operation.",
+         DARK_GREEN),
+        ("WP4: Cloud Telehealth Platform",
+         "Secure FHIR Integration",
+         "Consolidates telemetry from WP1–WP3 into an encrypted cloud backend for clinician review.",
+         "Standardized FHIR R4 resources\nReal-time web & mobile dashboards.",
+         ALERT_RED)
+    ]
+
+    for i, (badge, title, body, sub, col) in enumerate(wps):
+        left = Inches(0.8) + i * Inches(2.95)
+        c = add_card(slide, left, Inches(2.0), Inches(2.75), Inches(4.8))
+        tf = c.text_frame
+        tf.margin_left = tf.margin_right = tf.margin_top = Inches(0.25)
+
+        p = tf.paragraphs[0]
+        p.text = badge
+        p.font.bold = True; p.font.size = Pt(10.5); p.font.color.rgb = col
+
+        p = tf.add_paragraph()
+        p.text = title
+        p.font.bold = True; p.font.size = Pt(13); p.font.color.rgb = DARK_GREEN
+        p.space_before = Pt(4)
+
+        p = tf.add_paragraph()
+        p.text = body
+        p.font.size = Pt(10.5); p.font.color.rgb = TEXT_DARK
+        p.space_before = Pt(8)
+
+        p = tf.add_paragraph()
+        p.text = sub
+        p.font.size = Pt(9.5); p.font.color.rgb = TEXT_MUTED
+        p.space_before = Pt(10)
+
+
+def build_slide_27(prs):
+    """WP1 Deep Dive: Non-Invasive Glucose via Raman Spectroscopy"""
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    add_slide_background(slide, prs)
+    add_header(slide, "Phase +1 · AIT Spotlight", "WP1 Deep Dive: Non-Invasive Glucose via Raman Spectroscopy",
+               "Translating raw optical spectra into calibrated physiological biomarkers (BloodGlucose-App)")
+
+    c1 = add_card(slide, Inches(0.8), Inches(2.0), Inches(5.6), Inches(4.8))
+    tf1 = c1.text_frame
+    tf1.margin_left = tf1.margin_right = tf1.margin_top = Inches(0.35)
+
+    p = tf1.paragraphs[0]
+    p.text = "THE OPTICAL SENSOR PRINCIPLE"
+    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = MED_GREEN
+
+    p = tf1.add_paragraph()
+    p.text = "Inelastic Photon Scattering"
+    p.font.bold = True; p.font.size = Pt(18); p.font.color.rgb = DARK_GREEN
+    p.space_before = Pt(6)
+
+    bullets = [
+        ("The Clinical Need", "Diabetic and elderly patients require frequent daily blood checks. Finger-prick lancets cause tissue damage, infection risks, and poor patient compliance."),
+        ("Raman Spectroscopy", "A 785nm near-infrared laser illuminates interstitial fluid. Photons scatter inelastically off glucose molecules, yielding a unique spectral fingerprint around 1125 cm⁻¹."),
+        ("Mobile POC App", "Built at AIT (github.com/akraradets/BloodGlucose-App). Connects over Bluetooth Low Energy (BLE) to the Raman hardware spectrometer.")
+    ]
+    for h, d in bullets:
+        p = tf1.add_paragraph()
+        p.text = f"• {h}:\n"
+        p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = TEXT_DARK
+        p.space_before = Pt(10)
+        run = p.add_run(); run.text = d; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
+
+    c2 = add_card(slide, Inches(6.8), Inches(2.0), Inches(5.7), Inches(4.8))
+    tf2 = c2.text_frame
+    tf2.margin_left = tf2.margin_right = tf2.margin_top = Inches(0.35)
+
+    p = tf2.paragraphs[0]
+    p.text = "THE MACHINE LEARNING ENGINE"
+    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = LIME_GREEN
+
+    p = tf2.add_paragraph()
+    p.text = "Modality 3 → Modality 1 Mapping"
+    p.font.bold = True; p.font.size = Pt(18); p.font.color.rgb = DARK_GREEN
+    p.space_before = Pt(6)
+
+    bullets2 = [
+        ("Signal Preprocessing", "Raw spectra suffer from skin autofluorescence and dark current noise. Preprocessing uses baseline polynomial subtraction and Standard Normal Variate (SNV) scaling."),
+        ("Edge Calibration Model", "Partial Least Squares (PLS) regression and Random Forests map the continuous 1D spectral curve directly to blood glucose (mg/dL)."),
+        ("The Standard Challenge", "Once the phone calculates '118 mg/dL', how do we push it to a hospital EHR without losing context? We serialize it to FHIR!")
+    ]
+    for h, d in bullets2:
+        p = tf2.add_paragraph()
+        p.text = f"• {h}:\n"
+        p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = TEXT_DARK
+        p.space_before = Pt(10)
+        run = p.add_run(); run.text = d; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
+
+
+def build_slide_28(prs):
+    """Closing the Circuit: Mapping AIT Raman Reading into FHIR R4"""
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    add_slide_background(slide, prs)
+    add_header(slide, "Phase +1 · AIT Spotlight", "Closing the Circuit: Mapping AIT Raman Readings into FHIR",
+               "How physical sensor telemetry becomes a globally interoperable clinical resource")
+
+    c1 = add_card(slide, Inches(0.8), Inches(2.0), Inches(4.8), Inches(4.8))
+    tf1 = c1.text_frame
+    tf1.margin_left = tf1.margin_right = tf1.margin_top = Inches(0.3)
+
+    p = tf1.paragraphs[0]
+    p.text = "STANDARDS HARMONIZATION"
+    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = MED_GREEN
+
+    items = [
+        ("LOINC 2339-0", "Standard test code for Glucose [Mass/vol] in Blood. Guarantees that any EHR on Earth recognizes the value as blood sugar."),
+        ("SNOMED CT 439401001", "Identifies the measurement method as In-vivo Raman spectroscopy rather than a laboratory venous blood draw."),
+        ("UCUM Units (mg/dL)", "Explicit unit coding eliminates fatal confusion between US (mg/dL) and European/Thai (mmol/L) scales.")
+    ]
+    for h, d in items:
+        p = tf1.add_paragraph()
+        p.text = f"{h}:\n"
+        p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = DARK_GREEN
+        p.space_before = Pt(10)
+        run = p.add_run(); run.text = d; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
+
+    c2 = add_card(slide, Inches(5.9), Inches(2.0), Inches(6.6), Inches(4.8), bg_color=DARK_PANEL, border_color=None)
+    tf2 = c2.text_frame
+    tf2.margin_left = tf2.margin_right = tf2.margin_top = Inches(0.3)
+
+    p = tf2.paragraphs[0]
+    p.text = "// AIT WP1 Raman Glucose in FHIR R4 JSON"
+    p.font.name = "Courier New"; p.font.size = Pt(10.5); p.font.color.rgb = LIME_GREEN
+
+    json_lines = [
+        '{\n  "resourceType": "Observation",\n  "id": "ait-raman-glucose-001",\n  "status": "final",',
+        '  "code": {\n    "coding": [{\n      "system": "http://loinc.org",\n      "code": "2339-0",\n      "display": "Glucose [Mass/vol] in Blood"\n    }]\n  },',
+        '  "subject": { "reference": "Patient/P0001" },\n  "effectiveDateTime": "2026-09-09T10:30:00+07:00",',
+        '  "valueQuantity": {\n    "value": 118,\n    "unit": "mg/dL",\n    "system": "http://unitsofmeasure.org",\n    "code": "mg/dL"\n  },',
+        '  "method": {\n    "coding": [{\n      "system": "http://snomed.info/sct",\n      "code": "439401001",\n      "display": "In-vivo Raman spectroscopy"\n    }]\n  }\n}'
+    ]
+    for snippet in json_lines:
+        p = tf2.add_paragraph()
+        p.text = snippet
+        p.font.name = "Courier New"; p.font.size = Pt(9); p.font.color.rgb = CODE_GREEN
+        p.space_before = Pt(4)
+
+
+# =============================================================================
+# EPILOGUE & TRANSITION TO AFTERNOON
+# =============================================================================
+
+def build_slide_29(prs):
+    """Closing the Loop & Tech Check"""
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    add_slide_background(slide, prs)
+    add_header(slide, "Bridge to Afternoon", "Closing the Classical Loop & Tech Checkpoint",
                "Verify your environment now so the room is 100% ready to run code at 14:00")
 
     steps = [
-        ("STEP 1: REPO ROOT", "Open Terminal on Laptop",
-         "Open your terminal application and navigate into the cloned workshop directory:\n\n$ cd fhir-ml-workshop\n\nEnsure git branch is set up."),
-        ("STEP 2: SYNC UV", "Download Dependencies",
-         "Run the fast package synchronizer from inside the repository:\n\n$ uv sync\n\nDownloads and pins the 66 required libraries (~580 MB)."),
-        ("STEP 3: TEST SCIKIT", "Verify Environment",
-         "Run the verification one-liner:\n\n$ uv run python -c \"import sklearn; print(sklearn.__version__)\"\n\nShould print 1.6.x cleanly!")
+        ("CLOSING THE LOOP", "Predictions Back as FHIR",
+         "In Step 5c of this afternoon's workshop, clicking 'Send to record' wraps our scikit-learn cancer risk prediction back into a valid FHIR RiskAssessment and Observation resource."),
+        ("TERMINAL CHECK", "Navigate to Repo Root",
+         "Open your terminal application and verify your current working directory:\n\n$ cd fhir-ml-workshop\n\nEnsure git branch is clean."),
+        ("SYNC ENVIRONMENT", "Verify Libraries Before Lunch",
+         "Run the fast package synchronizer from inside the repository:\n\n$ uv sync\n\nVerify sklearn:\n$ uv run python -c \"import sklearn; print(sklearn.__version__)\"")
     ]
 
     for i, (title, sub, body) in enumerate(steps):
         left = Inches(0.8) + i * Inches(3.95)
-        c = add_card(slide, left, Inches(2.0), Inches(3.75), Inches(4.7))
+        c = add_card(slide, left, Inches(2.0), Inches(3.75), Inches(4.8))
         tf = c.text_frame
         tf.margin_left = tf.margin_right = tf.margin_top = Inches(0.3)
 
         p = tf.paragraphs[0]
         p.text = title
-        p.font.bold = True; p.font.size = Pt(12); p.font.color.rgb = LIME_GREEN
+        p.font.bold = True; p.font.size = Pt(13); p.font.color.rgb = LIME_GREEN
 
         p = tf.add_paragraph()
         p.text = sub
-        p.font.bold = True; p.font.size = Pt(16); p.font.color.rgb = DARK_GREEN
+        p.font.bold = True; p.font.size = Pt(15); p.font.color.rgb = DARK_GREEN
         p.space_before = Pt(4)
 
         p = tf.add_paragraph()
         p.text = body
-        p.font.name = "Arial"; p.font.size = Pt(11); p.font.color.rgb = TEXT_DARK
+        p.font.name = "Arial"; p.font.size = Pt(10.5); p.font.color.rgb = TEXT_DARK
         p.space_before = Pt(12)
 
 
 # -----------------------------------------------------------------------------
-# MAIN
+# MAIN BUILDER
 # -----------------------------------------------------------------------------
 
 def main():
-    print("Building clean 27-slide presentation deck for Morning Theory Session...")
+    print("Building clean 29-slide presentation deck for Morning Theory Session (2 + 1 Architecture)...")
     prs = create_deck()
 
     builders = [
@@ -1365,7 +1489,7 @@ def main():
         build_slide_11, build_slide_12, build_slide_13, build_slide_14, build_slide_15,
         build_slide_16, build_slide_17, build_slide_18, build_slide_19, build_slide_20,
         build_slide_21, build_slide_22, build_slide_23, build_slide_24, build_slide_25,
-        build_slide_26, build_slide_27,
+        build_slide_26, build_slide_27, build_slide_28, build_slide_29,
     ]
 
     for idx, fn in enumerate(builders, 1):
