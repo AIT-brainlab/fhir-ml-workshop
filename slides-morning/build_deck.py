@@ -26,54 +26,56 @@ DST_DECK = HERE / "orientation-and-health-ai-foundations.pptx"
 # Template slide indices (0-based) from SRC_DECK to clone for each morning slide:
 # Slide 1: Cover (0)
 # Slide 2: Two cards comparison (12)
-# Slide 3: Tradeoff / two error cards (16)
-# Slide 4: One object / concept focus (14)
-# Slide 5: Four subsystems across (3)
-# Slide 6: Patient journey / steps (2)
-# Slide 7: Interoperability problem statement (10)
-# Slide 8: Syntactic vs Semantic two columns (1)
-# Slide 9: Why relational tables break down (18)
-# Slide 10: HL7 v2 section header (5)
-# Slide 11: HL7 v2 message anatomy (7)
-# Slide 12: Why HL7 v2 broke / Z-segments (9)
-# Slide 13: Enter FHIR R4 section header (5)
-# Slide 14: Four FHIR building blocks (17)
-# Slide 15: FHIR Bundles / collections (14)
-# Slide 16: Three coded vocabularies (24)
-# Slide 17: Four pillars of AI readiness (3)
-# Slide 18: Clinical reality: Informative missingness (11)
-# Slide 19: Clinical reality: Class imbalance & leakage (18)
-# Slide 20: Data impedance mismatch (1)
-# Slide 21: Safe preprocessing pipelines (13)
-# Slide 22: Afternoon 5-step roadmap (2)
-# Slide 23: Closing the loop: predictions as FHIR (23)
-# Slide 24: Tech check before lunch (24)
+# Slide 3: AIT Research: Telehealth & Assistive Systems (3)
+# Slide 4: Tradeoff / two error cards (16)
+# Slide 5: One object / concept focus (14)
+# Slide 6: Four subsystems across (3)
+# Slide 7: Patient journey / steps (2)
+# Slide 8: Interoperability problem statement (10)
+# Slide 9: Syntactic vs Semantic two columns (1)
+# Slide 10: Why relational tables break down (18)
+# Slide 11: HL7 v2 section header (5)
+# Slide 12: HL7 v2 message anatomy (7)
+# Slide 13: Why HL7 v2 broke / Z-segments (9)
+# Slide 14: Enter FHIR R4 section header (5)
+# Slide 15: Four FHIR building blocks (17)
+# Slide 16: FHIR Bundles / collections (14)
+# Slide 17: Three coded vocabularies (24)
+# Slide 18: Four pillars of AI readiness (3)
+# Slide 19: Clinical reality: Informative missingness (11)
+# Slide 20: Clinical reality: Class imbalance & leakage (18)
+# Slide 21: Data impedance mismatch (1)
+# Slide 22: Safe preprocessing pipelines (13)
+# Slide 23: Afternoon 5-step roadmap (2)
+# Slide 24: Closing the loop: predictions as FHIR (23)
+# Slide 25: Tech check before lunch (24)
 
 TEMPLATE_MAP = [
     0,   # 1. Cover
     12,  # 2. Two Halves of Today
-    16,  # 3. Why Health AI is Not Consumer Tech
-    14,  # 4. Prediction vs Clinical Decision Support
-    3,   # 5. Clinical Data Ecosystem (4 subsystems)
-    2,   # 6. Patient Journey
-    10,  # 7. Interoperability Crisis
-    1,   # 8. Syntactic vs Semantic
-    18,  # 9. Why Relational Tables Break Down
-    5,   # 10. HL7 v2 The Workhorse
-    7,   # 11. Anatomy of HL7 v2 Message
-    9,   # 12. The Z-Segment Trap
-    5,   # 13. Enter HL7 FHIR R4
-    17,  # 14. Core FHIR Building Blocks
-    14,  # 15. FHIR Bundles
-    24,  # 16. Coded Vocabularies
-    3,   # 17. 4 Pillars of AI Readiness
-    11,  # 18. Informative Missingness
-    18,  # 19. Class Imbalance & Leakage
-    1,   # 20. Impedance Mismatch
-    13,  # 21. Safe Preprocessing Pipelines
-    2,   # 22. Afternoon Roadmap
-    23,  # 23. Closing the Loop: Predictions as FHIR
-    24,  # 24. Tech Check Before Lunch
+    3,   # 3. AIT Research: Telehealth & Assistive Systems (4 cards)
+    16,  # 4. Why Health AI is Not Consumer Tech
+    14,  # 5. Prediction vs Clinical Decision Support
+    3,   # 6. Clinical Data Ecosystem (4 subsystems)
+    2,   # 7. Patient Journey
+    10,  # 8. Interoperability Crisis
+    1,   # 9. Syntactic vs Semantic
+    18,  # 10. Why Relational Tables Break Down
+    5,   # 11. HL7 v2 The Workhorse
+    7,   # 12. Anatomy of HL7 v2 Message
+    9,   # 13. The Z-Segment Trap
+    5,   # 14. Enter HL7 FHIR R4
+    17,  # 15. Core FHIR Building Blocks
+    14,  # 16. FHIR Bundles
+    24,  # 17. Coded Vocabularies
+    3,   # 18. 4 Pillars of AI Readiness
+    11,  # 19. Informative Missingness
+    18,  # 20. Class Imbalance & Leakage
+    1,   # 21. Impedance Mismatch
+    13,  # 22. Safe Preprocessing Pipelines
+    2,   # 23. Afternoon Roadmap
+    23,  # 24. Closing the Loop: Predictions as FHIR
+    24,  # 25. Tech Check Before Lunch
 ]
 
 # Slide content definitions: shape_name -> text
@@ -98,7 +100,20 @@ SLIDE_TEXTS = [
             "train Logistic Regression & Random Forest, evaluate ROC/thresholds, and serve."
         ),
     },
-    # 3. Why Health AI is Not Consumer Tech
+    # 3. AIT Research in Action: Telehealth & Assistive Systems
+    {
+        "TextBox 3": "AIT RESEARCH IN ACTION",
+        "TextBox 4": "Telehealth Monitoring and Assistive Systems for Elderly and Disabled (AIT Brain Lab)",
+        "TextBox 18": "01. WP1: Glucose",
+        "TextBox 19": "Non-invasive blood glucose using Raman spectroscopy & POC App (akraradets/BloodGlucose-App).",
+        "TextBox 20": "02. WP2: Fall Detection",
+        "TextBox 21": "Activity monitoring and fall prevention via computer vision and Wi-Fi CSI telemetry.",
+        "TextBox 22": "03. WP3: Haptic Therapy",
+        "TextBox 23": "Robotic force-feedback device for remote upper-limb physical rehabilitation.",
+        "TextBox 24": "04. WP4: Cloud Platform",
+        "TextBox 25": "Secure clinical cloud integration, real-time analytics, and FHIR data exchange.",
+    },
+    # 4. Why Health AI is Not Consumer Tech
     {
         "TextBox 5": "WHY HEALTH AI IS NOT CONSUMER TECH",
         "TextBox 15": "High Asymmetry",
