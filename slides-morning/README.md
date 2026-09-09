@@ -3,7 +3,8 @@
 **Time:** 10:00 – 12:00 (120 minutes)  
 **Location:** Library Studio Room  
 **Deck Target:** `slides-morning/orientation-and-health-ai-foundations.pptx`  
-**Audience:** 20 undergraduate engineering students (Information Technology, Agricultural Engineering, Mechanical Engineering).
+**Audience:** 20 undergraduate engineering students (Information Technology, Agricultural Engineering, Mechanical Engineering).  
+**Instructor Scratchpad:** [`slides-morning/HEALTH_STANDARDS_SCRATCHPAD.md`](HEALTH_STANDARDS_SCRATCHPAD.md) (HL7 & FHIR Deep-Dive, Adoption, & Pedagogy)
 
 ---
 
