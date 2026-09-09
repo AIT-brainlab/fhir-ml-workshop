@@ -2,7 +2,7 @@
 
 **Time:** 10:00 – 12:00 (120 minutes)  
 **Location:** Library Studio Room  
-**Deck Target:** [`slides-morning/orientation-and-health-ai-foundations.pptx`](orientation-and-health-ai-foundations.pptx) (29 Slides, 16:9 Widescreen)  
+**Deck Target:** [`slides-morning/orientation-and-health-ai-foundations.pptx`](orientation-and-health-ai-foundations.pptx) (30 Slides, 16:9 Widescreen)  
 **Audience:** 20 undergraduate engineering students (Information Technology, Agricultural Engineering, Mechanical Engineering).  
 **Instructor Scratchpad:** [`slides-morning/HEALTH_STANDARDS_SCRATCHPAD.md`](HEALTH_STANDARDS_SCRATCHPAD.md) (Complete 2+1 Phase Narrative, History & Pedagogy)
 
@@ -46,7 +46,7 @@ Because the room consists of **20 undergraduate students from engineering discip
 
 ## Slide-by-Slide Storyboard (`.pptx`)
 
-The presentation deck consists of **29 clean slides** ([`slides-morning/orientation-and-health-ai-foundations.pptx`](orientation-and-health-ai-foundations.pptx)), 16:9 widescreen, custom card layouts, and official AIT brand palette.
+The presentation deck consists of **30 clean slides** ([`slides-morning/orientation-and-health-ai-foundations.pptx`](orientation-and-health-ai-foundations.pptx)), 16:9 widescreen, custom card layouts, and official AIT brand palette.
 
 ### Prologue: Welcome & Architecture (10:00 – 10:05)
 
@@ -116,7 +116,13 @@ The presentation deck consists of **29 clean slides** ([`slides-morning/orientat
 - **Title:** Coded Vocabularies: The Semantic Glue
 - **Visual:** 3 cards: **LOINC** (lab measurements), **SNOMED CT** (clinical findings & procedures), and **ICD-10** (epidemiology & billing).
 
-#### Slide 14: Global Adoption Spectrum
+#### Slide 14: FHIR, The Semantic Web & KRR (Knowledge Representation)
+- **Title:** FHIR, The Semantic Web & KRR (Knowledge Representation)
+- **Visual:** 2 cards:
+  - *The Semantic Web (W3C Linked Data):* Universal Resource Identifiers (URIs), RDF Triples (`Subject -> Predicate -> Object`), W3C RDF/Turtle standard (`fhir/rdf.html`), SPARQL graph querying.
+  - *KRR (Knowledge Representation & Reasoning):* Description Logics (SNOMED CT $\mathcal{EL}^{++}$ profile of OWL 2), automated subsumption inference (inferring Bacterial Pneumonia $\sqsubseteq$ Respiratory Infection), pragmatic KRR vs. academic OWL.
+
+#### Slide 15: Global Adoption Spectrum
 - **Title:** Global Adoption: From Federal Law to Thailand
 - **Visual:** 2 cards: Mandated by law (US Cures Act & EU EHDS) vs. Thailand MOPH HIE initiatives and legacy hospital hybrid reality.
 
@@ -124,43 +130,43 @@ The presentation deck consists of **29 clean slides** ([`slides-morning/orientat
 
 ### Phase 2: Evolution of Clinical Data Modalities for ML & AI (10:50 – 11:35)
 
-#### Slide 15: Phase 2 Section Header: The Four Modalities of Health AI
+#### Slide 16: Phase 2 Section Header: The Four Modalities of Health AI
 - **Title:** The Four Modalities of Health AI
 - **Visual:** Full-bleed Dark Green header: Different mathematics, different algorithms across tabular, spatial, telemetry, and text.
 
-#### Slide 16: Modality 1: Tabular Data (Classical ML)
+#### Slide 17: Modality 1: Tabular Data (Classical ML)
 - **Title:** Tabular Data: The Classical Machine Learning Engine
 - **Visual:** 2 cards: Data representation ($X \in \mathbb{R}^{n \times d}$, $y \in \{0, 1\}$) vs. Algorithms (Logistic Regression, Random Forest, XGBoost) and Afternoon Workshop Step 1/3 link.
 
-#### Slide 17: Modality 2: Spatial & Imaging Data (Computer Vision)
+#### Slide 18: Modality 2: Spatial & Imaging Data (Computer Vision)
 - **Title:** Spatial & Imaging Data: Computer Vision in Medicine
 - **Visual:** High-dimensional spatial tensors: DICOM standard, 2D/3D/4D tensors ($C \times D \times H \times W$), CNNs, Vision Transformers, and U-Net segmentation.
 
-#### Slide 18: Modality 3: Time-Series & Continuous Telemetry
+#### Slide 19: Modality 3: Time-Series & Continuous Telemetry
 - **Title:** Time-Series & Telemetry: Continuous Physiological Streams
 - **Visual:** Sequential temporal signals: ICU multi-parameter waveforms, 12-lead ECG, continuous glucose monitors, sliding windows, LSTMs, and Mamba state space models.
 
-#### Slide 19: Modality 4: Unstructured Text ("What 90% Mean by AI")
+#### Slide 20: Modality 4: Unstructured Text ("What 90% Mean by AI")
 - **Title:** Unstructured Text: What 90% of People Mean by 'AI'
 - **Visual:** 2 cards: The unstructured majority (80% of health data in free-text notes) vs. The GenAI paradigm (Clinical LLMs, Med-PaLM, ambient AI scribing).
 
-#### Slide 20: The Formatting Dilemma: Why LLMs Choke on Raw FHIR
+#### Slide 21: The Formatting Dilemma: Why LLMs Choke on Raw FHIR
 - **Title:** The Formatting Dilemma: Why LLMs Choke on Raw FHIR
 - **Visual:** 2 cards: The raw JSON trap (token bloat, 50k+ tokens per chart, diluted attention) vs. Clean Markdown tables (.md) reducing token consumption by 60–75%.
 
-#### Slide 21: Clinical AI Agents: RAG & Model Context Protocol (MCP)
+#### Slide 22: Clinical AI Agents: RAG & Model Context Protocol (MCP)
 - **Title:** Clinical AI Agents: RAG & Model Context Protocol (MCP)
 - **Visual:** 2 cards: Knowledge retrieval via clinical vector DBs (RAG) vs. Deterministic tool-calling via MCP (`get_patient_labs`).
 
-#### Slide 22: The Fundamental Data Impedance Mismatch
+#### Slide 23: The Fundamental Data Impedance Mismatch
 - **Title:** The Fundamental Data Impedance Mismatch
 - **Visual:** 2 contrast cards: Hierarchical FHIR event trees vs. 2D numerical feature matrices ($X \in \mathbb{R}^{n \times d}$). The core role of `scripts/01_fhir_to_table.py`.
 
-#### Slide 23: Clinical Realities: Informative Missingness & Class Imbalance
+#### Slide 24: Clinical Realities: Informative Missingness & Class Imbalance
 - **Title:** Clinical Realities: Informative Missingness & Class Imbalance
 - **Visual:** 2 warning cards: Tests ordered for sick patients (informative missingness) vs. The 63% accuracy trap (rare disease class imbalance).
 
-#### Slide 24: Towards AI-Native Health Data Standards
+#### Slide 25: Towards AI-Native Health Data Standards
 - **Title:** Towards AI-Native Health Data Standards
 - **Visual:** 2 architecture panels: The 3 Eras of Health Data vs. The Dual-Stack Solution (FHIR as System of Record + AI Vector/Feature Store as System of Intelligence).
 
@@ -168,11 +174,11 @@ The presentation deck consists of **29 clean slides** ([`slides-morning/orientat
 
 ### Phase +1: AIT Research in Action — Telehealth & WP1 (11:35 – 11:55)
 
-#### Slide 25: Phase +1 Section Header: AIT Research in Action
+#### Slide 26: Phase +1 Section Header: AIT Research in Action
 - **Title:** Telehealth & Assistive Systems (Prof. Chaklam Silpasuwanchai)
 - **Visual:** Full-bleed Dark Green header: Grounding theory in real AIT systems engineering.
 
-#### Slide 26: The AIT Telehealth Project: Four Work Packages
+#### Slide 27: The AIT Telehealth Project: Four Work Packages
 - **Title:** AIT Telehealth Project: Four Work Packages
 - **Visual:** 4 cards:
   - **WP1:** Non-Invasive Glucose (Raman spectroscopy & edge ML).
@@ -180,11 +186,11 @@ The presentation deck consists of **29 clean slides** ([`slides-morning/orientat
   - **WP3:** Remote Haptic Therapy (Robotic rehabilitation force-feedback).
   - **WP4:** Cloud Telehealth Platform (Secure FHIR integration & dashboards).
 
-#### Slide 27: WP1 Deep Dive: Non-Invasive Glucose via Raman Spectroscopy
+#### Slide 28: WP1 Deep Dive: Non-Invasive Glucose via Raman Spectroscopy
 - **Title:** WP1 Deep Dive: Non-Invasive Glucose via Raman Spectroscopy
 - **Visual:** 2 cards: The optical sensor principle (785nm laser, molecular inelastic scattering) vs. The ML engine (Modality 3 → Modality 1 mapping, `BloodGlucose-App` POC).
 
-#### Slide 28: Closing the Circuit: Mapping AIT Raman Readings into FHIR
+#### Slide 29: Closing the Circuit: Mapping AIT Raman Readings into FHIR
 - **Title:** Closing the Circuit: Mapping AIT Raman Readings into FHIR
 - **Visual:** Split layout: Standards harmonization (LOINC `2339-0`, SNOMED CT `439401001`, UCUM `mg/dL`) alongside real FHIR JSON observation code panel.
 
@@ -192,7 +198,7 @@ The presentation deck consists of **29 clean slides** ([`slides-morning/orientat
 
 ### Epilogue & Transition to Afternoon (11:55 – 12:00)
 
-#### Slide 29: Closing the Classical Loop & Tech Checkpoint
+#### Slide 30: Closing the Classical Loop & Tech Checkpoint
 - **Title:** Closing the Classical Loop & Tech Checkpoint
 - **Visual:** 3 cards: Closing the loop (Step 5c ML predictions back into FHIR `RiskAssessment`), Terminal navigation, and Pre-lunch `uv sync` verification.
 

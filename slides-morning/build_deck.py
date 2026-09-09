@@ -661,6 +661,64 @@ def build_slide_13(prs):
         p.space_before = Pt(12)
 
 
+def build_slide_semantic_krr(prs):
+    """FHIR, The Semantic Web & KRR"""
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    add_slide_background(slide, prs)
+    add_header(slide, "Computer Science & AI", "FHIR, The Semantic Web & KRR (Knowledge Representation)",
+               "How FHIR implements W3C Linked Data, RDF Triples, and Description Logic reasoning in production")
+
+    c1 = add_card(slide, Inches(0.8), Inches(2.0), Inches(5.6), Inches(4.8))
+    tf1 = c1.text_frame
+    tf1.margin_left = tf1.margin_right = tf1.margin_top = Inches(0.35)
+
+    p = tf1.paragraphs[0]
+    p.text = "THE SEMANTIC WEB (W3C LINKED DATA)"
+    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = MED_GREEN
+
+    p = tf1.add_paragraph()
+    p.text = "URIs & The RDF Knowledge Graph"
+    p.font.bold = True; p.font.size = Pt(18); p.font.color.rgb = DARK_GREEN
+    p.space_before = Pt(6)
+
+    bullets = [
+        ("Universal Resource Identifiers (URIs)", "Nothing in FHIR is a loose string. Every concept, coding system, and extension is anchored to a globally resolvable URI (e.g. http://loinc.org|2339-0)."),
+        ("RDF Triples in Practice", "FHIR references form directed graph triples: Subject (Observation/obs-01) -> Predicate (subject) -> Object (Patient/P0001). Zero duplication; infinite traversal."),
+        ("W3C RDF/Turtle Standard", "HL7 and W3C officially standardized the FHIR RDF specification (fhir/rdf.html). Entire hospital populations can be queried as a unified knowledge graph via SPARQL.")
+    ]
+    for h, d in bullets:
+        p = tf1.add_paragraph()
+        p.text = f"• {h}:\n"
+        p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = TEXT_DARK
+        p.space_before = Pt(10)
+        run = p.add_run(); run.text = d; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
+
+    c2 = add_card(slide, Inches(6.8), Inches(2.0), Inches(5.7), Inches(4.8))
+    tf2 = c2.text_frame
+    tf2.margin_left = tf2.margin_right = tf2.margin_top = Inches(0.35)
+
+    p = tf2.paragraphs[0]
+    p.text = "KRR (KNOWLEDGE REPRESENTATION & REASONING)"
+    p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = LIME_GREEN
+
+    p = tf2.add_paragraph()
+    p.text = "Description Logics & Automated Deduction"
+    p.font.bold = True; p.font.size = Pt(18); p.font.color.rgb = DARK_GREEN
+    p.space_before = Pt(6)
+
+    bullets2 = [
+        ("Formal Ontologies (SNOMED CT)", "SNOMED CT is mathematically structured in Description Logic (the EL++ profile of OWL 2). Concepts possess formal relationships and subsumption hierarchies (Is-A)."),
+        ("Automated Logical Inference", "If an AI clinical rule states 'Alert if patient has Respiratory Infection', a reasoner infers that Bacterial Pneumonia is a subclass of Respiratory Infection and fires the alert—even if those words never appear in the chart!"),
+        ("Pragmatic KRR Success", "FHIR succeeded where academic Semantic Web stalled: it hid complex Description Logics under clean, friendly JSON REST APIs that web developers love.")
+    ]
+    for h, d in bullets2:
+        p = tf2.add_paragraph()
+        p.text = f"• {h}:\n"
+        p.font.bold = True; p.font.size = Pt(11); p.font.color.rgb = TEXT_DARK
+        p.space_before = Pt(10)
+        run = p.add_run(); run.text = d; run.font.bold = False; run.font.color.rgb = TEXT_MUTED
+
+
 def build_slide_14(prs):
     """Global Adoption Spectrum"""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
@@ -1480,16 +1538,16 @@ def build_slide_29(prs):
 # -----------------------------------------------------------------------------
 
 def main():
-    print("Building clean 29-slide presentation deck for Morning Theory Session (2 + 1 Architecture)...")
+    print("Building clean 30-slide presentation deck for Morning Theory Session (2 + 1 Architecture)...")
     prs = create_deck()
 
     builders = [
         build_slide_01, build_slide_02, build_slide_03, build_slide_04, build_slide_05,
         build_slide_06, build_slide_07, build_slide_08, build_slide_09, build_slide_10,
-        build_slide_11, build_slide_12, build_slide_13, build_slide_14, build_slide_15,
-        build_slide_16, build_slide_17, build_slide_18, build_slide_19, build_slide_20,
-        build_slide_21, build_slide_22, build_slide_23, build_slide_24, build_slide_25,
-        build_slide_26, build_slide_27, build_slide_28, build_slide_29,
+        build_slide_11, build_slide_12, build_slide_13, build_slide_semantic_krr, build_slide_14,
+        build_slide_15, build_slide_16, build_slide_17, build_slide_18, build_slide_19,
+        build_slide_20, build_slide_21, build_slide_22, build_slide_23, build_slide_24,
+        build_slide_25, build_slide_26, build_slide_27, build_slide_28, build_slide_29,
     ]
 
     for idx, fn in enumerate(builders, 1):

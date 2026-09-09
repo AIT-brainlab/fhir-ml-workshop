@@ -127,6 +127,24 @@ Why didn't they use JSON or REST APIs?
 
 ---
 
+### 7. FHIR, The Semantic Web & Knowledge Representation & Reasoning (KRR)
+* **FHIR as Production Semantic Web:** FHIR represents the single largest production deployment of W3C Semantic Web and Linked Data principles:
+  1. **Universal Resource Identifiers (URIs):** Nothing in FHIR is an ambiguous loose string. Every coded concept, coding system, and structural extension is anchored to a globally resolvable URI (e.g. `http://loinc.org|2339-0`, `http://snomed.info/sct|439401001`).
+  2. **RDF Triples in Practice:** FHIR resource references form directed graph triples:
+     $$\text{Subject } (\texttt{Observation/obs-01}) \xrightarrow{\text{Predicate } (\texttt{subject})} \text{Object } (\texttt{Patient/P0001})$$
+     This enables infinite multi-hop graph traversal across distributed EHR nodes without data duplication.
+  3. **W3C RDF/Turtle Standard:** HL7 and the W3C jointly standardized the official FHIR RDF specification (`fhir/rdf.html`), allowing entire hospital populations to be indexed and queried as a unified knowledge graph via SPARQL.
+* **Knowledge Representation & Reasoning (KRR):**
+  1. **Formal Description Logics (SNOMED CT):** SNOMED CT is mathematically structured in Description Logics (the $\mathcal{EL}^{++}$ tractable profile of OWL 2). Concepts are defined using formal relationships, existential quantifications, and subsumption hierarchies (`Is-A`).
+  2. **Automated Subsumption Inference:** If an AI clinical safety rule specifies:
+     $$\text{Alert if patient has } \texttt{Respiratory Infection}$$
+     an automated Description Logic reasoner infers that:
+     $$\texttt{Bacterial Pneumonia} \sqsubseteq \texttt{Infectious disease of lung} \sqsubseteq \texttt{Respiratory Infection}$$
+     and automatically fires the safety alert—even if the exact string *"Respiratory Infection"* never appears in the patient's record!
+  3. **Pragmatic KRR Success:** FHIR succeeded where 2000s academic Semantic Web stalled: it concealed rigorous Description Logics and RDF graph semantics beneath clean, developer-friendly JSON REST APIs that modern web and AI developers can immediately build upon.
+
+---
+
 # PHASE 2: Evolution of Clinical Data Modalities for ML & AI
 
 When non-medical engineers think of "clinical AI," they often picture a single monolithic algorithm. In reality, healthcare data spans **four distinct modalities**, each requiring completely different mathematical abstractions and machine learning architectures.
