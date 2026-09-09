@@ -32,7 +32,7 @@ DST = HERE / "from-fhir-to-a-table.pptx"
 # and rewriting it. main() can only rebuild the integers; apply_results.py
 # refreshes both, and is what you want in almost every case.
 ORDER = [
-    1, "recap", 3, 25, "learning", 23, 4, 2, 24, 6, 10, 20, 11,
+    1, "recap", 3, 25, 23, 4, 2, 24, 6, "provenance", 10, 20, 11, "learning",
     14, 7, "pipeline",          # what a model is, how it is judged, what is saved
     19, 5,
     "ablations", "starved",     # change one setting, then read what it cost
@@ -233,6 +233,24 @@ TEXT = {
             "The script asserts its output is identical to patients.csv. One "
             "patient, P0010, returns a silent NaN because an Observation is "
             "missing from the Bundle."
+        ),
+    },
+    # ------------------------- provenance: where this data actually came from
+    "provenance": {
+        "TextBox 2": "REAL OR MADE UP?",
+        "TextBox 8": "The numbers are real. The FHIR is ours.",
+        "TextBox 7": (
+            "The {n} patients are a published research dataset — real "
+            "measurements from digitised cell images, real biopsy results, "
+            "collected at one American hospital in the 1990s.\n"
+            "\n"
+            "The {n_bundles} Bundles you just flattened were written from "
+            "those same rows by scripts/00_build_dataset.py. No LOINC code "
+            "was invented to make the demo look tidier.\n"
+            "\n"
+            "So that assert is a round-trip test: the table went out as FHIR "
+            "and came back, and it has to come back identical. In a real "
+            "project nobody hands you the answer to check against."
         ),
     },
     # ------------------------------------------- 10 failure modes, three
@@ -571,6 +589,14 @@ NOTES = {
     24: "Open data/fhir/P0001.json on the projector. Twelve resources describe one person, "
         "and none of that structure is what a model consumes.",
     6: "Run the script live. Point at P0010 in the output - no error, no warning, just NaN.",
+    "provenance": "Answer the question before a student has to ask it, because one of them "
+                  "will work it out and then wonder what else was glossed over. Read the "
+                  "diagram left to right along the top: the table came first, and the "
+                  "Bundles were written from it. Then the red line. Because we knew the "
+                  "answer in advance, we can prove the parser is correct - that is what "
+                  "the assert is. Then the sentence that matters: in a real project nobody "
+                  "hands you the answer, you parse a hospital feed and nothing tells you "
+                  "whether you got it right. That is why this step eats the calendar.",
     10: "Ask how they would have noticed the missing value if the script had not printed it. "
         "Most production pipelines do not print it.",
     20: "The honest slide. Without demographics the fairness audit cannot be run at all - that "

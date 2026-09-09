@@ -655,3 +655,74 @@ def winner(ax):
 
 fig("learning_search.png", 5.56, 3.13, search)
 fig("learning_rule.png", 8.73, 4.91, winner)
+
+
+# ------------------------------- where the data actually came from
+# The deck says "FHIR Bundles to a table". The truth is that the table came
+# first and the Bundles were written from it. Draw that, rather than let a
+# student work it out and wonder what else was glossed over.
+def provenance(ax):
+    ax.axis("off"); ax.set_xlim(0, 100); ax.set_ylim(0, 58)
+
+    ax.add_patch(plt.Rectangle((1, 32), 98, 24, color="#F1F4EF"))
+    ax.text(3, 52.6, "PREPARED BEFORE THE SESSION", fontsize=10,
+            color=MUTED, fontweight="bold")
+    ax.text(3, 25.2, "WHAT YOU RUN THIS AFTERNOON", fontsize=10,
+            color=DARK, fontweight="bold")
+
+    def box(x, y, w, title, sub, fill, fg, h=11):
+        ax.add_patch(plt.Rectangle((x, y), w, h, color=fill))
+        # long names get a smaller face so nothing spills over the edge
+        fs = 11.5 if len(title) <= 12 else 9.6
+        ax.text(x + w / 2, y + h * 0.63, title, ha="center", va="center",
+                fontsize=fs, fontweight="bold", color=fg)
+        ax.text(x + w / 2, y + h * 0.25, sub, ha="center", va="center",
+                fontsize=8.5, color="#DDE7DB" if fg == "white" else MUTED)
+
+    def arrow(x0, x1, y, colour=MUTED, lw=1.7):
+        ax.annotate("", xy=(x1, y), xytext=(x0, y),
+                    arrowprops=dict(arrowstyle="-|>", color=colour, lw=lw))
+
+    # ---- top lane: everything that already happened
+    box(3, 36, 20, "scikit-learn", "569 real patients", "#E4EBE4", INK)
+    arrow(23.6, 27.4, 41.5)
+    box(28, 36, 20, "patients.csv", "the training table", "#E4EBE4", INK)
+    arrow(48.6, 52.4, 41.5)
+    box(53, 36, 22, "00_build_dataset.py", "wrote 20 as FHIR", "#E4EBE4", INK)
+    arrow(75.6, 79.4, 41.5)
+    box(80, 36, 17, "data/fhir/", "20 Bundles", LIME, INK)
+
+    # the Bundles are the one thing that crosses into the room
+    ax.annotate("", xy=(88.5, 21.4), xytext=(88.5, 35.6),
+                arrowprops=dict(arrowstyle="-|>", color=DARK, lw=2.2))
+
+    # ---- bottom lane: read right to left, the direction the room works in
+    box(80, 10, 17, "data/fhir/", "20 Bundles", LIME, INK)
+    arrow(79.6, 75.4, 15.5, DARK, 1.9)
+    box(52, 10, 23, "01_fhir_to_table.py", "Step 1", DARK, "white")
+    arrow(51.6, 47.4, 15.5, DARK, 1.9)
+    box(30, 10, 17, "a table", "20 rows", "#E4EBE4", INK)
+
+    # ---- the round trip
+    ax.plot([38.5, 38.5], [21.3, 35.7], color=ALERT, lw=2, ls=(0, (4, 3)))
+    ax.text(41, 28.5, "must match\nexactly", fontsize=10.5, color=ALERT,
+            fontweight="bold", ha="left", va="center", linespacing=1.35)
+
+    ax.text(50, 3, "The measurements are real. The FHIR wrapping is ours.",
+            ha="center", fontsize=11, color=INK)
+
+
+fig("provenance.png", 8.73, 4.91, provenance)
+
+card(
+    "roundtrip.png", 1600, 900,
+    [
+        ("$ uv run python scripts/01_fhir_to_table.py", LIME, True),
+        ("", GREY, False),
+        ("Identical to patients.csv : True", "#D9E4DC", True),
+        ("", GREY, False),
+        ("in a real project nobody hands you", MUTED, False),
+        ("the answer to check against", MUTED, False),
+    ],
+    title="The round-trip check", size=34, line_gap=2.0,
+)

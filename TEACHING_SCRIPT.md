@@ -6,13 +6,13 @@ point is that you never have to invent a sentence while thirty people watch.
 
 ---
 
-## Twenty-six slides, six steps
+## Twenty-seven slides, six steps
 
 | | minutes |
 |---|---|
 | Students typing, running, reading their own output | ~68 |
 | You talking | ~52 |
-| Slides | 26 |
+| Slides | 27 |
 
 Slightly over 2 minutes of speaking per slide on average, but the average is
 not the point: five pages are one-line punctuation you leave up for forty
@@ -27,18 +27,18 @@ projector still knows where they are and what to run.
 | Step | What | Slides |
 |---|---|---|
 | — | Recap of HL7 v2 and FHIR | 2 |
-| — | What "learning" actually means | 5 |
-| 0 | Install uv, build the environment | 7 |
-| 1 | FHIR Bundles into a table | 8, 9, 10, 11 |
+| — | What "learning" actually means | 14 |
+| 0 | Install uv, build the environment | 6 |
+| 1 | FHIR Bundles into a table | 7, 8, 9, 10, 11 |
 | 2 | Profile the data | 12, 13 |
-| 3 | What a model is and how it is judged | 14, 15, 16 |
-| 3 | Train, compare, choose an error | 17, 18 |
-| 3 | Change one setting and re-read | 19, 20 |
-| 4 | Cluster without labels | 21 |
-| 5 | Serve it — app, API, then back as FHIR | 22, 23, 24, 25 |
-| — | Limitations and close | 26 |
+| 3 | What a model is and how it is judged | 15, 16, 17 |
+| 3 | Train, compare, choose an error | 18, 19 |
+| 3 | Change one setting and re-read | 20, 21 |
+| 4 | Cluster without labels | 22 |
+| 5 | Serve it — app, API, then back as FHIR | 23, 24, 25, 26 |
+| — | Limitations and close | 27 |
 
-Pages 5, 14–16 and 19–20 exist because the morning was FHIR, not machine
+Pages 14–17 and 20–21 exist because the morning was FHIR, not machine
 learning. Nobody in the room has been told what a model is, what a hold-out
 set is for, or why anyone would report four numbers instead of one. Without
 those five pages the afternoon opens on a results table, which teaches
@@ -82,7 +82,7 @@ Write on the whiteboard before they sit down:
 
 ---
 
-## 00:00 – 00:12 · Framing  (slides 1–6)
+## 00:00 – 00:10 · Framing  (slides 1–5)
 
 **Slide 1 — cover**
 
@@ -143,38 +143,7 @@ Point at stage 3.
 > takes the least time in a real project, because it is library calls. Boxes two
 > and four are where projects die. We are doing all four this afternoon."
 
-**Slide 5 — learning a rule**
-
-Thirty seconds of idea, and the whole afternoon rests on it. Do not lecture it.
-
-> "Before anything else, what does it actually mean for a machine to *learn*?"
-
-Point at the histogram.
-
-> "I took the 569 patients whose biopsy answer we already know, and I tried
-> every simple rule I could build — every pair of measurements, every cut
-> point. Twenty-eight thousand of them. That is the whole picture: each bar is
-> a rule, and how many patients it got wrong."
-
-Point at the red line, then at the scatter below.
-
-> "This was the best one. Perimeter above 77, concave points above 0.048.
-> It gets 45 of 569 wrong."
-
-> "That search *is* machine learning. Not magic — a for-loop that tries things
-> and keeps what works. What this afternoon's model adds is scale: twelve dials
-> instead of two, tuned continuously instead of guessed, and it hands back a
-> probability instead of yes or no. That last part is where the whole second
-> half of today lives."
-
-Two footnotes if a sharp student pushes back — do not volunteer them:
-
-- That rule was picked while looking at all 569 answers, so 45 flatters it.
-  Slide 15 is where we deal with that.
-- In these two dimensions the hand rule is genuinely competitive with the
-  model. The model earns its place on twelve measurements, not two.
-
-**Slide 6 — ten numbers**
+**Slide 5 — ten numbers**
 
 This gets asked every single time, so answer it before anybody raises it.
 
@@ -207,13 +176,13 @@ Then the lower card.
 > problem, and solving it is worth more than another percent of accuracy on
 > stage three."
 
-*Timing check: you should be starting slide 7 at 00:12.*
+*Timing check: you should be starting slide 6 at 00:10.*
 
 ---
 
-## 00:12 – 00:22 · Step 0, get everyone running  (slide 7)
+## 00:10 – 00:20 · Step 0, get everyone running  (slide 6)
 
-**Slide 7 — install uv first**
+**Slide 6 — install uv first**
 
 **Do not let anyone type `uv sync` yet.** Two things have to be true first.
 
@@ -260,13 +229,13 @@ When most screens are green:
 
 ---
 
-## 00:22 – 00:40 · Step 1, Bundles become rows  (slides 8, 9, 10)
+## 00:20 – 00:40 · Step 1, Bundles become rows  (slides 7, 8, 9, 10)
 
-**Slide 8 — section divider**
+**Slide 7 — section divider**
 
 > "Everything from here is this morning's material, executed."
 
-**Slide 9 — one patient, twelve resources**
+**Slide 8 — one patient, twelve resources**
 
 Switch to the browser tab with `P0001.json` open. Scroll it slowly.
 
@@ -282,7 +251,7 @@ Switch to the browser tab with `P0001.json` open. Scroll it slowly.
 > we come back to it at the end and it turns out to be the most important thing
 > on the slide."
 
-**Slide 10 — flattening**
+**Slide 9 — flattening**
 
 > "Fifty lines of Python turn that into one row per patient. There is no
 > library call for this. Somebody writes it, by hand, for every source system
@@ -308,6 +277,35 @@ Give them 90 seconds to read their own output, then drive from the front.
 > 569-row CSV we shipped. Same procedure, run over everybody."
 
 ---
+
+**Slide 10 — real or made up?**
+
+Answer this before a student works it out and wonders what else was glossed
+over. One minute.
+
+> "Fair question at this point: is any of this real?"
+
+Read the top row of the diagram, left to right.
+
+> "The measurements and the diagnoses are real — 569 patients, a published
+> research dataset from one American hospital in the 1990s. That is what the
+> model will train on."
+
+> "The FHIR files you just opened, I wrote. That script took twenty of those
+> rows and packaged them as Bundles. Real numbers, our wrapping."
+
+Then the red dashed line.
+
+> "Which is exactly why I can check the parser. I knew the answer before I
+> started, so when Step 1 hands back a table it has to match the rows I started
+> from, exactly. That is what `Identical to patients.csv : True` means."
+
+> "In a real project nobody hands you the answer. You parse a hospital feed and
+> nothing anywhere tells you whether you got it right. That is why this step
+> eats the calendar."
+
+If asked why only 20: 569 Bundles is 6,800 resources and nobody can read that.
+Twenty is enough to see the shape and to hide one broken record in.
 
 ## 00:40 – 00:52 · Break the feed on purpose  (slide 11)
 
@@ -382,12 +380,43 @@ uv run python scripts/02_explore_data.py --feature fractal_dimension
 
 ---
 
-## 01:00 – 01:10 · What a model is  (slides 14, 15, 16)
+## 01:00 – 01:13 · What a model is  (slides 14, 15, 16, 17)
 
 **Nobody has defined any of this yet.** The morning was FHIR. Do not skip to
 the results table — three slides, ten minutes, no typing.
 
-**Slide 14 — two models**
+**Slide 14 — learning a rule**
+
+Thirty seconds of idea, and the whole afternoon rests on it. Do not lecture it.
+
+> "Before anything else, what does it actually mean for a machine to *learn*?"
+
+Point at the histogram.
+
+> "I took the 569 patients whose biopsy answer we already know, and I tried
+> every simple rule I could build — every pair of measurements, every cut
+> point. Twenty-eight thousand of them. That is the whole picture: each bar is
+> a rule, and how many patients it got wrong."
+
+Point at the red line, then at the scatter below.
+
+> "This was the best one. Perimeter above 77, concave points above 0.048.
+> It gets 45 of 569 wrong."
+
+> "That search *is* machine learning. Not magic — a for-loop that tries things
+> and keeps what works. What this afternoon's model adds is scale: twelve dials
+> instead of two, tuned continuously instead of guessed, and it hands back a
+> probability instead of yes or no. That last part is where the whole second
+> half of today lives."
+
+Two footnotes if a sharp student pushes back — do not volunteer them:
+
+- That rule was picked while looking at all 569 answers, so 45 flatters it.
+  Slide 16 is where we deal with that.
+- In these two dimensions the hand rule is genuinely competitive with the
+  model. The model earns its place on twelve measurements, not two.
+
+**Slide 15 — two models**
 
 > "A model here is one function. Ten numbers in, one probability out. We build
 > it by showing it patients whose biopsy result we already know and letting it
@@ -410,7 +439,7 @@ Point at Model B.
 > to two dimensions so they fit on a slide. Hold on to one question: is the
 > flexible one better? We will have the answer in ten minutes."
 
-**Slide 15 — how we measure**
+**Slide 16 — how we measure**
 
 > "Before you believe any number, ask which patients it was measured on. We put
 > 114 of our 569 patients in a locked drawer, train on the other 455, and score
@@ -432,7 +461,7 @@ until you have.
 > 0.886. Accuracy just adds up the two green cells and treats every mistake as
 > the same size."
 
-**Slide 16 — one object**
+**Slide 17 — one object**
 
 > "Two things go wrong after the maths is finished, and both are on this slide."
 
@@ -450,13 +479,13 @@ until you have.
 
 ---
 
-## 01:10 – 01:20 · Step 3, train and choose  (slides 17, 18)
+## 01:13 – 01:22 · Step 3, train and choose  (slides 18, 19)
 
 ```bash
 uv run python scripts/03_train_model.py
 ```
 
-**Slide 17 — the two models**
+**Slide 18 — the two models**
 
 > "Accuracy: 0.930 and 0.930. Identical. On that metric these two models are
 > indistinguishable, which tells you accuracy is the wrong summary."
@@ -470,7 +499,7 @@ uv run python scripts/03_train_model.py
 > trees were more flexible and they were not better. They were worse at the one
 > thing we care about. Complexity is not a strategy."
 
-**Slide 18 — which error?**
+**Slide 19 — which error?**
 
 > "These two mistakes are not the same size. A false negative sends a patient
 > home with an untreated malignancy; it surfaces months later, if ever, and it
@@ -497,12 +526,12 @@ uv run python scripts/03_train_model.py
 
 ---
 
-## 01:20 – 01:34 · Four flags  (slides 19, 20)
+## 01:22 – 01:34 · Four flags  (slides 20, 21)
 
 **The longest hands-on block of the afternoon. Ten minutes of typing, four of
 talking. Walk the room the whole time.**
 
-**Slide 19 — four flags**
+**Slide 20 — four flags**
 
 > "Four commands. Each one changes exactly one setting. The script remembers
 > your first run, so section six prints the difference for you — you do not
@@ -539,7 +568,7 @@ Give them eight minutes. Then pull the room back and take the cards in order.
 
 > "Four is the one worth a slide of its own."
 
-**Slide 20 — accuracy rose, the model got worse**
+**Slide 21 — accuracy rose, the model got worse**
 
 > "Train on 113 patients instead of 455. Accuracy goes *up*, from 0.930 to
 > 0.941. Missed tumours go from three to twenty-one."
@@ -558,9 +587,9 @@ Let that sit for a moment.
 
 ---
 
-## 01:34 – 01:40 · Step 4, structure without labels  (slide 21)
+## 01:34 – 01:40 · Step 4, structure without labels  (slide 22)
 
-**Slide 21 — groups**
+**Slide 22 — groups**
 
 ```bash
 uv run python scripts/04_cluster_patients.py
@@ -593,9 +622,9 @@ about K-Means and move on.*
 
 ---
 
-## 01:40 – 01:54 · Step 5, deployment + the two minutes that matter  (slides 22, 23)
+## 01:40 – 01:54 · Step 5, deployment + the two minutes that matter  (slides 23, 24)
 
-**Slide 22 — the app, four numbered moves**
+**Slide 23 — the app, four numbered moves**
 
 This slide is a walkthrough, not a summary. Read the four boxes out in order and
 wait for the room at each one. Nobody moves on until their screen shows a risk
@@ -631,7 +660,7 @@ uv run streamlit run app/streamlit_app.py
 
 > "The model has not changed once while you did that."
 
-**Slide 23 — what you see**
+**Slide 24 — what you see**
 
 Put this up the moment you finish reading move 1, and leave it up for the whole
 block. It is the reference screen.
@@ -647,7 +676,7 @@ Then, at the end of move 4, point at the two sidebars along the top.
 > "Somebody has to choose between those two panels. In a hospital, who? It is
 > not the person who wrote the code, and it is not the model."
 
-**Slide 24 — now over HTTP**
+**Slide 25 — now over HTTP**
 
 > "Same model, second front door. Start the API, then ask it one question
 > twice."
@@ -693,7 +722,7 @@ Finish the loop:
 
 ---
 
-**Slide 25 — full circle**
+**Slide 26 — full circle**
 
 The last thing they run, and the sentence the whole day was built to earn.
 
@@ -725,9 +754,9 @@ Provenance resource, a validated model, and a regulator.
 
 ---
 
-## 01:54 – 02:00 · Limitations and close  (slide 26)
+## 01:54 – 02:00 · Limitations and close  (slide 27)
 
-**Slide 26 — limitations. Do not rush this. It is the whole point.**
+**Slide 27 — limitations. Do not rush this. It is the whole point.**
 
 Walk all three, slowly.
 
@@ -769,13 +798,13 @@ Ninety seconds per group. Push back hard on generic third answers:
 **Running 10 minutes late at 01:00** — cut Step 4 entirely (say the two K-Means
 sentences from slide 4's spot and move on). That buys 8 minutes.
 
-**Running 20 minutes late** — cut the flags block on slide 19 down to two
+**Running 20 minutes late** — cut the flags block on slide 20 down to two
 commands, `--threshold 0.30` and `--test-size 0.8`, and run them yourself from
-the front. Keep slide 20; it is thirty seconds and it is the best point of the
+the front. Keep slide 21; it is thirty seconds and it is the best point of the
 afternoon.
 
-**Never cut**: Step 1, slides 14–15 (without them the results mean nothing),
-slide 20, the P0216 demonstration, and the last 10 minutes.
+**Never cut**: Step 1, slides 15–16 (without them the results mean nothing),
+slide 21, the P0216 demonstration, and the last 10 minutes.
 
 **Running early** — send them to `EXERCISES.md` section C and D. Or ask them to
 predict the direction of a change *before* pressing enter, then check.
@@ -807,7 +836,7 @@ than invent LOINC codes to make the demo look tidier. Real integration projects
 lose weeks to exactly this.
 
 **"Could this be deployed in a hospital in the Philippines?"**
-Not as it stands, and the honest answer is on slide 21. What it would take:
+Not as it stands, and the honest answer is on slide 22. What it would take:
 local data, local validation, demographics for a bias audit, prospective
 follow-up, and a regulatory pathway.
 
