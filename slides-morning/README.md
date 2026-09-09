@@ -1,9 +1,24 @@
 # Morning Theory Session: Orientation & Intro to AI in Health Foundations
 
 **Time:** 10:00 – 12:00 (120 minutes)  
-**Location:** Main Workshop Room  
+**Location:** Library Studio Room  
 **Deck Target:** `slides-morning/orientation-and-health-ai-foundations.pptx`  
-**Audience:** Clinicians, biomedical engineers, data scientists, and health informatics students.
+**Audience:** 20 undergraduate engineering students (Information Technology, Agricultural Engineering, Mechanical Engineering).
+
+---
+
+## Target Audience & Pedagogical Strategy
+
+Because the room consists of **20 undergraduate students from engineering disciplines (IT, Agriculture, Mechanical)** rather than healthcare practitioners, the morning session translates clinical informatics into **systems engineering, sensor networks, and data pipeline concepts**:
+
+1. **Observations as Sensor Telemetry:**
+   - For Mechanical & Ag students, a clinical `Observation` (e.g., cell nucleus radius, blood pressure, soil moisture, vibration telemetry) is simply a **timestamped measurement from a physical transducer/sensor** carrying units, calibration codes, and tolerances.
+2. **HL7 v2 as Legacy Industrial Serial Bus:**
+   - HL7 v2 is directly comparable to legacy serial protocols (e.g., Modbus, NMEA 0183, CAN bus ASCII frames): delimiter-separated strings (`|`, `^`), fixed segment headers, brittle custom extensions, and point-to-point wiring without discovery.
+3. **FHIR R4 as Modern Microservices & Web Standards:**
+   - FHIR represents the transition to standard HTTP REST APIs, structured JSON payloads, UUIDs, and distributed microservices familiar to IT students.
+4. **Informative Missingness through an Engineering Lens:**
+   - In predictive maintenance (Mechanical) or precision farming (Ag), sensors aren't sampled uniformly at random; you perform an oil spectrography or soil nitrogen core test *when there is an anomaly or concern*. In healthcare, diagnostic tests follow the exact same logic.
 
 ---
 
@@ -12,11 +27,11 @@
 The morning session lays the theoretical and architectural foundations for the workshop. It bridges the gap between how clinical healthcare data is created, communicated, and standardized in real hospital environments (HL7 v2, FHIR R4) and how modern machine learning pipelines ingest and evaluate health data.
 
 By the end of this session, participants will be able to:
-1. **Map the Hospital IT Ecosystem:** Understand how EHR/EMR, LIS, RIS/PACS generate clinical data across the patient journey.
+1. **Map the Hospital IT Ecosystem:** Understand how EHR/EMR, LIS, RIS/PACS generate clinical data across the patient journey as interconnected subsystems.
 2. **Contrast Digital Health Standards:** Explain why HL7 v2 was built, why point-to-point integration becomes unmaintainable ("Z-segment spaghetti"), and how HL7 FHIR solves this using RESTful APIs, JSON, and standard clinical terminologies (LOINC, SNOMED CT).
 3. **Assess AI-Readiness in Clinical Data:** Identify real-world health data challenges including informative missingness, class imbalance, temporal shift, and label leakage.
 4. **Understand the Impedance Mismatch:** Explain why ML algorithms cannot directly consume hierarchical FHIR resources and why flattening/preprocessing is where 80% of clinical AI work takes place.
-5. **Be Prepared for the Afternoon Hands-on:** Verify their local environment (`uv sync`) before breaking for lunch.
+5. **Be Prepared for the Afternoon Hands-on:** Verify their local environment (`uv sync`) before breaking for lunch in the Library Studio Room.
 
 ---
 
@@ -245,9 +260,19 @@ OBX|2|NM|99901-1^Mean Texture^LN|1|10.38|score||N|||F
 
 ---
 
-## Instructor Delivery Notes & Questions for the Room
+## Instructor Delivery Notes & Questions for the Room (Library Studio Room)
 
-1. **At Slide 7 (Interoperability):** Ask the room: *"Who has worked with hospital data before? What was the biggest barrier to getting started?"* (Usually: getting data out of legacy systems, non-standard field names, missing documentation).
-2. **At Slide 12 (HL7 v2 Z-segments):** Point out: *"HL7 v2 was so flexible that every hospital customized it. That flexibility turned into an integration nightmare."*
-3. **At Slide 18 (Missingness):** Ask: *"If a patient is missing a serum creatinine test, can we assume their kidneys are fine?"* (Highlight: Doctors order tests when patients show symptoms).
-4. **At Slide 24 (Tech Check):** Enforce the lunch sync check. Have two pre-loaded USB drives with `~/.cache/uv` ready for students with poor wifi connections.
+With 20 students in a studio room setting, keep discussions interactive and draw on their engineering backgrounds:
+
+1. **At Slide 7 & 8 (Syntactic vs. Semantic Interoperability):**
+   - *Prompt for IT students:* *"Who has integrated two web APIs where both return valid JSON, but one calls the field `user_id` and the other calls it `patient_ref` or `subject_id`? That's syntactic success with semantic failure. How does FHIR's canonical URI schema fix this?"*
+2. **At Slide 10 & 11 (HL7 v2 Delimiters):**
+   - *Prompt for IT & Mech students:* *"Who has parsed NMEA GPS sentences, Modbus packets, or CSV telemetry over a serial port? Notice how HL7 v2 (`MSH|^~\&|...`) is essentially an industrial ASCII packet format from 1989."*
+3. **At Slide 12 (HL7 v2 Z-segments):**
+   - *Teaching point:* *"HL7 v2 was so flexible that every hospital added custom Z-segments. That flexibility turned into an integration nightmare—like an industrial equipment vendor changing CAN bus IDs on every machine."*
+4. **At Slide 18 (Informative Missingness):**
+   - *Prompt for Ag & Mech students:* *"In predictive maintenance (vibration diagnostics) or precision agriculture (soil nitrogen testing), do you run expensive lab assays randomly, or only when a subsystem shows distress? If a patient doesn't have a biopsy result, does that mean they are healthy or un-tested?"*
+5. **At Slide 20 (The Impedance Mismatch):**
+   - *Visual bridge:* *"In robotics or IoT, you ingest streaming JSON sensor events, but to train an anomaly detection classifier in scikit-learn, what data structure do you need? A 2D feature matrix ($N \times D$). The morning lecture explains the events; the afternoon code does the matrix transformation."*
+6. **At Slide 24 (Tech Check before Lunch):**
+   - *Enforce the sync:* With 20 laptops in the Library Studio Room, verify that every student gets a clean output from `uv run python -c "import sklearn; print(sklearn.__version__)"`. Have two pre-loaded USB drives with `~/.cache/uv` ready for offline sync if the room wifi throttles.
