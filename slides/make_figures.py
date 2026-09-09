@@ -6,6 +6,7 @@ run, or is a verbatim listing from the repository.
 """
 
 import json
+import sys
 import textwrap
 from pathlib import Path
 
@@ -130,8 +131,13 @@ flat = [
 ]
 card("flatten.png", 1780, 1000, flat, title="Bundles become rows")
 
-# 3. Real terminal output from the script the students run
-raw = Path("/tmp/out01.txt").read_text().splitlines()
+# 3. Real terminal output from the script the students run.
+# Run it here rather than reading a saved copy, so the card can never drift
+# away from what the room actually sees.
+import subprocess as _sp
+
+raw = _sp.run([sys.executable, str(REPO / "scripts" / "01_fhir_to_table.py")],
+              capture_output=True, text=True, cwd=REPO, check=True).stdout.splitlines()
 start = next(i for i, l in enumerate(raw) if "WHAT WENT WRONG" in l) - 1
 term = [("$ uv run python scripts/01_fhir_to_table.py", LIME, True), ("", GREY, False)]
 for line in raw[start : start + 14]:
@@ -586,3 +592,66 @@ card(
     ],
     title="FHIR  (2014, same value, same patient)", size=37, line_gap=2.0,
 )
+
+
+# ------------------------------------------------ slide 5: what learning is
+# One idea, two pictures: we tried every rule, and we kept the best one.
+# No human-versus-machine comparison here - in two dimensions the hand rule
+# actually wins, and that fight belongs on the results slide, not this one.
+import itertools as _it
+
+
+def _rule_errors():
+    """Every candidate rule and how many patients it got wrong."""
+    hr = R["hand_rule"]
+    lab = df[TARGET].to_numpy()
+    grid = np.linspace(0.30, 0.90, 25)
+    counts = []
+    for f1, f2 in _it.combinations(RAW_FEATURES, 2):
+        for c1 in np.quantile(df[f1], grid):
+            hit1 = (df[f1] > c1).to_numpy()
+            for c2 in np.quantile(df[f2], grid):
+                pred = (hit1 & (df[f2] > c2).to_numpy()).astype(int)
+                counts.append(int((pred != lab).sum()))
+    return np.array(counts), hr
+
+
+def search(ax):
+    counts, hr = _rule_errors()
+    ax.hist(counts, bins=60, color="#D7E2CF")
+    ax.axvline(hr["wrong"], color=ALERT, lw=2.2)
+    ax.annotate(f"best: {hr['wrong']} wrong",
+                xy=(hr["wrong"], ax.get_ylim()[1] * 0.62),
+                xytext=(hr["wrong"] + (counts.max() - counts.min()) * 0.18,
+                        ax.get_ylim()[1] * 0.80),
+                fontsize=12, color=ALERT, fontweight="bold",
+                arrowprops=dict(arrowstyle="-|>", color=ALERT, lw=1.6))
+    ax.set_xlabel("patients the rule gets wrong", fontsize=11, color=MUTED)
+    ax.set_yticks([]); ax.grid(False)
+    ax.set_title(f"all {len(counts):,} rules we tried", fontsize=13,
+                 loc="left", color=INK)
+    for sp in ax.spines.values():
+        sp.set_visible(False)
+
+
+def winner(ax):
+    hr = R["hand_rule"]
+    f1, f2 = hr["feature_1"], hr["feature_2"]
+    x, y = df[f1].to_numpy(), df[f2].to_numpy()
+    lab = df[TARGET].to_numpy()
+    ax.scatter(x[lab == 0], y[lab == 0], s=13, c=LIME, linewidths=0, label="benign")
+    ax.scatter(x[lab == 1], y[lab == 1], s=13, c=DARK, linewidths=0, label="malignant")
+    ax.axvline(hr["cut_1"], color=ALERT, lw=2.2)
+    ax.axhline(hr["cut_2"], color=ALERT, lw=2.2)
+    ax.set_xlabel(f1, fontsize=12, color=MUTED)
+    ax.set_ylabel(f2, fontsize=12, color=MUTED)
+    ax.set_xticks([]); ax.set_yticks([]); ax.grid(False)
+    ax.legend(loc="upper left", frameon=False, fontsize=11)
+    ax.set_title(f"the one we kept:  {f1} > {hr['cut_1']}  and  "
+                 f"{f2} > {hr['cut_2']}", fontsize=13, loc="left", color=INK)
+    for sp in ax.spines.values():
+        sp.set_visible(False)
+
+
+fig("learning_search.png", 5.56, 3.13, search)
+fig("learning_rule.png", 8.73, 4.91, winner)

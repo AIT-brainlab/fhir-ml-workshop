@@ -253,6 +253,20 @@
     "missing30_fraction": 0.3,
     "missing30_column": "texture"
   },
+  "hand_rule": {
+    "rules_tried": 28125,
+    "feature_1": "perimeter",
+    "cut_1": 77.36,
+    "feature_2": "concave_points",
+    "cut_2": 0.048,
+    "wrong": 45,
+    "n": 569,
+    "accuracy": 0.921,
+    "missed": 20,
+    "false_alarms": 25,
+    "dials": 2,
+    "model_dials": 12
+  },
   "env": {
     "n_packages": 66,
     "python": "3.12"

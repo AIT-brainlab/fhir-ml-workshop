@@ -32,7 +32,7 @@ DST = HERE / "from-fhir-to-a-table.pptx"
 # and rewriting it. main() can only rebuild the integers; apply_results.py
 # refreshes both, and is what you want in almost every case.
 ORDER = [
-    1, "recap", 3, 25, 23, 4, 2, 24, 6, 10, 20, 11,
+    1, "recap", 3, 25, "learning", 23, 4, 2, 24, 6, 10, 20, 11,
     14, 7, "pipeline",          # what a model is, how it is judged, what is saved
     19, 5,
     "ablations", "starved",     # change one setting, then read what it cost
@@ -74,6 +74,9 @@ def load_results() -> dict:
         flat[f"ari_{k}"] = v["ari"]
 
     flat["n_train"] = r["cohort"]["n"] - r["cohort"]["n_test"]
+    for k, v in r["hand_rule"].items():
+        flat[f"rule_{k}"] = v
+    flat["rules_tried_pretty"] = f'{r["hand_rule"]["rules_tried"]:,}'
     for t, v in r["threshold_cohort"].items():
         tag = round(float(t) * 100)
         for k, n in v.items():
@@ -144,9 +147,25 @@ TEXT = {
         "TextBox 24": "04. Point of care",
         "TextBox 25": "An endpoint a clinician can act on, or nothing changes.",
     },
+    # ------------------------------- learning: what "learning" actually means
+    "learning": {
+        "TextBox 2": "LEARNING A RULE",
+        "TextBox 8": "We tried {rules_tried_pretty} rules and kept one",
+        "TextBox 7": (
+            "Nobody writes the rule. You take {n} patients whose biopsy result "
+            "is already known, try every rule you can think of, and keep the "
+            "one that gets the fewest wrong. That search is the whole of "
+            "machine learning — the winner here misses {rule_wrong}.\n"
+            "\n"
+            "This afternoon's model does exactly the same thing, with "
+            "{rule_model_dials} dials instead of {rule_dials}, and it hands "
+            "back a probability instead of a yes or no. That difference is "
+            "what the rest of the day is about."
+        ),
+    },
     # ------------------------------------------------ 23 why not an LLM
     23: {
-        "TextBox 14": "Why not an LLM?",
+        "TextBox 14": "So why not an LLM?",
         "TextBox 11": "TEN NUMBERS",
         "TextBox 13": "What this task needs",
         "TextBox 12": (
@@ -512,7 +531,12 @@ TEXT = {
 }
 
 NOTES = {
-    1: "Two hours, five steps, every line already written. Their job is to run it and judge it.",
+    1: "Open on the morning's own phrase, not on yours. They were told "
+       "'impedance mismatch' - hierarchical FHIR trees against flat 2-D feature "
+       "matrices. Say the afternoon is two hours of fixing exactly that by hand, "
+       "and that the fixing is where real projects spend their calendar. Then: "
+       "two hours, five steps, every line already written, and their job is to "
+       "run it and judge it.",
     "recap": "Thirty seconds, not three minutes - this is a reminder, not a lecture, and "
              "they had two hours of it this morning. Point at the red carets: in v2 the "
              "meaning of 17.99 is 'the fifth field of OBX', so the contract is a position "
@@ -523,7 +547,17 @@ NOTES = {
     3: "Point at step 1. It is what separates this from a generic scikit-learn tutorial.",
     25: "Ask which stage they expected to spend the afternoon on. Almost everyone says three. "
         "Stage two is the one that consumes the calendar in real projects.",
-    23: "Asked every time: why not an LLM? Answer honestly. This input is already ten "
+    "learning": "The one slide the whole afternoon rests on, and it is thirty seconds of "
+                "idea. Say it plainly: nobody writes the rule, you search for it. I ran "
+                "that search for real - every pair of measurements, every cut point, "
+                "twenty-eight thousand rules - and kept the best. A for-loop counts as "
+                "machine learning. What the model adds is scale and a probability, not "
+                "magic. Two honest footnotes if a sharp student pushes: that rule was "
+                "chosen while looking at all the answers, which flatters it, and we fix "
+                "that on the hold-out slide; and in these two dimensions the hand rule is "
+                "actually competitive with the model - the model earns its place on twelve "
+                "measurements, not two.",
+    23: "Bridge before you argue, or this sounds like you are contradicting the morning. They have just heard that protocols may need to become AI-ready, that MCP and RAG are coming. Agree with all of it out loud, then narrow it to the job in front of them. Asked every time: why not an LLM? Answer honestly. This input is already ten "
         "numbers - an LLM's advantage is unstructured text, and there is none here. We "
         "need a calibrated probability to put a threshold through, the same answer on "
         "every run for a regulator, and coefficients somebody can inspect. Twenty "
@@ -593,7 +627,7 @@ NOTES = {
     17: "Walk them through it in order and do not move on until every screen shows a "
         "risk band. Number four is the one that matters: the curve in the middle is "
         "what they are dragging along, and the model is identical at every point on it.",
-    "fhir_back": "This is the sentence the whole day was built to earn: this morning they "
+    "fhir_back": "Call back to the morning first: the Raman spotlight ended by serialising a sensor reading into FHIR R4. Same move here, different payload - that was an instrument writing into the record, this is a model writing into it. Then: this is the sentence the whole day was built to earn: this morning they "
                  "consumed a FHIR resource, and just now they produced one. Press the "
                  "button live and let the JSON fill the screen. Then slow down on three "
                  "words. RiskAssessment, not Condition - the model contributes a number, "

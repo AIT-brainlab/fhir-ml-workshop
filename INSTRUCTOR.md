@@ -59,28 +59,29 @@ is the job.** Everything downstream is a library call.
 
 | Minutes | What | Slides |
 |---|---|---|
-| 0–12 | Recap of v2 vs FHIR, framing, why not an LLM | 1–5 |
-| 12–22 | `uv sync`, fix the two or three laptops that fail | 6 |
-| 22–40 | Step 1 — FHIR to table; open `data/fhir/P0001.json` on the projector | 7–9 |
-| 40–52 | Break the feed on purpose | 10 |
-| 52–60 | Step 2 — read the output, majority-class baseline | 11, 12 |
-| 60–70 | What a model is, how it is judged, what gets saved | 13–15 |
-| 70–80 | Step 3 — the two models, and which error costs more | 16, 17 |
-| 80–94 | Four flags — the longest hands-on block | 18, 19 |
-| 94–100 | Step 4 — clustering, short | 20 |
-| 100–114 | Step 5 — the app, the API, then the result back as FHIR | 21–24 |
-| 114–120 | Limitations + the "why is this not safe" question | 25 |
+| 0–12 | Recap of v2 vs FHIR, what learning means, why not an LLM | 1–6 |
+| 12–22 | `uv sync`, fix the two or three laptops that fail | 7 |
+| 22–40 | Step 1 — FHIR to table; open `data/fhir/P0001.json` on the projector | 8–10 |
+| 40–52 | Break the feed on purpose | 11 |
+| 52–60 | Step 2 — read the output, majority-class baseline | 12, 13 |
+| 60–70 | What a model is, how it is judged, what gets saved | 14–16 |
+| 70–80 | Step 3 — the two models, and which error costs more | 17, 18 |
+| 80–94 | Four flags — the longest hands-on block | 19, 20 |
+| 94–100 | Step 4 — clustering, short | 21 |
+| 100–114 | Step 5 — the app, the API, then the result back as FHIR | 22–25 |
+| 114–120 | Limitations + the "why is this not safe" question | 26 |
 
 Slide 2 recaps v2 versus FHIR in thirty seconds — after lunch, half the room
-has lost it. Slides 13–15 and 18–19 carry the machine-learning explanation. The morning
+has lost it. Slide 5 defines what learning is at all; slides 14–16 and 19–20 carry the rest
+of the machine-learning explanation. The morning
 lecture is FHIR and AI-readiness, so this afternoon is the first time the room
 hears what a model, a hold-out set or a recall figure actually is. Skipping
 them means opening on a results table nobody can read.
 
-If you are behind schedule, **cut Step 4 first** — slide 20 can be shown and
-talked over in thirty seconds. Then trim slide 18 from four commands to two and
+If you are behind schedule, **cut Step 4 first** — slide 21 can be shown and
+talked over in thirty seconds. Then trim slide 19 from four commands to two and
 run them from the front. Never cut Step 1 (it is the link to the morning),
-never cut slides 13–14, never cut slides 21–22 (the guided app walkthrough and
+never cut slides 5, 14–15, never cut slides 22–23 (the guided app walkthrough and
 the reference screen), and never cut the last 10 minutes.
 
 ## Everything is a flag now
@@ -190,7 +191,7 @@ Clustering: silhouette 0.395, ARI vs. true diagnosis 0.646 (k=2);
 ARI 0.483 at k=3 and 0.324 at k=5.
 
 Cross-validation, 5 folds on the 455 training patients, recall: mean 0.900,
-spread ±0.040, lowest fold 0.853, highest 0.941. Slide 15 uses this to make
+spread ±0.040, lowest fold 0.853, highest 0.941. Slide 16 uses this to make
 the point that one split is not evidence.
 
 Numbers are fixed by `random_state=42`, so they will be identical on every
