@@ -110,7 +110,7 @@ Point at the red carets.
 > you get the wrong number, and nothing anywhere tells you."
 
 > "In FHIR the meaning travels *with* the value, as a code. That is the only
-> reason Step 1 can name a column after Observation.code — and it is why
+> reason the flattening script can name a column after Observation.code — and it is why
 > everything you do this afternoon starts from the lower box."
 
 The honest footnote if anyone asks: FHIR did not replace v2. It is usually
@@ -159,7 +159,7 @@ Point at the left-hand card.
 Then the lower card.
 
 > "Now the honest half. There *is* a job here that a language model would be
-> very good at, and it is the one we are about to do by hand in Step 1 — reading
+> very good at, and it is the one we are about to do by hand in Part 1 — reading
 > a free-text pathology report into structured fields, and mapping a local code
 > onto LOINC. That is feature engineering, which has a page of its own after
 > the break. It is still an open
@@ -170,7 +170,7 @@ Then the lower card.
 
 ---
 
-## 00:10 – 00:20 · Step 0, get everyone running  (slide 5)
+## 00:10 – 00:20 · Get everyone running  (slide 5)
 
 **Slide 5 — install uv first**
 
@@ -329,7 +329,7 @@ Read the top row of the diagram, left to right.
 Then the red dashed line.
 
 > "Which is exactly why I can check the parser. I knew the answer before I
-> started, so when Step 1 hands back a table it has to match the rows I started
+> started, so when the script hands back a table it has to match the rows I started
 > from, exactly. That is what `Identical to patients.csv : True` means."
 
 > "In a real project nobody hands you the answer. You parse a hospital feed and
@@ -463,7 +463,7 @@ uv run python scripts/03_train_model.py
 > mean. For now just watch what happens when you change one thing."
 
 > "Two commands. Each one changes exactly one setting, and the script remembers
-> your first run, so section six prints the difference for you."
+> your first run, so section five prints the difference for you."
 
 > "Before you press enter, say out loud to the person next to you which
 > direction you think it moves. Then run it and find out whether you were
@@ -560,21 +560,6 @@ uv run python scripts/03_train_model.py
 > they meant. The three hundred
 > trees were more flexible and they were not better. They were worse at the one
 > thing we care about. Complexity is not a strategy."
-
-**Then the threshold table — section 5 of their output.**
-
-> "Scroll up to section five in your terminal. Seven rows. At threshold 0.20 the
-> model misses two tumours and raises nine false alarms. At 0.80 it misses eight
-> and raises one."
-
-> "Now the important part: **nothing was retrained between those rows.** One
-> model. One set of weights. Seven different answers, because somebody moved a
-> number."
-
-> "Which row would you ship? And would your answer change if this were not a
-> screening programme, but a confirmatory test after a radiologist had already
-> seen something suspicious? It should. Same model, different clinical setting,
-> different right answer."
 
 ---
 

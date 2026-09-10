@@ -16,5 +16,13 @@ dependencies = [
     "pydantic>=2.8",
 ]
 
+[dependency-groups]
+# Only the person rebuilding the deck needs these. Students never install them:
+# a plain `uv sync` leaves this group out.
+slides = [
+    "python-pptx>=1.0",
+    "pillow>=10.0",
+]
+
 [tool.uv]
 package = false

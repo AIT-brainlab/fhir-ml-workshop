@@ -19,7 +19,7 @@ measurements, renames the columns to snake_case, adds a synthetic
 
 The same script re-encodes **every** patient as a FHIR R4 `collection` Bundle —
 569 files, one per row of `patients.csv` — so the afternoon can start where the
-morning lecture ended and Step 1 rebuilds the whole training table rather than a
+morning lecture ended and Part 1 rebuilds the whole training table rather than a
 demo slice. Each Bundle holds:
 
 | Resource | Count | Carries |
@@ -78,7 +78,7 @@ judged independently of size.
 - 569 patients, no missing values
 - 212 malignant (37.3%), 357 benign (62.7%)
 - A model that always predicts "benign" scores **62.7% accuracy** and detects
-  nothing. Use recall and ROC-AUC instead.
+  nothing. Use recall and precision instead.
 
 ## AI-readiness assessment
 

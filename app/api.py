@@ -126,7 +126,7 @@ def sample(patient_id: str, threshold: float = DEFAULT_THRESHOLD) -> dict:
 # ------------------------------------------------ the same answer, as FHIR
 # Everything above returns whatever JSON we felt like inventing. A hospital
 # cannot file that. These two return a real RiskAssessment instead — the
-# return half of the morning: FHIR in at Step 1, FHIR out here.
+# return half of the morning: FHIR in at Part 1, FHIR out here.
 
 
 @app.post("/predict/fhir")

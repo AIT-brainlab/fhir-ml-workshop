@@ -559,7 +559,7 @@ print("   starved_bars.png", Image.open(OUT / "starved_bars.png").size)
 
 
 def loop_closed(ax):
-    """FHIR in at Step 1, FHIR out at Step 5. The afternoon as one circle."""
+    """FHIR in at Part 1, FHIR out at Part 3. The afternoon as one circle."""
     ax.axis("off"); ax.set_xlim(0, 100); ax.set_ylim(0, 52)
     boxes = [
         (1.5,  "FHIR\nBundle",   "12 resources",    "#E4EBE4", INK),
@@ -576,7 +576,7 @@ def loop_closed(ax):
         if x < 70:
             ax.annotate("", xy=(x + 25.6, 32), xytext=(x + 23.9, 32),
                         arrowprops=dict(arrowstyle="-|>", color=MUTED, lw=1.8))
-    for label, x in (("Step 1", 13.2), ("Steps 2-4", 62.0), ("Step 5", 86.7)):
+    for label, x in (("Part 1", 13.2), ("Part 2", 62.0), ("Part 3", 86.7)):
         ax.text(x, 42.5, label, ha="center", fontsize=10, color=MUTED,
                 style="italic")
     # the return path, drawn as plain segments so it cannot bow off the canvas
@@ -653,7 +653,7 @@ def provenance(ax):
     box(72, 26, "a table", "569 rows, 12 columns", DARK, "white")
 
     for x0, x1, label, when in ((28.4, 36.4, "we wrote these", "before today"),
-                                (63.4, 71.4, "Step 1", "you run this")):
+                                (63.4, 71.4, "Part 1", "you run this")):
         ax.annotate("", xy=(x1, 25.5), xytext=(x0, 25.5),
                     arrowprops=dict(arrowstyle="-|>", color=DARK, lw=2))
         ax.text((x0 + x1) / 2, 29.5, label, ha="center", fontsize=10.5,
@@ -662,7 +662,7 @@ def provenance(ax):
 
     ax.text(50, 5,
             "FHIR is one of the raw formats a model cannot read.\n"
-            "Step 1 is what turns it into one it can.",
+            "Part 1 is what turns it into one it can.",
             ha="center", fontsize=12, color=INK, linespacing=1.5)
 
 
@@ -691,10 +691,9 @@ card(
         ("    uv sync", MUTED, False),
         ("1   uv run python scripts/01_fhir_to_table.py", LIME, True),
         ("2   uv run python scripts/02_explore_data.py", LIME, True),
-        ("    uv run python scripts/03_train_model.py", "#D9E4DC", False),
-        ("    uv run python scripts/04_cluster_patients.py", "#D9E4DC", False),
+        ("    uv run python scripts/03_train_model.py", LIME, True),
         ("3   uv run streamlit run app/streamlit_app.py", LIME, True),
-        ("    uv run uvicorn app.api:app --reload", "#D9E4DC", False),
+        ("    uv run uvicorn app.api:app --reload", LIME, True),
     ],
     title="EVERY COMMAND", size=30, line_gap=2.05,
 )

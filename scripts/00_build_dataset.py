@@ -196,7 +196,7 @@ def bundle_for(row: pd.Series) -> dict:
 
 
 def build_fhir(df: pd.DataFrame) -> None:
-    # Every patient, so Step 1 reconstructs patients.csv exactly.
+    # Every patient, so 01_fhir_to_table.py reconstructs patients.csv exactly.
     sample = df.sort_values("patient_id")
 
     FHIR_DIR.mkdir(parents=True, exist_ok=True)

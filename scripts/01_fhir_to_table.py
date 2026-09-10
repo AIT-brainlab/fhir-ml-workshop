@@ -158,7 +158,7 @@ def main() -> None:
         print("\nThe Observation simply was not in the Bundle. Nothing errored,")
         print("nothing warned - you just silently got a NaN.")
         print("This is the normal condition of real health data. The imputer")
-        print("in Step 3's pipeline is what deals with it.")
+        print("in the training pipeline is what deals with it.")
 
     # ------------------------------------------------- prove it is the same
     rule("4. PROOF: THIS IS THE SAME DATA YOU WILL TRAIN ON")
@@ -178,7 +178,7 @@ def main() -> None:
     print("\nThat is the training table. Every Bundle on disk was written out")
     print("of data/patients.csv before the workshop, so flattening them lands")
     print("back exactly where they started - which is the only reason this")
-    print("check is possible at all. Step 3 trains on this same table.")
+    print("check is possible at all. The model trains on this same table.")
 
     rule("DONE")
     print("In a real project this step would also handle:")

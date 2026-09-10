@@ -83,20 +83,6 @@
     "low": 0.2,
     "high": 0.5
   },
-  "clustering": {
-    "2": {
-      "ari": 0.646,
-      "silhouette": 0.395
-    },
-    "3": {
-      "ari": 0.483,
-      "silhouette": 0.332
-    },
-    "5": {
-      "ari": 0.324,
-      "silhouette": 0.217
-    }
-  },
   "cv": {
     "logit": {
       "folds": 5,

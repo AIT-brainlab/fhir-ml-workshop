@@ -9,18 +9,18 @@ Not part of the student handout. Delete this file before sharing if you prefer.
 ## The spine of the afternoon
 
 The morning is a lecture on health data ecosystems, HL7 v2, FHIR and
-AI-readiness. The afternoon has to *land* that, not run beside it. Step 1 is the
+AI-readiness. The afternoon has to *land* that, not run beside it. Part 1 is the
 join: students start from FHIR Bundles and end at the table scikit-learn wants.
 
 ```
 morning lecture          afternoon code
 -----------------        --------------------------------
-FHIR Resources     ->    Step 1  data/fhir/*.json
-Bundle / reference ->    Step 1  walk entry[], join on subject
-coded vocabularies ->    Step 1  Observation.code names the column
-AI-readiness       ->    Step 2  missingness, class balance, leakage
-                         Step 3  pipeline, metrics
-                         Step 5  the model becomes callable over HTTP
+FHIR Resources     ->    Part 1  data/fhir/*.json
+Bundle / reference ->    Part 1  walk entry[], join on subject
+coded vocabularies ->    Part 1  Observation.code names the column
+AI-readiness       ->    Part 2  missingness, class balance, leakage
+                         Part 2  pipeline, metrics
+                         Part 3  the model becomes callable over HTTP
 ```
 
 If you only make one point all afternoon, make it this: **the FHIR-to-table step
@@ -34,7 +34,6 @@ is the job.** Everything downstream is a library call.
    uv run python scripts/01_fhir_to_table.py
    uv run python scripts/02_explore_data.py
    uv run python scripts/03_train_model.py
-   uv run python scripts/04_cluster_patients.py
    uv run streamlit run app/streamlit_app.py
    uv run uvicorn app.api:app --reload
    ```
@@ -52,8 +51,8 @@ is the job.** Everything downstream is a library call.
 5. `data/patients.csv`, `data/fhir/` and `uv.lock` are committed, so nothing
    else downloads during class.
 6. `models/model.joblib` is intentionally **not** committed — students must run
-   Step 3 to produce it. If your room's laptops are slow, commit it as a
-   fallback so Step 5 still works.
+   `03_train_model.py` to produce it. If your room's laptops are slow, commit
+   it as a fallback so Part 3 still works.
 
 ## Running to time (120 minutes)
 
@@ -79,7 +78,7 @@ them means opening on a results table nobody can read.
 
 If you are behind schedule, **trim slide 14 first** — two commands down to one,
 run from the front. Then skip the pipeline half of slide 13; it is the only part of
-Part 2 the results do not depend on. Never cut Step 1 (it is the link to the morning),
+Part 2 the results do not depend on. Never cut Part 1 (it is the link to the morning),
 never cut slides 9, 11, 15–17, never cut slides 20–21 (the guided app walkthrough and
 the reference screen), and never cut the last 10 minutes.
 
@@ -94,16 +93,15 @@ answers `--help`. The ones worth demonstrating from the front:
 | `01_fhir_to_table.py --rename radius:tumor_rad` | a renamed code silently breaks the join |
 | `03_train_model.py --no-engineered` | recall, precision and accuracy **identical** |
 | `03_train_model.py --test-size 0.8` | missed 3 → 21 while **accuracy rises** to 0.941 |
-| `04_cluster_patients.py --clusters 5` | five groups appear because you asked |
 
 Two of those are worth knowing in advance because they defeat the obvious
 expectation, which is exactly why they teach well:
 
 - **`--no-engineered` changes nothing.** The two hand-built shape ratios
   (`compactness_ratio`, `concavity_per_radius`) were added for sound clinical
-  reasons and buy no measurable accuracy, recall or precision — only ROC-AUC
-  moves, by 0.003. Say so. A student who learns to report that is worth more
-  than one who learns to tune.
+  reasons and buy nothing the slides report. (ROC-AUC moves by 0.003, but that
+  metric is deliberately absent from the deck — it was never defined.) Say so.
+  A student who learns to report that is worth more than one who learns to tune.
 - **`--test-size 0.8` makes accuracy go up.** Training on 113 patients instead
   of 455 raises accuracy from 0.930 to 0.941 and takes missed tumours from 3 to
   21. It is the cleanest demonstration in the whole afternoon that a single
@@ -157,12 +155,7 @@ patients as they move it: 0.20 misses 7 tumours and alarms 39 healthy patients;
   be reapplied identically at prediction time. `common.add_features` exists so
   training and serving cannot drift apart — that drift is a real and common
   patient-safety bug.
-- **Clustering finds structure, not meaning.** (No slide of its own any more —
-  `04_cluster_patients.py` is an optional extra for a group that finishes early.)
-  K-Means recovers the diagnosis
-  boundary (ARI ≈ 0.65) without ever seeing a label, but cannot say which
-  cluster is dangerous.
-- **Close the loop at Step 5c.** They read a FHIR resource this morning and
+- **Close the loop on the last slide.** They read a FHIR resource this morning and
   produce one this afternoon: the app's "Send to record" button builds a real
   `RiskAssessment`. Make the distinction out loud — a RiskAssessment is a
   score performed by a `Device`; a `Condition` is a diagnosis asserted by a
@@ -183,11 +176,8 @@ Logistic Regression wins on recall and is the model that gets saved.
 Random Forest misses 5 malignant tumours, Logistic Regression misses 3 — a
 concrete, teachable reason to pick the simpler model.
 
-Step 1: 569 bundles, 568 complete rows, `texture` missing for P0010, comparison
+Part 1: 569 bundles, 568 complete rows, `texture` missing for P0010, comparison
 against `patients.csv` returns `True`.
-
-Clustering: silhouette 0.395, ARI vs. true diagnosis 0.646 (k=2);
-ARI 0.483 at k=3 and 0.324 at k=5.
 
 Cross-validation, 5 folds on the 455 training patients, recall: mean 0.900,
 spread ±0.040, lowest fold 0.853, highest 0.941. Slide 13 uses this to make
@@ -223,7 +213,7 @@ Worth knowing in case anyone compares the code against the programme blurb.
 
 - The blurb says **"patient outcome prediction"**. This is diagnosis, not
   prognosis — the dataset is a single time point with no follow-up. Say so
-  during Step 2 and use it to explain the difference; it takes two minutes and
+  during Part 2 and use it to explain the difference; it takes two minutes and
   is a better lesson than pretending otherwise.
 - The blurb says **"public health datasets"**. Everything here is clinical.
   There is no population-level or epidemiological component.
@@ -235,7 +225,7 @@ Worth knowing in case anyone compares the code against the programme blurb.
 | `uv: command not found` | uv not installed yet, or terminal not restarted |
 | `No \`pyproject.toml\` found` | They ran `uv sync` outside the cloned folder |
 | `ModuleNotFoundError: common` | Ran `python scripts/...` instead of `uv run python scripts/...`, or from the wrong directory |
-| Streamlit shows the model-missing error | Step 3 not run yet |
+| Streamlit shows the model-missing error | `03_train_model.py` not run yet |
 | Port already in use | Another student's server, or a previous run not stopped |
 | Corporate laptop blocks the installer | Fall back to `pip install uv` |
 

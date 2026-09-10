@@ -22,13 +22,10 @@ sys.path.insert(0, str(ROOT))
 import joblib
 import numpy as np
 import pandas as pd
-from sklearn.cluster import KMeans
 from sklearn.metrics import (
-    adjusted_rand_score,
     confusion_matrix,
     precision_score,
     recall_score,
-    silhouette_score,
 )
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
@@ -177,17 +174,6 @@ def main() -> None:
             }
             break
     r["flip_case"] = flip
-
-    # ---------------------------------------------------------- 6. clustering
-    feats = [c for c in df.columns if c not in ("patient_id", TARGET)]
-    Xs = StandardScaler().fit_transform(df[feats])
-    r["clustering"] = {}
-    for k in (2, 3, 5):
-        cl = KMeans(n_clusters=k, n_init=10, random_state=SEED).fit_predict(Xs)
-        r["clustering"][str(k)] = {
-            "ari": round(float(adjusted_rand_score(y_all, cl)), 3),
-            "silhouette": round(float(silhouette_score(Xs, cl)), 3),
-        }
 
     # -------------------------------------- 7. cross-validation on the train half
     # 03_train_model.py cross-validates before it touches the test set. The deck

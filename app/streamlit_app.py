@@ -189,7 +189,7 @@ with st.expander("What the model actually received (after feature engineering)")
     )
 
 # --------------------------------------------------- back into the record
-# This is the return half of the morning. Step 1 read FHIR in; this writes
+# This is the return half of the morning. Part 1 read FHIR in; this writes
 # FHIR out, so the room can see that "the AI result goes into the chart" is
 # one ordinary HTTP request carrying one ordinary resource.
 st.divider()

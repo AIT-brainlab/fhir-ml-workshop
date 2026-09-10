@@ -61,17 +61,6 @@ Fill this in:
 - Who in a hospital should own this number: the data scientist, the radiologist,
   the hospital board, or the regulator?
 
-### A3. The same table, printed by the trainer
-
-```bash
-uv run python scripts/03_train_model.py
-```
-
-Section 5 prints the same trade-off for seven thresholds. Nothing is retrained
-between those rows. Convince yourself of that.
-
----
-
 ## B. Break the data feed
 
 The Bundles on disk are never modified — the damage is applied in memory as
@@ -111,7 +100,7 @@ uv run python scripts/03_train_model.py --test-size 0.8
 
 Only 20% of patients are used for training.
 
-- Read section 6 carefully. One of those metrics goes **up**. Which one, and
+- Read the last section carefully. One of those metrics goes **up**. Which one, and
   would you have caught the problem if that were the only number you watched?
 - Missed tumours go from 3 to 21. Say in one sentence why accuracy did not
   notice.
@@ -141,9 +130,8 @@ uv run python scripts/03_train_model.py --no-engineered
 ```
 
 - Were `compactness_ratio` and `concavity_per_radius` earning their place?
-- Recall, precision and accuracy do not move at all. Only ROC-AUC does, by
-  0.003. If you had spent a week building those two features, what would you
-  write in the report?
+- Recall, precision and accuracy do not move at all. If you had spent a week
+  building those two features, what would you write in the report?
 
 ### C5. Combine two changes
 
@@ -157,61 +145,9 @@ uv run python scripts/03_train_model.py --test-size 0.6 --seed 7
 
 ---
 
-## D. Clustering without labels
+## D. The resource that goes back into the record
 
-### D1. Ask for more groups
-
-```bash
-uv run python scripts/04_cluster_patients.py --clusters 3
-uv run python scripts/04_cluster_patients.py --clusters 5
-```
-
-- Does the Adjusted Rand Index go up or down?
-- Can you give each of the five groups a clinical name?
-- If you cannot, what does that tell you about the five groups?
-
-### D2. A different starting point
-
-```bash
-uv run python scripts/04_cluster_patients.py --clusters 3 --seed 99
-```
-
-- Are the same patients grouped together as before?
-
----
-
-## E. Look at the data differently
-
-```bash
-uv run python scripts/02_explore_data.py --feature area
-uv run python scripts/02_explore_data.py --feature fractal_dimension --bins 15
-```
-
-Open `reports/01_top_feature.png` after each run.
-
-- Which measurement separates the two groups most cleanly?
-- Which one barely separates them at all? Should it stay in the model?
-
----
-
-## If you still have time
-
-Now you may edit code. Add a third model to the `candidates` dictionary in
-`scripts/03_train_model.py`:
-
-```python
-from sklearn.ensemble import GradientBoostingClassifier
-"Gradient Boosting": GradientBoostingClassifier(random_state=args.seed),
-```
-
-Does the extra complexity buy anything you would be willing to defend to a
-clinician?
-
----
-
-## F. Put the answer back where it came from
-
-### F1. Read the resource, not the number
+### D1. Read the resource, not the number
 
 Press **Send to record** at the bottom of the Streamlit app.
 
@@ -221,7 +157,7 @@ Press **Send to record** at the bottom of the Streamlit app.
 - The resource says `RiskAssessment`. What would change, legally and
   clinically, if the app wrote a `Condition` instead?
 
-### F2. The threshold, in FHIR terms
+### D2. The threshold, in FHIR terms
 
 ```
 http://127.0.0.1:8000/sample/P0216/fhir?threshold=0.5
@@ -231,7 +167,7 @@ http://127.0.0.1:8000/sample/P0216/fhir?threshold=0.2
 - `probabilityDecimal` is identical in both. `qualitativeRisk` is not.
 - Which of those two fields would you put in front of a clinician, and why?
 
-### F3. What is still missing
+### D3. What is still missing
 
 The request in the app would be rejected by a real hospital for at least four
 reasons. Name them. (Hint: one is in the URL, one is a header that is not

@@ -12,7 +12,7 @@ is typed by hand, so the slides cannot drift away from the code.
 
 ```bash
 uv run python slides/collect_results.py    # re-run the workshop, record the facts
-python3 slides/apply_results.py            # push them into the existing deck
+uv run --group slides python slides/apply_results.py            # push them into the existing deck
 ```
 
 `apply_results.py` and `build_from_template.py` need **python-pptx**, which is
@@ -38,9 +38,9 @@ To rebuild from scratch, re-export the Canva copy as `ait-template.pptx`, then:
 
 ```bash
 uv run python slides/collect_results.py
-python3 slides/build_from_template.py
+uv run --group slides python slides/build_from_template.py
 uv run python slides/make_figures.py
-python3 slides/swap_figures.py
+uv run --group slides python slides/swap_figures.py
 ```
 
 If only the numbers changed and the template did not, skip all that and run
@@ -59,10 +59,8 @@ reproduce it byte-for-byte, so five pages were built by copying a layout that
 was already in the deck:
 
 ```bash
-python3 slides/clone_page.py --page 13 --after 13   # ONE OBJECT
-python3 slides/clone_page.py --page 3  --after 16   # TWO FLAGS
-python3 slides/clone_page.py --page 11 --after 17   # ACCURACY ROSE
-python3 slides/apply_results.py                     # fills the text
+uv run --group slides python slides/clone_page.py --page 13 --after 13
+uv run --group slides python slides/apply_results.py                     # fills the text
 ```
 
 `ORDER` in `build_from_template.py` holds a string, not a page number, for each

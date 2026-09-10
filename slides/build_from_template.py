@@ -69,9 +69,6 @@ def load_results() -> dict:
     flat["flip_probability"] = r["flip_case"]["probability"]
     flat["flip_low"] = f'{r["flip_case"]["low"]:.2f}'
     flat["flip_high"] = f'{r["flip_case"]["high"]:.2f}'
-    for k, v in r["clustering"].items():
-        flat[f"ari_{k}"] = v["ari"]
-
     flat["n_train"] = r["cohort"]["n"] - r["cohort"]["n_test"]
     for t, v in r["threshold_cohort"].items():
         tag = round(float(t) * 100)
@@ -157,19 +154,6 @@ TEXT = {
         ),
     },
     # ------------------------------------------------- 8 step 4, clustering
-    8: {
-        "TextBox 5": "GROUPS",
-        "TextBox 7": "Step 4 · No labels used",
-        "TextBox 6": (
-            "uv run python\nscripts/04_cluster_patients.py\n"
-            "\n"
-            "K-Means never saw a diagnosis. Its two groups still line up with "
-            "one: ARI {ari_2}.\n"
-            "\n"
-            "Ask for three groups and you get three, ARI {ari_3}. Ask for five "
-            "and you get five, {ari_5}. It always answers."
-        ),
-    },
     # ------------------------------------------- 17 step 5, the app, guided
     17: {
         "TextBox 2": "THE APP, IN FOUR MOVES",

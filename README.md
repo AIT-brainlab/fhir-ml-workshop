@@ -4,7 +4,7 @@ A two-hour session. You start from FHIR Bundles, turn them into a table, train
 a model on that table, serve it on your own laptop, and write the result back
 out as FHIR.
 
-You will run seven commands. All the code is already written — your job is to run
+You will run five commands. All the code is already written — your job is to run
 it, change a setting, run it again, and decide whether you would trust the result.
 
 Nothing here requires editing a file. Every setting worth playing with is a
@@ -12,12 +12,12 @@ command-line flag, and every script answers `--help`.
 
 ```
 FHIR Bundles  →  flat table  →  trained model  →  running service
-   Step 1          Step 2          Step 3-4          Step 5
+        Part 1                Part 2                Part 3
 ```
 
 ---
 
-## Step 0a — Install uv  (do this first, ideally the night before)
+## Install uv  (do this first, ideally the night before)
 
 Everything in this workshop runs through **uv**, the Python package manager.
 
@@ -53,7 +53,7 @@ and use the green **Code → Download ZIP** button instead, then unzip it.
 
 ---
 
-## Step 0b — Get the code and build the environment
+## Get the code and build the environment
 
 ```bash
 git clone https://github.com/AIT-brainlab/fhir-ml-workshop.git
@@ -82,7 +82,7 @@ uv run python -c "import sklearn; print(sklearn.__version__)"
 
 ---
 
-## Step 1 — From FHIR to a table
+## Part 1 — From FHIR to a table
 
 ```bash
 uv run python scripts/01_fhir_to_table.py
@@ -112,12 +112,12 @@ uv run python scripts/01_fhir_to_table.py --rename radius:tumor_rad
 
 The script then proves the table it produced is identical, value for value, to
 `data/patients.csv` — a round-trip test, since that file is where the Bundles
-were written from. P0010 is the one exception; it ships with a gap. Step 3
+were written from. P0010 is the one exception; it ships with a gap. Part 2b
 trains on this same table.
 
 ---
 
-## Step 2 — Explore the dataset
+## Part 2a — Explore the dataset
 
 ```bash
 uv run python scripts/02_explore_data.py
@@ -125,7 +125,7 @@ uv run python scripts/02_explore_data.py
 
 Profiles the 569 patients: what the columns mean, whether anything is missing,
 how imbalanced the classes are, and which measurements separate malignant from
-benign tumours. Saves two figures into `reports/`.
+benign tumours. Saves one figure into `reports/`.
 
 **Look for:** the majority-class baseline it prints. If 63% of patients are
 benign, a model that predicts "benign" every time is already 63% accurate — and
@@ -133,7 +133,7 @@ completely useless. This is why the next step does not report accuracy alone.
 
 ---
 
-## Step 3 — Train model
+## Part 2b — Train a model
 
 ```bash
 uv run python scripts/03_train_model.py
@@ -145,43 +145,20 @@ Forest**, cross-validates both, and evaluates them on data neither model has
 seen. Saves the better model to `models/model.joblib` and a ROC curve to
 `reports/`.
 
-**Look for:** the confusion matrix, and section 5 — the same fitted model read
-off at seven different thresholds. Nothing is retrained between those rows.
+**Look for:** the confusion matrix, and the fact that the two models have the
+*same accuracy* and different recall. Accuracy cannot choose between them.
 
 **Then change one thing and run it again.** The first default run is recorded as
 a baseline, and every later run prints what your change did to it:
 
 ```bash
-uv run python scripts/03_train_model.py --test-size 0.8    # starve it of training data
-uv run python scripts/03_train_model.py --seed 7           # a different random split
-uv run python scripts/03_train_model.py --no-engineered    # drop the two shape features
+uv run python scripts/03_train_model.py --no-engineered    # drop the two columns we wrote
+uv run python scripts/03_train_model.py --test-size 0.8    # train on far fewer patients
 ```
 
 ---
 
-## Step 4 — Find patient subgroups (unsupervised)
-
-```bash
-uv run python scripts/04_cluster_patients.py
-```
-
-Runs K-Means and PCA on the same patients with the diagnosis **hidden**. The
-algorithm still recovers groups that line up closely with the real diagnosis.
-
-**Look for:** the crosstab of cluster vs. actual diagnosis. Clustering can find
-structure without labels — but it cannot tell you which group is the dangerous
-one. Only labelled data does that.
-
-```bash
-uv run python scripts/04_cluster_patients.py --clusters 3
-uv run python scripts/04_cluster_patients.py --clusters 5
-```
-
-Three groups will always appear if you ask for three. That is the trap.
-
----
-
-## Step 5 — Deploy for local use
+## Part 3 — Serve it
 
 Two ways to serve the same model. Try both.
 
@@ -261,7 +238,7 @@ never creates one, and it must not.
 Three things to be able to say out loud:
 
 1. Show one live prediction, from the app or the API.
-2. Your confusion matrix from Step 3, and which metric you would optimise.
+2. Your confusion matrix, and which metric you would optimise — with a reason.
 3. **One reason this model is not safe to use on real patients.**
 
 The third is the one that matters — and "we need more data" does not count.
@@ -287,16 +264,15 @@ fhir-ml-workshop/
 │   └── DATA_CARD.md       <- where it came from, what each column means
 ├── scripts/
 │   ├── 00_build_dataset.py     <- instructor only, already run for you
-│   ├── 01_fhir_to_table.py     <- Step 1
-│   ├── 02_explore_data.py      <- Step 2
-│   ├── 03_train_model.py       <- Step 3
-│   └── 04_cluster_patients.py  <- Step 4
+│   ├── 01_fhir_to_table.py     <- Part 1
+│   ├── 02_explore_data.py      <- Part 2a
+│   └── 03_train_model.py       <- Part 2b
 ├── app/
-│   ├── streamlit_app.py   <- Step 5a and 5c
-│   └── api.py             <- Step 5b, plus /fhir variants
+│   ├── streamlit_app.py   <- Part 3, in the browser
+│   └── api.py             <- Part 3, over HTTP (plus the /fhir variants)
 ├── slides/                <- the deck used in the session
-├── models/                <- model.joblib appears here after Step 3
-└── reports/               <- figures appear here after Steps 2 and 4
+├── models/                <- model.joblib appears here after Part 2b
+└── reports/               <- figures appear here after Parts 2a and 2b
 ```
 
 ---
@@ -306,7 +282,7 @@ fhir-ml-workshop/
 | Problem | Fix |
 |---|---|
 | `uv: command not found` | Close and reopen the terminal after installing uv |
-| `models/model.joblib not found` | Run Step 3 first |
+| `models/model.joblib not found` | Run Part 2b first |
 | `ModuleNotFoundError` | You forgot `uv run` in front of the command |
 | Port 8501 or 8000 already in use | Add `--server.port 8502` (Streamlit) or `--port 8001` (uvicorn) |
 | Nothing opens in the browser | Type the URL manually: `localhost:8501` |

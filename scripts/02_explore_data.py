@@ -8,8 +8,6 @@ Prints a profile of the dataset and saves two figures into reports/.
 
 Look at a different measurement without editing anything:
 
-    --feature area        plot 'area' instead of the strongest feature
-    --bins 12             coarser histogram
 """
 
 import argparse
@@ -34,9 +32,6 @@ def rule(title: str) -> None:
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Profile the patient table.")
-    p.add_argument("--feature", default=None,
-                   help="which measurement to plot (default: the strongest one)")
-    p.add_argument("--bins", type=int, default=30, help="histogram bins")
     return p.parse_args()
 
 
@@ -92,28 +87,11 @@ def main() -> None:
     fig.savefig(REPORTS / "01_class_balance.png", dpi=150)
     plt.close(fig)
 
-    # ---- figure 2: distribution of one feature ------------------------------
-    top = args.feature or corr.index[0]
-    if top not in features:
-        raise SystemExit(f"No such feature '{top}'. Choose from: {', '.join(features)}")
-    fig, ax = plt.subplots(figsize=(6, 4))
-    ax.hist(df.loc[df[TARGET] == 0, top], bins=args.bins, alpha=0.7, label="benign", color="#4C9F70")
-    ax.hist(df.loc[df[TARGET] == 1, top], bins=args.bins, alpha=0.7, label="malignant", color="#C64B4B")
-    ax.set_xlabel(top)
-    ax.set_ylabel("patients")
-    ax.set_title(f"'{top}' by diagnosis")
-    ax.legend()
-    fig.tight_layout()
-    fig.savefig(REPORTS / "01_top_feature.png", dpi=150)
-    plt.close(fig)
-
     rule("DONE")
-    print("Figures saved to reports/01_class_balance.png and reports/01_top_feature.png")
+    print("Figure saved to reports/01_class_balance.png")
     print("\nDiscuss with your group:")
     print("  - Which feature would a clinician actually be able to measure?")
     print("  - If a column recorded the treatment given, could we use it? (No - leakage.)")
-    print("\nPlot a different measurement:")
-    print("  uv run python scripts/02_explore_data.py --feature area")
     print("\nNext:  uv run python scripts/03_train_model.py")
 
 

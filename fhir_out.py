@@ -1,7 +1,7 @@
 """
 The return journey: a prediction, written back as FHIR.
 
-Step 1 went FHIR Bundle -> table. This goes the other way: model output ->
+Part 1 went FHIR Bundle -> table. This goes the other way: model output ->
 a FHIR resource a hospital system could actually file against the patient.
 
 The resource is a **RiskAssessment**, not a Condition, and that distinction is

@@ -141,20 +141,6 @@ def evaluate(name: str, pipe: Pipeline, X_test, y_test, threshold: float) -> dic
     return scores
 
 
-def threshold_table(pipe, X_test, y_test) -> None:
-    """The same fitted model, read off at several thresholds."""
-    proba = pipe.predict_proba(X_test)[:, 1]
-    print("\n  threshold   missed   false alarms   recall   precision")
-    for t in (0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80):
-        pred = (proba >= t).astype(int)
-        tn, fp, fn, tp = confusion_matrix(y_test, pred, labels=[0, 1]).ravel()
-        r = recall_score(y_test, pred, zero_division=0)
-        p = precision_score(y_test, pred, zero_division=0)
-        print(f"     {t:.2f}       {fn:>3}          {fp:>4}        {r:.3f}     {p:.3f}")
-    print("\n  Nothing was retrained between those rows. One model, seven answers.")
-    print("  Choosing the row is a clinical decision, not an engineering one.")
-
-
 def compare_to_baseline(name: str, scores: dict, args) -> None:
     diffs = changed(args)
     if not diffs:
@@ -249,10 +235,7 @@ def main() -> None:
     best_pipe = fitted[best_name]
     print(f"\nSelected: {best_name}")
 
-    rule("5. THE SAME MODEL AT DIFFERENT THRESHOLDS")
-    threshold_table(best_pipe, X_test, y_test)
-
-    rule("6. WHAT YOUR SETTINGS DID")
+    rule("5. WHAT YOUR SETTINGS DID")
     compare_to_baseline(best_name, results[best_name], args)
 
     # ------------------------------------------------------------ roc curve
@@ -286,7 +269,7 @@ def main() -> None:
     rule("DONE")
     print("Model saved  -> models/model.joblib")
     print("ROC curve    -> reports/02_roc_curve.png")
-    print("\nTry one of these, then read section 6 again:")
+    print("\nTry one of these, then read the last section again:")
     print("  uv run python scripts/03_train_model.py --no-engineered")
     print("  uv run python scripts/03_train_model.py --test-size 0.8")
     print("\nNext:  uv run streamlit run app/streamlit_app.py")
