@@ -218,6 +218,15 @@ Worth knowing in case anyone compares the code against the programme blurb.
 - The blurb says **"public health datasets"**. Everything here is clinical.
   There is no population-level or epidemiological component.
 
+## The one figure worth putting on the projector
+
+`reports/explore_correlations.png` — the block of dark green in the top-left
+corner is `radius`, `perimeter` and `area` at r ≈ 0.99 with one another. It is
+the honest answer to a question the flags block raises later and never resolves
+on its own: dropping the two engineered columns changes nothing because
+`compactness_ratio` was built out of columns that were already telling the model
+the same thing. Two minutes on this heatmap buys you that explanation.
+
 ## Common failures in the room
 
 | Symptom | Cause |

@@ -484,6 +484,12 @@ Give them five minutes. Then pull the room back and take the cards in order.
 not on any slide because we never defined it — do not open that door unless
 you have a spare three minutes.)*
 
+> "And you already saw why, in section seven of the profiling step. `radius`,
+> `perimeter` and `area` correlate with each other at 0.99 — one measurement
+> written three ways. `compactness_ratio` is perimeter squared over area, built
+> out of two columns the model already had and already knew were saying the same
+> thing. There was no new information in it to find."
+
 > "They bought us nothing measurable. That is a real result and you report it.
 > The alternative is a career of quietly keeping features because you liked the
 > idea — and this is the single most useful habit you can take out of today:

@@ -1,16 +1,17 @@
 """
-STEP 2 - EXPLORE THE DATASET
+EXPLORE THE DATASET
 Look at the data before you model it.
 
     uv run python scripts/02_explore_data.py
 
-Prints a profile of the dataset and saves two figures into reports/.
-
-Look at a different measurement without editing anything:
-
+Seven sections of profiling and two figures in reports/. Three of the sections
+are checks rather than descriptions: a leakage tripwire, a look at how alike
+the measurements are to each other, and the gap between the two groups. Those
+are the ones that would change what you do next.
 """
 
 import argparse
+import itertools
 from pathlib import Path
 
 import matplotlib
@@ -75,7 +76,45 @@ def main() -> None:
     rule("5. WHICH FEATURES SEPARATE THE TWO GROUPS?")
     corr = df[features + [TARGET]].corr()[TARGET].drop(TARGET).sort_values(ascending=False)
     print(corr.round(3).to_string())
-    print(f"\nStrongest signal: '{corr.index[0]}'")
+    print(f"\nStrongest signal: '{corr.index[0]}' at {corr.iloc[0]:.3f}")
+
+    LEAK = 0.95
+    suspects = corr[corr.abs() > LEAK]
+    if suspects.empty:
+        print(f"\nLeakage check: nothing correlates with the answer above {LEAK:.2f}.")
+        print("That is what you want to see. A column at 0.99 is not a good")
+        print("feature - it is usually the answer itself, arriving early: a")
+        print("treatment code, a billing code, a follow-up date. Run this check")
+        print("on every dataset before you are pleased with a result.")
+    else:
+        print(f"\nLEAKAGE WARNING: {', '.join(suspects.index)} sit above {LEAK:.2f}.")
+        print("Find out where each one comes from before training anything.")
+
+    rule("6. HOW FAR APART ARE THE TWO GROUPS?")
+    grp = df.groupby(TARGET)[features].mean().T
+    grp.columns = ["benign", "malignant"]
+    grp["x"] = (grp["malignant"] / grp["benign"]).round(2)
+    grp = grp.sort_values("x", ascending=False)
+    print(grp.round(3).to_string())
+    print("\nRead the right-hand column: malignant nuclei are about")
+    print(f"{grp['x'].iloc[0]:.1f}x the {grp.index[0]} of benign ones. A clinician can")
+    print("argue with a number like that. They cannot argue with a correlation")
+    print("coefficient, which is why this table is the one to show them.")
+
+    rule("7. HOW ALIKE ARE THE MEASUREMENTS?")
+    cm = df[features].corr().abs()
+    top = sorted(
+        ((a, b, cm.loc[a, b]) for a, b in itertools.combinations(features, 2)),
+        key=lambda t: t[2], reverse=True)[:5]
+    for a, b, r in top:
+        print(f"  {a:<20} {b:<20} r = {r:.3f}")
+    print("\nThe top pairs are not three measurements. They are one measurement")
+    print("written three ways - a bigger nucleus has a bigger radius, a bigger")
+    print("perimeter and a bigger area, necessarily.")
+    print("\nKeep this in mind when 03 lets you drop the two engineered columns")
+    print("and nothing changes. compactness_ratio is perimeter squared over area:")
+    print("built out of two columns the model already had, and already knew were")
+    print("telling it the same thing.")
 
     # ---- figure 1: class balance -------------------------------------------
     fig, ax = plt.subplots(figsize=(4, 4))
@@ -84,11 +123,28 @@ def main() -> None:
     ax.set_title("Class balance")
     ax.set_ylabel("patients")
     fig.tight_layout()
-    fig.savefig(REPORTS / "01_class_balance.png", dpi=150)
+    fig.savefig(REPORTS / "explore_class_balance.png", dpi=150)
+    plt.close(fig)
+
+    # ---- figure 2: how alike the measurements are ---------------------------
+    fig, ax = plt.subplots(figsize=(7, 6))
+    im = ax.imshow(cm.values, cmap="Greens", vmin=0, vmax=1)
+    ax.set_xticks(range(len(features)), features, rotation=90, fontsize=8)
+    ax.set_yticks(range(len(features)), features, fontsize=8)
+    for i in range(len(features)):
+        for j in range(len(features)):
+            v = cm.values[i, j]
+            ax.text(j, i, f"{v:.2f}", ha="center", va="center", fontsize=6,
+                    color="white" if v > 0.6 else "#333333")
+    ax.set_title("How alike are the measurements?  (|correlation|)", fontsize=11)
+    fig.colorbar(im, ax=ax, shrink=0.8)
+    fig.tight_layout()
+    fig.savefig(REPORTS / "explore_correlations.png", dpi=150)
     plt.close(fig)
 
     rule("DONE")
-    print("Figure saved to reports/01_class_balance.png")
+    print("Figures  -> reports/explore_class_balance.png")
+    print("         -> reports/explore_correlations.png")
     print("\nDiscuss with your group:")
     print("  - Which feature would a clinician actually be able to measure?")
     print("  - If a column recorded the treatment given, could we use it? (No - leakage.)")

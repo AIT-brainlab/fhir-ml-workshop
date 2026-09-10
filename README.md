@@ -123,13 +123,25 @@ trains on this same table.
 uv run python scripts/02_explore_data.py
 ```
 
-Profiles the 569 patients: what the columns mean, whether anything is missing,
-how imbalanced the classes are, and which measurements separate malignant from
-benign tumours. Saves one figure into `reports/`.
+Profiles the 569 patients across seven sections and saves two figures into
+`reports/`. Three of the sections are checks, not descriptions:
+
+- **Leakage tripwire** — is anything correlated with the answer above 0.95? Here
+  nothing is, and that is the point. A column at 0.99 is usually the answer
+  arriving early: a treatment code, a billing code, a follow-up date.
+- **How far apart the two groups are** — malignant nuclei have about 3.5× the
+  concavity of benign ones. A clinician can argue with a number like that.
+- **How alike the measurements are** — `radius`, `perimeter` and `area` sit at
+  r ≈ 0.99 with each other. They are not three measurements; they are one
+  measurement written three ways.
 
 **Look for:** the majority-class baseline it prints. If 63% of patients are
 benign, a model that predicts "benign" every time is already 63% accurate — and
-completely useless. This is why the next step does not report accuracy alone.
+completely useless. This is why the next part does not report accuracy alone.
+
+**Then keep the last section in mind.** When you drop the two engineered columns
+later and nothing changes, this is why: `compactness_ratio` is perimeter² / area,
+built out of two columns the model already had.
 
 ---
 
@@ -272,7 +284,7 @@ fhir-ml-workshop/
 │   └── api.py             <- Part 3, over HTTP (plus the /fhir variants)
 ├── slides/                <- the deck used in the session
 ├── models/                <- model.joblib appears here after Part 2b
-└── reports/               <- figures appear here after Parts 2a and 2b
+└── reports/               <- explore_*.png, train_*.png, baseline.json
 ```
 
 ---

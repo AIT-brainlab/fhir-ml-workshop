@@ -249,7 +249,7 @@ def main() -> None:
     ax.set_title("ROC curve - test set")
     ax.legend(loc="lower right")
     fig.tight_layout()
-    fig.savefig(REPORTS / "02_roc_curve.png", dpi=150)
+    fig.savefig(REPORTS / "train_roc_curve.png", dpi=150)
     plt.close(fig)
 
     # ----------------------------------------------------------------- save
@@ -268,7 +268,7 @@ def main() -> None:
 
     rule("DONE")
     print("Model saved  -> models/model.joblib")
-    print("ROC curve    -> reports/02_roc_curve.png")
+    print("ROC curve    -> reports/train_roc_curve.png")
     print("\nTry one of these, then read the last section again:")
     print("  uv run python scripts/03_train_model.py --no-engineered")
     print("  uv run python scripts/03_train_model.py --test-size 0.8")
