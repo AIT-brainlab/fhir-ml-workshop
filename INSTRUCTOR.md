@@ -59,30 +59,28 @@ is the job.** Everything downstream is a library call.
 
 | Minutes | What | Slides |
 |---|---|---|
-| 0–10 | Recap of v2 vs FHIR, why not an LLM | 1–5 |
-| 10–20 | `uv sync`, fix the two or three laptops that fail | 6 |
-| 20–40 | Step 1 — FHIR to table, and where the data really came from | 7–10 |
-| 40–52 | Break the feed on purpose | 11 |
-| 52–60 | Step 2 — read the output, majority-class baseline | 12, 13 |
-| 60–73 | What learning is, what a model is, how it is judged | 14–17 |
-| 73–82 | Step 3 — the two models, and which error costs more | 18, 19 |
-| 82–94 | Four flags — the longest hands-on block | 20, 21 |
-| 94–100 | Step 4 — clustering, short | 22 |
-| 100–114 | Step 5 — the app, the API, then the result back as FHIR | 23–26 |
-| 114–120 | Limitations + the "why is this not safe" question | 27 |
+| 0–10 | Recap of v2 vs FHIR, the agenda, why not an LLM | 1–4 |
+| 10–20 | `uv sync`, fix the two or three laptops that fail | 5 |
+| 20–44 | **Part 1** — FHIR to table, and where the data really came from | 6–9 |
+| 44–54 | **Part 2** opens — the two columns we wrote ourselves | 10, 11 |
+| 54–72 | What a model is, and was that one split fair | 12, 13 |
+| 72–86 | Train it, then turn a knob — the longest hands-on block | 14 |
+| 86–100 | What those numbers meant: hold-out, the trap, the error, the results | 15–18 |
+| 100–114 | **Part 3** — the app, the API, then the result back as FHIR | 19–23 |
+| 114–120 | Close — the "why is this not safe" question, no slide | — |
 
 Slide 2 recaps v2 versus FHIR in thirty seconds — after lunch, half the room
-has lost it. Slide 10 is the honesty slide: the measurements are real, the FHIR wrapping is
-ours, and the assert is a round-trip test. Slide 14 defines what learning is at
-all; slides 15–17 and 20–21 carry the rest of the machine-learning explanation. The morning
+has lost it. Slide 9 is the honesty slide: the measurements are real, the FHIR wrapping is
+ours, and the assert is a round-trip test. Slides 12–13 and 15–17 carry the
+machine-learning explanation the morning did not. The morning
 lecture is FHIR and AI-readiness, so this afternoon is the first time the room
 hears what a model, a hold-out set or a recall figure actually is. Skipping
 them means opening on a results table nobody can read.
 
-If you are behind schedule, **cut Step 4 first** — slide 22 can be shown and
-talked over in thirty seconds. Then trim slide 20 from four commands to two and
-run them from the front. Never cut Step 1 (it is the link to the morning),
-never cut slides 10, 14–16, never cut slides 23–24 (the guided app walkthrough and
+If you are behind schedule, **trim slide 14 first** — two commands down to one,
+run from the front. Then skip the pipeline half of slide 13; it is the only part of
+Part 2 the results do not depend on. Never cut Step 1 (it is the link to the morning),
+never cut slides 9, 11, 15–17, never cut slides 20–21 (the guided app walkthrough and
 the reference screen), and never cut the last 10 minutes.
 
 ## Everything is a flag now
@@ -94,9 +92,7 @@ answers `--help`. The ones worth demonstrating from the front:
 |---|---|
 | `01_fhir_to_table.py --drop area` | a column vanishes, nothing errors |
 | `01_fhir_to_table.py --rename radius:tumor_rad` | a renamed code silently breaks the join |
-| `03_train_model.py --threshold 0.3` | missed 3 → 1, false alarms 5 → 7, accuracy unmoved |
 | `03_train_model.py --no-engineered` | recall, precision and accuracy **identical** |
-| `03_train_model.py --missing 0.3` | no error at all, and 2 more tumours missed |
 | `03_train_model.py --test-size 0.8` | missed 3 → 21 while **accuracy rises** to 0.941 |
 | `04_cluster_patients.py --clusters 5` | five groups appear because you asked |
 
@@ -161,7 +157,9 @@ patients as they move it: 0.20 misses 7 tumours and alarms 39 healthy patients;
   be reapplied identically at prediction time. `common.add_features` exists so
   training and serving cannot drift apart — that drift is a real and common
   patient-safety bug.
-- **Clustering finds structure, not meaning.** K-Means recovers the diagnosis
+- **Clustering finds structure, not meaning.** (No slide of its own any more —
+  `04_cluster_patients.py` is an optional extra for a group that finishes early.)
+  K-Means recovers the diagnosis
   boundary (ARI ≈ 0.65) without ever seeing a label, but cannot say which
   cluster is dangerous.
 - **Close the loop at Step 5c.** They read a FHIR resource this morning and
@@ -180,19 +178,19 @@ Logistic Regression wins on recall and is the model that gets saved.
 | accuracy | 0.930 | 0.930 |
 | precision | 0.886 | 0.925 |
 | recall | **0.929** | 0.881 |
-| ROC-AUC | 0.987 | 0.984 |
+| ROC-AUC (terminal only, not on any slide) | 0.987 | 0.984 |
 
 Random Forest misses 5 malignant tumours, Logistic Regression misses 3 — a
 concrete, teachable reason to pick the simpler model.
 
-Step 1: 20 bundles, 19 complete rows, `texture` missing for P0010, comparison
+Step 1: 569 bundles, 568 complete rows, `texture` missing for P0010, comparison
 against `patients.csv` returns `True`.
 
 Clustering: silhouette 0.395, ARI vs. true diagnosis 0.646 (k=2);
 ARI 0.483 at k=3 and 0.324 at k=5.
 
 Cross-validation, 5 folds on the 455 training patients, recall: mean 0.900,
-spread ±0.040, lowest fold 0.853, highest 0.941. Slide 17 uses this to make
+spread ±0.040, lowest fold 0.853, highest 0.941. Slide 13 uses this to make
 the point that one split is not evidence.
 
 Numbers are fixed by `random_state=42`, so they will be identical on every

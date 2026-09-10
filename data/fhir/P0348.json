@@ -1,0 +1,441 @@
+{
+  "resourceType": "Bundle",
+  "id": "bundle-P0348",
+  "type": "collection",
+  "timestamp": "1995-06-15T14:00:00+07:00",
+  "entry": [
+    {
+      "fullUrl": "http://fhir-ml-workshop.example.org/fhir/Patient/P0348",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "P0348",
+        "identifier": [
+          {
+            "system": "http://fhir-ml-workshop.example.org/fhir/sid/workshop-mrn",
+            "value": "P0348"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "http://fhir-ml-workshop.example.org/fhir/Observation/P0348-radius",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "P0348-radius",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "imaging",
+                "display": "Imaging"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://fhir-ml-workshop.example.org/fhir/CodeSystem/fna-morphometry",
+              "code": "radius",
+              "display": "Nucleus radius (mean)"
+            }
+          ],
+          "text": "Nucleus radius (mean)"
+        },
+        "subject": {
+          "reference": "Patient/P0348"
+        },
+        "effectiveDateTime": "1995-06-15",
+        "valueQuantity": {
+          "value": 14.76,
+          "unit": "pixel"
+        }
+      }
+    },
+    {
+      "fullUrl": "http://fhir-ml-workshop.example.org/fhir/Observation/P0348-texture",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "P0348-texture",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "imaging",
+                "display": "Imaging"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://fhir-ml-workshop.example.org/fhir/CodeSystem/fna-morphometry",
+              "code": "texture",
+              "display": "Nucleus texture, SD of grey-scale (mean)"
+            }
+          ],
+          "text": "Nucleus texture, SD of grey-scale (mean)"
+        },
+        "subject": {
+          "reference": "Patient/P0348"
+        },
+        "effectiveDateTime": "1995-06-15",
+        "valueQuantity": {
+          "value": 14.74,
+          "unit": "1",
+          "system": "http://unitsofmeasure.org",
+          "code": "1"
+        }
+      }
+    },
+    {
+      "fullUrl": "http://fhir-ml-workshop.example.org/fhir/Observation/P0348-perimeter",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "P0348-perimeter",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "imaging",
+                "display": "Imaging"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://fhir-ml-workshop.example.org/fhir/CodeSystem/fna-morphometry",
+              "code": "perimeter",
+              "display": "Nucleus perimeter (mean)"
+            }
+          ],
+          "text": "Nucleus perimeter (mean)"
+        },
+        "subject": {
+          "reference": "Patient/P0348"
+        },
+        "effectiveDateTime": "1995-06-15",
+        "valueQuantity": {
+          "value": 94.87,
+          "unit": "pixel"
+        }
+      }
+    },
+    {
+      "fullUrl": "http://fhir-ml-workshop.example.org/fhir/Observation/P0348-area",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "P0348-area",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "imaging",
+                "display": "Imaging"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://fhir-ml-workshop.example.org/fhir/CodeSystem/fna-morphometry",
+              "code": "area",
+              "display": "Nucleus area (mean)"
+            }
+          ],
+          "text": "Nucleus area (mean)"
+        },
+        "subject": {
+          "reference": "Patient/P0348"
+        },
+        "effectiveDateTime": "1995-06-15",
+        "valueQuantity": {
+          "value": 668.7,
+          "unit": "pixel2"
+        }
+      }
+    },
+    {
+      "fullUrl": "http://fhir-ml-workshop.example.org/fhir/Observation/P0348-smoothness",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "P0348-smoothness",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "imaging",
+                "display": "Imaging"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://fhir-ml-workshop.example.org/fhir/CodeSystem/fna-morphometry",
+              "code": "smoothness",
+              "display": "Nucleus smoothness (mean)"
+            }
+          ],
+          "text": "Nucleus smoothness (mean)"
+        },
+        "subject": {
+          "reference": "Patient/P0348"
+        },
+        "effectiveDateTime": "1995-06-15",
+        "valueQuantity": {
+          "value": 0.08875,
+          "unit": "1",
+          "system": "http://unitsofmeasure.org",
+          "code": "1"
+        }
+      }
+    },
+    {
+      "fullUrl": "http://fhir-ml-workshop.example.org/fhir/Observation/P0348-compactness",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "P0348-compactness",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "imaging",
+                "display": "Imaging"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://fhir-ml-workshop.example.org/fhir/CodeSystem/fna-morphometry",
+              "code": "compactness",
+              "display": "Nucleus compactness (mean)"
+            }
+          ],
+          "text": "Nucleus compactness (mean)"
+        },
+        "subject": {
+          "reference": "Patient/P0348"
+        },
+        "effectiveDateTime": "1995-06-15",
+        "valueQuantity": {
+          "value": 0.0778,
+          "unit": "1",
+          "system": "http://unitsofmeasure.org",
+          "code": "1"
+        }
+      }
+    },
+    {
+      "fullUrl": "http://fhir-ml-workshop.example.org/fhir/Observation/P0348-concavity",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "P0348-concavity",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "imaging",
+                "display": "Imaging"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://fhir-ml-workshop.example.org/fhir/CodeSystem/fna-morphometry",
+              "code": "concavity",
+              "display": "Nucleus concavity (mean)"
+            }
+          ],
+          "text": "Nucleus concavity (mean)"
+        },
+        "subject": {
+          "reference": "Patient/P0348"
+        },
+        "effectiveDateTime": "1995-06-15",
+        "valueQuantity": {
+          "value": 0.04608,
+          "unit": "1",
+          "system": "http://unitsofmeasure.org",
+          "code": "1"
+        }
+      }
+    },
+    {
+      "fullUrl": "http://fhir-ml-workshop.example.org/fhir/Observation/P0348-concave_points",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "P0348-concave_points",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "imaging",
+                "display": "Imaging"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://fhir-ml-workshop.example.org/fhir/CodeSystem/fna-morphometry",
+              "code": "concave_points",
+              "display": "Nucleus concave points (mean)"
+            }
+          ],
+          "text": "Nucleus concave points (mean)"
+        },
+        "subject": {
+          "reference": "Patient/P0348"
+        },
+        "effectiveDateTime": "1995-06-15",
+        "valueQuantity": {
+          "value": 0.03528,
+          "unit": "1",
+          "system": "http://unitsofmeasure.org",
+          "code": "1"
+        }
+      }
+    },
+    {
+      "fullUrl": "http://fhir-ml-workshop.example.org/fhir/Observation/P0348-symmetry",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "P0348-symmetry",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "imaging",
+                "display": "Imaging"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://fhir-ml-workshop.example.org/fhir/CodeSystem/fna-morphometry",
+              "code": "symmetry",
+              "display": "Nucleus symmetry (mean)"
+            }
+          ],
+          "text": "Nucleus symmetry (mean)"
+        },
+        "subject": {
+          "reference": "Patient/P0348"
+        },
+        "effectiveDateTime": "1995-06-15",
+        "valueQuantity": {
+          "value": 0.1521,
+          "unit": "1",
+          "system": "http://unitsofmeasure.org",
+          "code": "1"
+        }
+      }
+    },
+    {
+      "fullUrl": "http://fhir-ml-workshop.example.org/fhir/Observation/P0348-fractal_dimension",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "P0348-fractal_dimension",
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "imaging",
+                "display": "Imaging"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://fhir-ml-workshop.example.org/fhir/CodeSystem/fna-morphometry",
+              "code": "fractal_dimension",
+              "display": "Nucleus fractal dimension (mean)"
+            }
+          ],
+          "text": "Nucleus fractal dimension (mean)"
+        },
+        "subject": {
+          "reference": "Patient/P0348"
+        },
+        "effectiveDateTime": "1995-06-15",
+        "valueQuantity": {
+          "value": 0.05912,
+          "unit": "1",
+          "system": "http://unitsofmeasure.org",
+          "code": "1"
+        }
+      }
+    },
+    {
+      "fullUrl": "http://fhir-ml-workshop.example.org/fhir/Condition/P0348-dx",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "P0348-dx",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "verificationStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+              "code": "confirmed"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://fhir-ml-workshop.example.org/fhir/CodeSystem/breast-mass-diagnosis",
+              "code": "benign",
+              "display": "Benign breast mass (biopsy confirmed)"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/P0348"
+        },
+        "recordedDate": "1995-06-15"
+      }
+    }
+  ]
+}

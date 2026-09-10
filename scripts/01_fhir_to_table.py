@@ -175,9 +175,10 @@ def main() -> None:
     print(f"Patients compared : {len(comparable)} (rows with no gaps)")
     print(f"Columns compared  : {len(shared)}")
     print(f"Identical to patients.csv : {identical}")
-    print("\ndata/patients.csv is exactly this, run over all 569 patients.")
-    print("We pre-flattened it so the afternoon fits in two hours - but you")
-    print("have now seen the step that produced it.")
+    print("\nThat is the training table. Every Bundle on disk was written out")
+    print("of data/patients.csv before the workshop, so flattening them lands")
+    print("back exactly where they started - which is the only reason this")
+    print("check is possible at all. Step 3 trains on this same table.")
 
     rule("DONE")
     print("In a real project this step would also handle:")

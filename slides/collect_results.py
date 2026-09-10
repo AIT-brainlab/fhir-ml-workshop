@@ -232,53 +232,15 @@ def main() -> None:
             raise RuntimeError(f"could not parse the diff table for {key}")
         r["ablations"][key] = got
 
-    ablate("threshold30", "--threshold", "0.30")
     ablate("no_engineered", "--no-engineered")
     ablate("starved", "--test-size", "0.8")
-    ablate("missing30", "--missing", "0.30")
     r["ablations"]["starved_test_size"] = 0.8
     starved_tr, starved_te = train_test_split(
         X, y, test_size=0.8, stratify=y, random_state=SEED)[:2]
     r["ablations"]["starved_n_train"] = len(starved_tr)
     r["ablations"]["starved_n_test"] = len(starved_te)
-    r["ablations"]["missing30_fraction"] = 0.30
-    r["ablations"]["missing30_column"] = "texture"
 
     run("03_train_model.py")   # leave models/model.joblib as the default fit
-
-    # ------------------------- 8b. the best rule a human could write by hand
-    # Slide 5 says "we tried N rules and kept the best". This is that search,
-    # run for real: every pair of measurements, every cut point on a grid,
-    # scored against the known answers. It is machine learning written as a
-    # for-loop, which is the point the slide makes.
-    import itertools
-
-    grid = np.linspace(0.30, 0.90, 25)
-    tried = 0
-    best = None
-    for f1, f2 in itertools.combinations(RAW_FEATURES, 2):
-        for c1 in np.quantile(df[f1], grid):
-            hit1 = (df[f1] > c1).to_numpy()
-            for c2 in np.quantile(df[f2], grid):
-                pred = (hit1 & (df[f2] > c2).to_numpy()).astype(int)
-                tried += 1
-                wrong = int((pred != y_all).sum())
-                if best is None or wrong < best[0]:
-                    best = (wrong, f1, float(c1), f2, float(c2), pred)
-
-    wrong, f1, c1, f2, c2, pred = best
-    r["hand_rule"] = {
-        "rules_tried": tried,
-        "feature_1": f1, "cut_1": round(c1, 3),
-        "feature_2": f2, "cut_2": round(c2, 3),
-        "wrong": wrong,
-        "n": int(len(y_all)),
-        "accuracy": round(1 - wrong / len(y_all), 3),
-        "missed": int(((pred == 0) & (y_all == 1)).sum()),
-        "false_alarms": int(((pred == 1) & (y_all == 0)).sum()),
-        "dials": 2,
-        "model_dials": len(feature_names),
-    }
 
     # ------------------------------------------------------- 9. environment
     lock = (ROOT / "uv.lock").read_text()

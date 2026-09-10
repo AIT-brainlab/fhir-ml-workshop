@@ -17,9 +17,10 @@ measurements, renames the columns to snake_case, adds a synthetic
 
 ## The FHIR Bundles in `data/fhir/`
 
-The same script re-encodes 20 of these patients (10 malignant, 10 benign) as
-FHIR R4 `collection` Bundles, so the afternoon can start where the morning
-lecture ended. Each Bundle holds:
+The same script re-encodes **every** patient as a FHIR R4 `collection` Bundle —
+569 files, one per row of `patients.csv` — so the afternoon can start where the
+morning lecture ended and Step 1 rebuilds the whole training table rather than a
+demo slice. Each Bundle holds:
 
 | Resource | Count | Carries |
 |---|---|---|
@@ -29,7 +30,9 @@ lecture ended. Each Bundle holds:
 
 These Bundles are a **faithful re-encoding of the same numbers**, not a separate
 data source. `scripts/01_fhir_to_table.py` flattens them and asserts the result
-is identical to the matching rows of `patients.csv`.
+is identical to `patients.csv`, row for row and value for value. P0010 is the
+single exception: it is shipped without its `texture` Observation on purpose, so
+students watch a `NaN` appear with no error raised.
 
 Three deliberate choices worth knowing about:
 

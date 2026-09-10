@@ -79,6 +79,9 @@ they are read.
 
 ### B1. A hospital stops sending a measurement
 
+*(These two used to have a slide of their own. They are here now — run them
+in a gap, or when you finish a section early.)*
+
 ```bash
 uv run python scripts/01_fhir_to_table.py --drop area
 ```
@@ -95,18 +98,6 @@ uv run python scripts/01_fhir_to_table.py --rename radius:tumor_rad
 
 - Look at the column list. Where did `radius` go?
 - The proof section still passes. Why is that *worse* than failing?
-
-### B3. Missing values reach the model
-
-```bash
-uv run python scripts/03_train_model.py --missing 0.30
-```
-
-30% of the `texture` column is deleted before training. The imputer in the
-pipeline handles it silently.
-
-- Read section 6. What happened to recall?
-- Would you have noticed, if the script had not told you?
 
 ---
 
@@ -157,10 +148,12 @@ uv run python scripts/03_train_model.py --no-engineered
 ### C5. Combine two changes
 
 ```bash
-uv run python scripts/03_train_model.py --missing 0.4 --test-size 0.6
+uv run python scripts/03_train_model.py --test-size 0.6 --seed 7
 ```
 
 - Can you predict the direction of the change before you press enter?
+- Run it again with `--seed 11`. How much of what you just saw was the change,
+  and how much was the shuffle?
 
 ---
 

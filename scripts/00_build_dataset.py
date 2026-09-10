@@ -5,8 +5,12 @@ Produces two things from the Breast Cancer Wisconsin (Diagnostic) dataset
 that ships inside scikit-learn, so the workshop needs no internet access:
 
   data/patients.csv   the flat table used for modelling (all 569 patients)
-  data/fhir/*.json    20 FHIR R4 Bundles, the shape the data would arrive in
-                      from a real hospital system
+  data/fhir/*.json    one FHIR R4 Bundle per patient - the shape the data
+                      would arrive in from a real hospital system
+
+Every patient is exported, so scripts/01_fhir_to_table.py rebuilds the whole
+of patients.csv from the Bundles. Nothing in the workshop trains on rows the
+students did not flatten themselves.
 
 Run once before the class:
     uv run python scripts/00_build_dataset.py
@@ -22,15 +26,11 @@ ROOT = Path(__file__).resolve().parents[1]
 CSV = ROOT / "data" / "patients.csv"
 FHIR_DIR = ROOT / "data" / "fhir"
 
-BASE = "http://gip-nvsu.example.org/fhir"
+BASE = "http://fhir-ml-workshop.example.org/fhir"
 CODE_SYSTEM = f"{BASE}/CodeSystem/fna-morphometry"
 DX_SYSTEM = f"{BASE}/CodeSystem/breast-mass-diagnosis"
 MRN_SYSTEM = f"{BASE}/sid/workshop-mrn"
 EFFECTIVE = "1995-06-15"   # synthetic; see data/DATA_CARD.md
-
-# How many patients get exported as FHIR. The other 549 are already flattened
-# in patients.csv - 20 is enough to read on screen during class.
-N_BUNDLES = 20
 
 # One patient is deliberately shipped with a missing Observation, so students
 # see a NaN appear when they flatten it. Real FHIR extracts always have gaps.
@@ -196,11 +196,8 @@ def bundle_for(row: pd.Series) -> dict:
 
 
 def build_fhir(df: pd.DataFrame) -> None:
-    # Stratified sample so students see both diagnoses, deterministic order.
-    half = N_BUNDLES // 2
-    sample = pd.concat(
-        [df[df["malignant"] == 1].head(half), df[df["malignant"] == 0].head(half)]
-    ).sort_values("patient_id")
+    # Every patient, so Step 1 reconstructs patients.csv exactly.
+    sample = df.sort_values("patient_id")
 
     FHIR_DIR.mkdir(parents=True, exist_ok=True)
     for old in FHIR_DIR.glob("*.json"):

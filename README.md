@@ -88,8 +88,10 @@ uv run python -c "import sklearn; print(sklearn.__version__)"
 uv run python scripts/01_fhir_to_table.py
 ```
 
-This is the bridge from this morning. `data/fhir/` holds 20 real FHIR R4
-Bundles — the format a hospital system would actually hand you. Each Bundle
+This is the bridge from this morning. `data/fhir/` holds one FHIR R4 Bundle per
+patient, 569 of them — the format a hospital system would actually hand you. The
+measurements inside them are real; the FHIR wrapping is ours, written out of
+`data/patients.csv` before the workshop (see `data/DATA_CARD.md`). Each Bundle
 contains one `Patient`, ten `Observation` resources, and one `Condition`
 carrying the biopsy result.
 
@@ -108,8 +110,10 @@ uv run python scripts/01_fhir_to_table.py --drop area
 uv run python scripts/01_fhir_to_table.py --rename radius:tumor_rad
 ```
 
-The script then proves the rows it produced are identical to `data/patients.csv`,
-which is the same flattening run over all 569 patients.
+The script then proves the table it produced is identical, value for value, to
+`data/patients.csv` — a round-trip test, since that file is where the Bundles
+were written from. P0010 is the one exception; it ships with a gap. Step 3
+trains on this same table.
 
 ---
 
@@ -148,8 +152,6 @@ off at seven different thresholds. Nothing is retrained between those rows.
 a baseline, and every later run prints what your change did to it:
 
 ```bash
-uv run python scripts/03_train_model.py --threshold 0.30   # catch more, alarm more
-uv run python scripts/03_train_model.py --missing 0.30     # delete 30% of a column
 uv run python scripts/03_train_model.py --test-size 0.8    # starve it of training data
 uv run python scripts/03_train_model.py --seed 7           # a different random split
 uv run python scripts/03_train_model.py --no-engineered    # drop the two shape features
@@ -280,7 +282,7 @@ fhir-ml-workshop/
 ├── common.py              <- shared feature engineering + prediction logic
 ├── fhir_out.py            <- the return trip: prediction -> FHIR RiskAssessment
 ├── data/
-│   ├── fhir/              <- 20 FHIR R4 Bundles (Step 1 input)
+│   ├── fhir/              <- 569 FHIR R4 Bundles, one per patient
 │   ├── patients.csv       <- the flat table, all 569 patients
 │   └── DATA_CARD.md       <- where it came from, what each column means
 ├── scripts/

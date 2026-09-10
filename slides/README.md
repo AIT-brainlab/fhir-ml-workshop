@@ -60,7 +60,7 @@ was already in the deck:
 
 ```bash
 python3 slides/clone_page.py --page 13 --after 13   # ONE OBJECT
-python3 slides/clone_page.py --page 3  --after 16   # FOUR FLAGS
+python3 slides/clone_page.py --page 3  --after 16   # TWO FLAGS
 python3 slides/clone_page.py --page 11 --after 17   # ACCURACY ROSE
 python3 slides/apply_results.py                     # fills the text
 ```

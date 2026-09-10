@@ -8,8 +8,8 @@ Then change one thing and run it again. Every setting below is a command-line
 flag, so you never have to edit the file:
 
     --threshold 0.30      call malignant above this probability   (default 0.50)
+                          the Streamlit slider is the same setting, live
     --test-size 0.50      hold out half the patients instead of a fifth
-    --missing 0.15        delete 15% of one column, like a real extract
     --seed 7              a different random split
     --forest-trees 20     cripple the Random Forest
     --no-engineered       drop the two engineered shape features
@@ -31,7 +31,6 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
@@ -58,7 +57,6 @@ BASELINE = REPORTS / "baseline.json"
 DEFAULTS = dict(
     threshold=DEFAULT_THRESHOLD,
     test_size=0.2,
-    missing=0.0,
     seed=42,
     forest_trees=300,
     engineered=True,
@@ -79,8 +77,6 @@ def parse_args() -> argparse.Namespace:
                    help="probability above which a tumour is called malignant")
     p.add_argument("--test-size", type=float, default=DEFAULTS["test_size"],
                    help="fraction of patients held out for testing")
-    p.add_argument("--missing", type=float, default=DEFAULTS["missing"],
-                   help="fraction of the 'texture' column to delete before training")
     p.add_argument("--seed", type=int, default=DEFAULTS["seed"],
                    help="random seed for the split and the models")
     p.add_argument("--forest-trees", type=int, default=DEFAULTS["forest_trees"],
@@ -97,7 +93,6 @@ def changed(args) -> dict:
     now = dict(
         threshold=args.threshold,
         test_size=args.test_size,
-        missing=args.missing,
         seed=args.seed,
         forest_trees=args.forest_trees,
         engineered=not args.no_engineered,
@@ -193,16 +188,8 @@ def main() -> None:
     args = parse_args()
     MODELS.mkdir(exist_ok=True)
     REPORTS.mkdir(exist_ok=True)
-    rng = np.random.default_rng(args.seed)
-
     # ---------------------------------------------------------------- data
     df = load_dataset()
-
-    if args.missing > 0:
-        n = int(len(df) * args.missing)
-        idx = rng.choice(df.index, size=n, replace=False)
-        df.loc[idx, "texture"] = np.nan
-        print(f"[--missing] deleted 'texture' for {n} of {len(df)} patients")
 
     df = add_features(df)
     feature_names = [c for c in df.columns if c not in ("patient_id", TARGET)]
@@ -300,10 +287,9 @@ def main() -> None:
     print("Model saved  -> models/model.joblib")
     print("ROC curve    -> reports/02_roc_curve.png")
     print("\nTry one of these, then read section 6 again:")
-    print("  uv run python scripts/03_train_model.py --threshold 0.30")
-    print("  uv run python scripts/03_train_model.py --missing 0.30")
+    print("  uv run python scripts/03_train_model.py --no-engineered")
     print("  uv run python scripts/03_train_model.py --test-size 0.8")
-    print("\nNext:  uv run python scripts/04_cluster_patients.py")
+    print("\nNext:  uv run streamlit run app/streamlit_app.py")
 
 
 if __name__ == "__main__":

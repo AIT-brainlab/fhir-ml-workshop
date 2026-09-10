@@ -3,7 +3,7 @@
   "test_size": 0.2,
   "threshold": 0.5,
   "fhir": {
-    "n_bundles": 20,
+    "n_bundles": 569,
     "example_id": "P0001",
     "resources_in_example": 12,
     "n_patient": 1,
@@ -119,38 +119,6 @@
       "compactness_ratio",
       "concavity_per_radius"
     ],
-    "threshold30": {
-      "recall": {
-        "baseline": 0.929,
-        "now": 0.976,
-        "delta": 0.047
-      },
-      "precision": {
-        "baseline": 0.886,
-        "now": 0.854,
-        "delta": -0.032
-      },
-      "accuracy": {
-        "baseline": 0.93,
-        "now": 0.93,
-        "delta": 0.0
-      },
-      "roc_auc": {
-        "baseline": 0.987,
-        "now": 0.984,
-        "delta": -0.003
-      },
-      "missed": {
-        "baseline": 3,
-        "now": 1,
-        "delta": -2
-      },
-      "false_alarms": {
-        "baseline": 5,
-        "now": 7,
-        "delta": 2
-      }
-    },
     "no_engineered": {
       "recall": {
         "baseline": 0.929,
@@ -215,57 +183,9 @@
         "delta": 1
       }
     },
-    "missing30": {
-      "recall": {
-        "baseline": 0.929,
-        "now": 0.881,
-        "delta": -0.048
-      },
-      "precision": {
-        "baseline": 0.886,
-        "now": 0.881,
-        "delta": -0.005
-      },
-      "accuracy": {
-        "baseline": 0.93,
-        "now": 0.912,
-        "delta": -0.018
-      },
-      "roc_auc": {
-        "baseline": 0.987,
-        "now": 0.982,
-        "delta": -0.005
-      },
-      "missed": {
-        "baseline": 3,
-        "now": 5,
-        "delta": 2
-      },
-      "false_alarms": {
-        "baseline": 5,
-        "now": 5,
-        "delta": 0
-      }
-    },
     "starved_test_size": 0.8,
     "starved_n_train": 113,
-    "starved_n_test": 456,
-    "missing30_fraction": 0.3,
-    "missing30_column": "texture"
-  },
-  "hand_rule": {
-    "rules_tried": 28125,
-    "feature_1": "perimeter",
-    "cut_1": 77.36,
-    "feature_2": "concave_points",
-    "cut_2": 0.048,
-    "wrong": 45,
-    "n": 569,
-    "accuracy": 0.921,
-    "missed": 20,
-    "false_alarms": 25,
-    "dials": 2,
-    "model_dials": 12
+    "starved_n_test": 456
   },
   "env": {
     "n_packages": 66,

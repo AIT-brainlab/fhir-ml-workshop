@@ -6,13 +6,13 @@ point is that you never have to invent a sentence while thirty people watch.
 
 ---
 
-## Twenty-seven slides, six steps
+## Twenty-three slides, three parts
 
 | | minutes |
 |---|---|
 | Students typing, running, reading their own output | ~68 |
 | You talking | ~52 |
-| Slides | 27 |
+| Slides | 23 |
 
 Slightly over 2 minutes of speaking per slide on average, but the average is
 not the point: five pages are one-line punctuation you leave up for forty
@@ -20,25 +20,20 @@ seconds, and four are hands-on blocks you stand on for ten minutes each. The
 terminal is the teaching material; the slides are punctuation.
 
 **Every step is numbered on the slide it belongs to**, and every command they
-have to type is on one. Page 3 lists all of them in one place, and the step
-pages repeat the relevant one at the top. A student who only ever looks at the
+have to type is on one, and Page 3 groups the afternoon into the three parts
+they belong to. A student who only ever looks at the
 projector still knows where they are and what to run.
 
-| Step | What | Slides |
+| Part | What | Slides |
 |---|---|---|
-| — | Recap of HL7 v2 and FHIR | 2 |
-| — | What "learning" actually means | 14 |
-| 0 | Install uv, build the environment | 6 |
-| 1 | FHIR Bundles into a table | 7, 8, 9, 10, 11 |
-| 2 | Profile the data | 12, 13 |
-| 3 | What a model is and how it is judged | 15, 16, 17 |
-| 3 | Train, compare, choose an error | 18, 19 |
-| 3 | Change one setting and re-read | 20, 21 |
-| 4 | Cluster without labels | 22 |
-| 5 | Serve it — app, API, then back as FHIR | 23, 24, 25, 26 |
-| — | Limitations and close | 27 |
+| — | Cover, recap of HL7 v2 and FHIR, agenda, ten numbers | 1–4 |
+| 0 | Install uv, build the environment | 5 |
+| 1 | **To a table** — Bundles in, rows out, and where the data came from | 6–9 |
+| 2 | **To a model** — the columns we wrote, train, judge, turn knobs | 10–18 |
+| 3 | **To a service** — app, HTTP, and back into the record as FHIR | 19–23 |
+| — | Close, no slide | — |
 
-Pages 14–17 and 20–21 exist because the morning was FHIR, not machine
+Pages 12–13 and 15–17 exist because the morning was FHIR, not machine
 learning. Nobody in the room has been told what a model is, what a hold-out
 set is for, or why anyone would report four numbers instead of one. Without
 those five pages the afternoon opens on a results table, which teaches
@@ -82,7 +77,7 @@ Write on the whiteboard before they sit down:
 
 ---
 
-## 00:00 – 00:10 · Framing  (slides 1–5)
+## 00:00 – 00:10 · Framing  (slides 1–4)
 
 **Slide 1 — cover**
 
@@ -123,27 +118,21 @@ bolted onto the front of a hospital that is still running v2 underneath.
 
 If nobody has a question, move straight on.
 
-**Slide 3 — five steps, one model**
+**Slide 3 — agenda**
 
-Walk the five lines. Then:
+Three boxes. Read the headings, not the bodies — the bodies are there for the
+people who look back at the projector ten minutes from now.
 
-> "Step 1 is the unusual one. Most machine learning courses hand you a clean
-> CSV on a plate. Clinical data never arrives that way, and the distance
-> between what a hospital sends and what scikit-learn eats is where most health
-> AI projects quietly fail. So we start there."
+> "Three moves this afternoon. One: to a table — FHIR Bundles become rows and
+> columns. Two: to a model — train two, judge them on the error that costs a
+> patient, then turn four knobs and watch. Three: to a service — serve it on
+> your own laptop and write the prediction back into the record as FHIR."
 
-**Slide 4 — four stages**
+> "Every line of code is supplied. Your job is to run it, read what comes back,
+> and decide whether the result deserves trust. That last part is the only one
+> I am marking."
 
-> "Any clinical AI system has four stages. A source system that speaks FHIR.
-> A feature table. A model. And something a clinician can actually act on."
-
-Point at stage 3.
-
-> "That box, and only that box, is machine learning. It is also the box that
-> takes the least time in a real project, because it is library calls. Boxes two
-> and four are where projects die. We are doing all four this afternoon."
-
-**Slide 5 — ten numbers**
+**Slide 4 — ten numbers**
 
 This gets asked every single time, so answer it before anybody raises it.
 
@@ -172,17 +161,18 @@ Then the lower card.
 > "Now the honest half. There *is* a job here that a language model would be
 > very good at, and it is the one we are about to do by hand in Step 1 — reading
 > a free-text pathology report into structured fields, and mapping a local code
-> onto LOINC. That is stage two from the last slide. It is still an open
+> onto LOINC. That is feature engineering, which has a page of its own after
+> the break. It is still an open
 > problem, and solving it is worth more than another percent of accuracy on
 > stage three."
 
-*Timing check: you should be starting slide 6 at 00:10.*
+*Timing check: you should be starting slide 5 at 00:10.*
 
 ---
 
-## 00:10 – 00:20 · Step 0, get everyone running  (slide 6)
+## 00:10 – 00:20 · Step 0, get everyone running  (slide 5)
 
-**Slide 6 — install uv first**
+**Slide 5 — install uv first**
 
 **Do not let anyone type `uv sync` yet.** Two things have to be true first.
 
@@ -229,18 +219,48 @@ When most screens are green:
 
 ---
 
-## 00:20 – 00:40 · Step 1, Bundles become rows  (slides 7, 8, 9, 10)
+## 00:20 – 00:44 · Part 1, Bundles become rows  (slides 6, 7, 8, 9)
 
-**Slide 7 — section divider**
+**Slide 6 — section divider · PART 1, to a table**
 
 > "Everything from here is this morning's material, executed."
 
-**Slide 8 — one patient, twelve resources**
+**Slide 7 — one patient, twelve resources**
 
-Switch to the browser tab with `P0001.json` open. Scroll it slowly.
+Read the lead-in line first. Do not say "twelve" until the three rows are done.
 
-> "This is one patient. Twelve resources describe them: one Patient, ten
-> Observations, one Condition."
+> "A patient is not one record. In FHIR it is a bag of small linked objects —
+> each one is called a resource, each one stands on its own, and each one points
+> back at the same person."
+
+Then the three rows, in order.
+
+> "`Patient` — who this is. In our data that is an identifier and nothing else:
+> no name, no age, no sex. Remember that when we get to fairness."
+
+> "`Observation` — one measurement each, ten of them. These are the columns of
+> the table we are about to build."
+
+> "`Condition` — the biopsy result. That is the label, the thing we predict."
+
+Only now the card.
+
+> "One, ten and one. Twelve resources for one patient, in one file — and that
+> is a small bundle. A real chart has hundreds."
+
+Then walk the table on the right. Read three or four codes out loud, not all
+ten — the point is that each one is a separate resource with a name.
+
+> "These ten are the Observations. `radius`, `texture`, `perimeter` — every one
+> of them arrives as its own object, and every one becomes a column. Nobody
+> measured these by hand: they were computed off a digitised image of the cells
+> from a needle biopsy."
+
+> "There is no LOINC code for any of them, because LOINC does not cover image
+> morphometry. They travel under a local code instead, and that is not an
+> exotic problem — it is the normal one."
+
+Now switch to the browser tab with `P0001.json` open. Scroll it slowly.
 
 > "Notice three things. `code` says *what* was measured — the column name comes
 > from the coded concept, not from a position in a file. `subject` points back
@@ -251,7 +271,7 @@ Switch to the browser tab with `P0001.json` open. Scroll it slowly.
 > we come back to it at the end and it turns out to be the most important thing
 > on the slide."
 
-**Slide 9 — flattening**
+**Slide 8 — flattening**
 
 > "Fifty lines of Python turn that into one row per patient. There is no
 > library call for this. Somebody writes it, by hand, for every source system
@@ -273,12 +293,24 @@ Give them 90 seconds to read their own output, then drive from the front.
 > yourself how you would ever have found out — and the honest answer is that
 > you would not, until somebody noticed the model had quietly got worse."
 
-> "Section four proves the twenty rows you just built are identical to the
-> 569-row CSV we shipped. Same procedure, run over everybody."
+> "Section four. 569 Bundles went in, 569 rows came out, and every one of them
+> matches `data/patients.csv` value for value — except P0010, which has the
+> hole we just looked at."
+
+> "Two flags in `EXERCISES.md` break this on purpose: `--drop area` makes a
+> hospital stop sending a measurement, and `--rename` makes one rename a code.
+> Neither raises an error. The second one is worse — the check still passes,
+> because it only compares the columns that still match. A pipeline that fails
+> loudly gets fixed on Tuesday; this one gets fixed three months after somebody
+> notices the model got worse. Run them in the gaps."
+
+> "That matters more than it sounds. What is on your screen is not a demo
+> slice. It is the exact table the model trains on in half an hour. Nothing in
+> this workshop was flattened for you behind the scenes."
 
 ---
 
-**Slide 10 — real or made up?**
+**Slide 9 — real or made up?**
 
 Answer this before a student works it out and wonders what else was glossed
 over. One minute.
@@ -291,8 +323,8 @@ Read the top row of the diagram, left to right.
 > research dataset from one American hospital in the 1990s. That is what the
 > model will train on."
 
-> "The FHIR files you just opened, I wrote. That script took twenty of those
-> rows and packaged them as Bundles. Real numbers, our wrapping."
+> "The FHIR files you just opened, I wrote. That script took all 569 rows and
+> packaged each one as a Bundle. Real numbers, our wrapping."
 
 Then the red dashed line.
 
@@ -307,116 +339,58 @@ Then the red dashed line.
 If asked why only 20: 569 Bundles is 6,800 resources and nobody can read that.
 Twenty is enough to see the shape and to hide one broken record in.
 
-## 00:40 – 00:52 · Break the feed on purpose  (slide 11)
+## 00:44 – 00:54 · Part 2 opens, and the columns we wrote  (slides 10, 11)
 
-**Slide 11 — what breaks once the feed is real**
+**Slide 10 — section divider · PART 2, to a model**
 
-> "Everything works perfectly on the twenty Bundles I prepared for you. Let's
-> stop that. Type this."
+> "You have a table. Nothing you have done so far is machine learning. That
+> starts now."
 
-```bash
-uv run python scripts/01_fhir_to_table.py --drop area
-```
+**Slide 11 — feature engineering**
 
-> "A hospital upgraded their LIS and stopped sending one measurement. Look at
-> your column count. Eleven instead of twelve. Did anything go wrong on your
-> screen? No. Would your model notice? It would produce numbers for every
-> patient, all of them wrong, and never complain."
+Ninety seconds, and it is a set-up, not a result. Do not tell them yet that it
+did not work.
 
-Then:
+> "One thing has to be defined before we go on, because nobody has given you a
+> definition. Feature engineering is writing *new columns* out of the ones
+> you were sent. No new data arrives from anywhere. You do arithmetic on what
+> you already have, because the raw columns do not say the thing you care
+> about."
 
-```bash
-uv run python scripts/01_fhir_to_table.py --rename radius:tumor_rad
-```
+> "The Bundle carried ten measurements. The model is about to train on twelve.
+> The other two, we wrote."
 
-> "Now a hospital renamed a code. Where did `radius` go? The proof section still
-> says the comparison passed — because it compared the columns that still match.
-> Passing silently is worse than failing loudly. A pipeline that fails loudly
-> gets fixed on Tuesday. This one gets fixed after somebody notices the model
-> got worse, three months later."
+Point at the two shapes.
 
-> "The files on your disk were never modified, by the way. The damage happens in
-> memory as they are read. Check `git status` if you don't believe me."
+> "These two have exactly the same area. `radius`, `perimeter` and `area` all
+> struggle to tell them apart — but perimeter squared over area is 12.6 for the
+> round one and 33.4 for the ragged one. That ratio describes shape without
+> caring about size, and a small but very irregular mass is exactly the one you
+> worry about."
 
-Walk the third card on the slide (duplicated patients) verbally — no command
-for it.
+> "So we wrote two: `compactness_ratio` and `concavity_per_radius`. Four lines
+> of Python in `common.py`. No hospital sent them; nobody could have. This is
+> what feature engineering is, and it is a large part of what a data scientist
+> is actually paid to do."
 
----
-
-## 00:52 – 01:00 · Step 2, profile before you model  (slides 13, 12)
-
-```bash
-uv run python scripts/02_explore_data.py
-```
-
-**Slide 13 — 62.7%**  ← show this *before* discussing any result
-
-> "Before anybody shows you a metric this afternoon, including me, here is the
-> number to keep in your head. 357 of our 569 patients are benign. A model that
-> answers 'benign' for every single patient scores 62.7% accuracy — and detects
-> nothing at all. Zero tumours. That is what accuracy is worth here."
-
-**Slide 12 — fit to model?**
-
-> "We wrote this assessment down *before* fitting anything. Complete, labelled,
-> no leakage, workably balanced. Two blockers."
-
-> "No demographics. Not one. No age, no sex, no ethnicity, no comorbidity. So
-> the subgroup fairness analysis that any regulator would demand before this
-> touched a patient — we cannot run it. Not 'we did not bother'. We *cannot*."
-
-> "Second, one time point, no follow-up. This is diagnosis, not prognosis. If
-> anyone asks whether this predicts patient outcomes: it does not, and the data
-> makes that impossible."
-
-If time allows, one flag:
-
-```bash
-uv run python scripts/02_explore_data.py --feature fractal_dimension
-```
-
-> "Some measurements barely separate the groups at all. Should they be in the
-> model?"
+> "Remember that we were pleased with ourselves. We come back to it."
 
 ---
 
-## 01:00 – 01:13 · What a model is  (slides 14, 15, 16, 17)
+## 00:54 – 01:12 · What a model is, and was the split fair  (slides 12, 13)
 
 **Nobody has defined any of this yet.** The morning was FHIR. Do not skip to
-the results table — three slides, ten minutes, no typing.
+the results table — three slides, eight minutes, no typing.
 
-**Slide 14 — learning a rule**
+**Slide 12 — two models**
 
-Thirty seconds of idea, and the whole afternoon rests on it. Do not lecture it.
+Read the line under the title first. It is the only definition of "model"
+anybody gets today.
 
-> "Before anything else, what does it actually mean for a machine to *learn*?"
-
-Point at the histogram.
-
-> "I took the 569 patients whose biopsy answer we already know, and I tried
-> every simple rule I could build — every pair of measurements, every cut
-> point. Twenty-eight thousand of them. That is the whole picture: each bar is
-> a rule, and how many patients it got wrong."
-
-Point at the red line, then at the scatter below.
-
-> "This was the best one. Perimeter above 77, concave points above 0.048.
-> It gets 45 of 569 wrong."
-
-> "That search *is* machine learning. Not magic — a for-loop that tries things
-> and keeps what works. What this afternoon's model adds is scale: twelve dials
-> instead of two, tuned continuously instead of guessed, and it hands back a
-> probability instead of yes or no. That last part is where the whole second
-> half of today lives."
-
-Two footnotes if a sharp student pushes back — do not volunteer them:
-
-- That rule was picked while looking at all 569 answers, so 45 flatters it.
-  Slide 16 is where we deal with that.
-- In these two dimensions the hand rule is genuinely competitive with the
-  model. The model earns its place on twelve measurements, not two.
-
-**Slide 15 — two models**
+> "A model is a rule found from examples that already have the answer. Feed it
+> a patient it has never seen and it hands back a probability. *Training* is the
+> search for that rule — it is not the memorising of answers, and that
+> distinction is the whole reason we hold patients back."
 
 > "A model here is one function. Ten numbers in, one probability out. We build
 > it by showing it patients whose biopsy result we already know and letting it
@@ -439,53 +413,139 @@ Point at Model B.
 > to two dimensions so they fit on a slide. Hold on to one question: is the
 > flexible one better? We will have the answer in ten minutes."
 
-**Slide 16 — how we measure**
+**Slide 13 — was that split fair?  (k-fold cross-validation)**
 
-> "Before you believe any number, ask which patients it was measured on. We put
-> 114 of our 569 patients in a locked drawer, train on the other 455, and score
-> only the ones in the drawer. A model marking its own homework always looks
-> brilliant."
+The whole page is one question. Ask it before you answer it.
 
-Walk the four cells on the matrix, in this order, and do not name a metric
-until you have.
+> "We shuffled 569 patients once and locked 114 of them away. That is a *draw*,
+> not a measurement. What if the 114 we happened to hold back were the easy
+> ones? What if every awkward patient landed in training instead? Nothing
+> inside a single split can tell you — the number would look just as
+> convincing either way."
 
-> "Sixty-seven benign patients we correctly left alone. Five healthy patients
-> we sent for a biopsy they did not need. Thirty-nine tumours we caught. And
-> three — bottom left — three tumours we called benign and sent home. That is
-> the cell with a person in it."
+Let that sit. Then point at the five bars.
 
-> "Now the two fractions, and they come straight off the picture. Recall is the
-> bottom row: of all the tumours that were there, how many did we catch?
-> Thirty-nine out of forty-two, 0.929. Precision is the right-hand column: of
-> all the alarms we raised, how many were real? Thirty-nine out of forty-four,
-> 0.886. Accuracy just adds up the two green cells and treats every mistake as
-> the same size."
+> "So before the drawer is opened at all, the 455 training patients get cut
+> five ways and the model refitted five times, a different fifth held back each
+> round. Same model, same data. Recall comes out anywhere between 0.853 and
+> 0.941 depending on which patients it happened to see."
 
-**Slide 17 — one object**
+> "Mean 0.900, spread plus or minus 0.040. That spread is the honest width of
+> the answer. When somebody quotes you a single number to three decimals, this
+> is the question to ask them — and most of the time nobody has run it."
 
-> "Two things go wrong after the maths is finished, and both are on this slide."
+Only now the dashed box at the top, and keep it short.
 
-> "First: the median we use to fill a gap, and the mean we use to centre a
-> column, are *learned* from the training patients. They are part of the model.
-> Impute, scale, classify go into one object and get saved as one file. If your
-> app recalculates them from whatever data it happens to have, your app is
-> running a different model from the one you tested — and nothing anywhere will
-> raise an error. `common.py` exists in this repo so that cannot happen."
-
-> "Second: the five bars. Before the drawer is opened at all, the training half
-> gets cut five ways and the model refitted five times. Same model, same data,
-> and recall comes out anywhere between 0.853 and 0.941 depending on which
-> patients it happened to see. One split was never evidence."
+> "One more thing falls out of this. Each of those five refits has to relearn
+> the median that fills a gap and the mean that centres a column, from its own
+> patients only — otherwise the fold is scoring itself on numbers it helped
+> compute. That is why impute, scale and classify are saved as one object.
+> `common.py` exists so nobody can accidentally take them apart."
 
 ---
 
-## 01:13 – 01:22 · Step 3, train and choose  (slides 18, 19)
+## 01:12 – 01:26 · Train it, then change one thing  (slide 14)
+
+**The longest hands-on block of the afternoon. Ten minutes of typing, four of
+talking. Walk the room the whole time.**
+
+**Slide 14 — change one thing**
+
+**First, the plain run — everybody, now.** This is the baseline every later run
+is compared against, and nothing on this page works without it.
 
 ```bash
 uv run python scripts/03_train_model.py
 ```
 
-**Slide 18 — the two models**
+> "Twenty seconds. That is the whole of what people call machine learning. Do
+> not try to read the numbers yet — we spend the next three slides on what they
+> mean. For now just watch what happens when you change one thing."
+
+> "Two commands. Each one changes exactly one setting, and the script remembers
+> your first run, so section six prints the difference for you."
+
+> "Before you press enter, say out loud to the person next to you which
+> direction you think it moves. Then run it and find out whether you were
+> right."
+
+```bash
+uv run python scripts/03_train_model.py --no-engineered
+uv run python scripts/03_train_model.py --test-size 0.8
+```
+
+Give them five minutes. Then pull the room back and take the cards in order.
+
+> "One. Remember slide eleven — the two features we wrote ourselves, for
+> perfectly good clinical reasons, that a pathologist would have nodded at.
+> Drop them both. Every number the slides report comes back identical."
+
+*(If somebody is watching the terminal closely: ROC-AUC moves by 0.003. It is
+not on any slide because we never defined it — do not open that door unless
+you have a spare three minutes.)*
+
+> "They bought us nothing measurable. That is a real result and you report it.
+> The alternative is a career of quietly keeping features because you liked the
+> idea — and this is the single most useful habit you can take out of today:
+> test the thing you are proud of, and believe the answer."
+
+> "Two. Train on 113 patients instead of 455 and accuracy goes *up*, from
+> 0.930 to 0.941 — while missed tumours go from three to twenty-one. The two
+> runs are not even scored on the same patients. No single headline number
+> settles anything, and recall is the one with a person attached to it."
+
+---
+
+> "Hold both of those. In three slides you will know exactly which of those
+> numbers was the one that mattered — and it is not the one that moved least."
+
+---
+
+## 01:26 – 01:40 · What those numbers meant  (slides 15, 16, 17, 18)
+
+**Slide 15 — how we measure**
+
+The page is not a list of three definitions. It is one claim: *these three
+numbers disagree, and the disagreement is the whole story.*
+
+> "Before you believe any number, ask which patients it was measured on. We put
+> 114 of our 569 in a locked drawer, train on the other 455, and score only the
+> ones in the drawer. A model marking its own homework always looks brilliant."
+
+Then the three words, slowly. Do not define them with a matrix — define them
+with the question each one asks.
+
+> "Accuracy counts every mistake the same. Recall asks how many of the tumours
+> we caught. Precision asks how many of our alarms were real."
+
+> "Three numbers, three different questions, same model. Which one you report is
+> a decision somebody makes — and the next two slides are about making it."
+
+Two slides before anybody sees a result: what accuracy is worth here, and
+which of the two mistakes actually costs a patient. Then run it.
+
+**Slide 16 — 62.7%**  ← the last thing on screen before any number
+
+> "Before anybody shows you a metric this afternoon, including me, here is the
+> number to keep in your head. 357 of our 569 patients are benign. A model that
+> answers 'benign' for every single patient scores 62.7% accuracy — and detects
+> nothing at all. Zero tumours. That is what accuracy is worth here."
+
+**Slide 17 — which error?**
+
+> "These two mistakes are not the same size. A false negative sends a patient
+> home with an untreated malignancy; it surfaces months later, if ever, and it
+> is often irreversible. A false positive sends a healthy patient for a biopsy
+> they did not need; it costs money, it is frightening, and it is over in a
+> week."
+
+> "Accuracy weights those two equally. That is the whole problem."
+
+```bash
+uv run python scripts/03_train_model.py
+```
+
+**Slide 18 — the results**
 
 > "Accuracy: 0.930 and 0.930. Identical. On that metric these two models are
 > indistinguishable, which tells you accuracy is the wrong summary."
@@ -495,19 +555,11 @@ uv run python scripts/03_train_model.py
 > Same accuracy. Two more cancers. The simpler model wins, and it wins for a
 > reason you can explain to a doctor."
 
-> "So — the answer to the question from three slides ago. The three hundred
+> "So — the answer to the question the Model A / Model B slide left open, and
+> the numbers you already had on screen twenty minutes ago without knowing what
+> they meant. The three hundred
 > trees were more flexible and they were not better. They were worse at the one
 > thing we care about. Complexity is not a strategy."
-
-**Slide 19 — which error?**
-
-> "These two mistakes are not the same size. A false negative sends a patient
-> home with an untreated malignancy; it surfaces months later, if ever, and it
-> is often irreversible. A false positive sends a healthy patient for a biopsy
-> they did not need; it costs money, it is frightening, and it is over in a
-> week."
-
-> "Accuracy weights those two equally. That is the whole problem."
 
 **Then the threshold table — section 5 of their output.**
 
@@ -526,105 +578,15 @@ uv run python scripts/03_train_model.py
 
 ---
 
-## 01:22 – 01:34 · Four flags  (slides 20, 21)
+## 01:40 – 01:54 · Part 3, deployment + the two minutes that matter  (slides 19–23)
 
-**The longest hands-on block of the afternoon. Ten minutes of typing, four of
-talking. Walk the room the whole time.**
+**Slide 19 — section divider · PART 3, to a service**
 
-**Slide 20 — four flags**
+> "A model in a notebook helps nobody. The rest of the afternoon is about
+> putting it somewhere a clinician could reach it — and getting the answer back
+> into the record it came from."
 
-> "Four commands. Each one changes exactly one setting. The script remembers
-> your first run, so section six prints the difference for you — you do not
-> have to remember what the numbers were."
-
-> "Before you press enter, say out loud to the person next to you which
-> direction you think it moves. Then run it and find out whether you were
-> right."
-
-```bash
-uv run python scripts/03_train_model.py --threshold 0.30
-uv run python scripts/03_train_model.py --no-engineered
-uv run python scripts/03_train_model.py --missing 0.30
-uv run python scripts/03_train_model.py --test-size 0.8
-```
-
-Give them eight minutes. Then pull the room back and take the cards in order.
-
-> "One. Lower the threshold to 0.30 and we go from three missed tumours to one,
-> at the cost of two more false alarms. Accuracy does not move at all — it
-> cannot see the trade you just made."
-
-> "Two, and this is the honest one. We engineered two extra features by hand —
-> a shape ratio and a concavity per unit radius — for perfectly good clinical
-> reasons. Drop them both and recall, precision and accuracy are *identical*.
-> They bought us nothing measurable. That is a real result and you report it.
-> The alternative is a career of quietly keeping features because you liked the
-> idea."
-
-> "Three. Delete the texture measurement for thirty per cent of the patients.
-> No error. No warning. The imputer fills the holes with the median and the run
-> completes exactly as before — and two more tumours go home undetected. If you
-> only watched the terminal for red text you would have shipped that."
-
-> "Four is the one worth a slide of its own."
-
-**Slide 21 — accuracy rose, the model got worse**
-
-> "Train on 113 patients instead of 455. Accuracy goes *up*, from 0.930 to
-> 0.941. Missed tumours go from three to twenty-one."
-
-Let that sit for a moment.
-
-> "If accuracy were the number on your dashboard, that change looks like an
-> improvement and you would have promoted it."
-
-> "There is a second problem underneath, and it is worth saying out loud. Those
-> two accuracies were not even measured on the same patients — the second run
-> tested on 456 people, the first on 114. So they are not comparable at all.
-> Any single headline number, on its own, is a decoration."
-
-> "What would you put on the dashboard for a screening tool? Defend it."
-
----
-
-## 01:34 – 01:40 · Step 4, structure without labels  (slide 22)
-
-**Slide 22 — groups**
-
-```bash
-uv run python scripts/04_cluster_patients.py
-```
-
-> "This algorithm never saw a diagnosis. It grouped patients purely on the
-> measurements. Look at the crosstab — cluster one is almost entirely
-> malignant. Adjusted Rand Index against the true diagnosis: 0.65."
-
-> "The signal was already in the data. Labelling only told us which group to be
-> frightened of."
-
-> "That is genuinely useful when labels are expensive. Cluster first, then pay a
-> pathologist to adjudicate a handful of cases per group instead of the whole
-> cohort."
-
-Then:
-
-```bash
-uv run python scripts/04_cluster_patients.py --clusters 5
-```
-
-> "Ask for five groups and you get five groups. ARI drops from 0.65 to 0.32.
-> Can anyone give me a clinical name for group four? No? That is the trap. The
-> algorithm will always answer. It has no way of telling you the answer is
-> meaningless."
-
-*If you are behind schedule, this is the block to cut. Say the two sentences
-about K-Means and move on.*
-
----
-
-## 01:40 – 01:54 · Step 5, deployment + the two minutes that matter  (slides 23, 24)
-
-**Slide 23 — the app, four numbered moves**
+**Slide 20 — the app, four numbered moves**
 
 This slide is a walkthrough, not a summary. Read the four boxes out in order and
 wait for the room at each one. Nobody moves on until their screen shows a risk
@@ -660,7 +622,7 @@ uv run streamlit run app/streamlit_app.py
 
 > "The model has not changed once while you did that."
 
-**Slide 24 — what you see**
+**Slide 21 — what you see**
 
 Put this up the moment you finish reading move 1, and leave it up for the whole
 block. It is the reference screen.
@@ -676,7 +638,7 @@ Then, at the end of move 4, point at the two sidebars along the top.
 > "Somebody has to choose between those two panels. In a hospital, who? It is
 > not the person who wrote the code, and it is not the model."
 
-**Slide 25 — now over HTTP**
+**Slide 22 — now over HTTP**
 
 > "Same model, second front door. Start the API, then ask it one question
 > twice."
@@ -722,7 +684,7 @@ Finish the loop:
 
 ---
 
-**Slide 26 — full circle**
+**Slide 23 — full circle**
 
 The last thing they run, and the sentence the whole day was built to earn.
 
@@ -754,11 +716,13 @@ Provenance resource, a validated model, and a regulator.
 
 ---
 
-## 01:54 – 02:00 · Limitations and close  (slide 27)
+## 01:54 – 02:00 · Close  (stay on slide 23)
 
-**Slide 27 — limitations. Do not rush this. It is the whole point.**
+**No slide for this. Leave FULL CIRCLE up and talk over it.**
 
-Walk all three, slowly.
+There used to be a limitations page. It listed the three answers, which is
+exactly the wrong thing to do ninety seconds before asking the room to find
+them. Ask first. Use these only to fill a silence, one at a time.
 
 > "One. This model has never seen a patient from this region or this decade. It
 > was fitted on one American hospital's cases from the 1990s. That it transfers
@@ -780,6 +744,15 @@ Walk all three, slowly.
 > "The third one is what I am marking. 'We need more data' does not count.
 > Name something specific — a table, a column, a number you saw this afternoon."
 
+The three you are fishing for, if nobody gets there:
+
+- It has never seen a patient from this region or this decade — one American
+  hospital, the 1990s. That it transfers here is an assumption with no evidence.
+- It cannot be audited for bias, because the fields you would audit on are not
+  in the data. That is not a limitation you fix with more compute.
+- It predicts a *label*, not a disease — what a pathologist wrote down, errors
+  included, reproduced with perfect confidence.
+
 Ninety seconds per group. Push back hard on generic third answers:
 
 > "That is true of every model ever built. Tell me something that is true of
@@ -795,16 +768,15 @@ Ninety seconds per group. Push back hard on generic third answers:
 
 ## Recovery plans
 
-**Running 10 minutes late at 01:00** — cut Step 4 entirely (say the two K-Means
-sentences from slide 4's spot and move on). That buys 8 minutes.
+**Running 10 minutes late at 01:00** — skip the pipeline half of slide 13 and trim the
+flags block on slide 14 to one command. That buys 8 minutes.
 
-**Running 20 minutes late** — cut the flags block on slide 20 down to two
-commands, `--threshold 0.30` and `--test-size 0.8`, and run them yourself from
-the front. Keep slide 21; it is thirty seconds and it is the best point of the
-afternoon.
+**Running 20 minutes late** — cut the flags block on slide 14 down to one
+command, `--test-size 0.8`, and run it yourself from
+the front, and read the second card out rather than making them run it.
 
-**Never cut**: Step 1, slides 15–16 (without them the results mean nothing),
-slide 21, the P0216 demonstration, and the last 10 minutes.
+**Never cut**: Part 1, slides 15–17 (without them the results mean nothing),
+the P0216 demonstration, and the last 10 minutes.
 
 **Running early** — send them to `EXERCISES.md` section C and D. Or ask them to
 predict the direction of a change *before* pressing enter, then check.
@@ -836,7 +808,7 @@ than invent LOINC codes to make the demo look tidier. Real integration projects
 lose weeks to exactly this.
 
 **"Could this be deployed in a hospital in the Philippines?"**
-Not as it stands, and the honest answer is on slide 22. What it would take:
+Not as it stands, and that is the closing question of the day. What it would take:
 local data, local validation, demographics for a bias audit, prospective
 follow-up, and a regulatory pathway.
 

@@ -110,24 +110,60 @@ json_lines = [
 ]
 card("fhir_json.png", 1600, 1000, json_lines, title="data/fhir/P0001.json")
 
-# 2. Bundles -> rows, before and after
+# The three PART dividers use a near-black wall of real FHIR as wallpaper.
+# It is barely legible on purpose, but it is still on the projector and still
+# in the repo - so it is generated from the current Bundle rather than kept as
+# a screenshot taken once. A stale copy of this leaked an old base URL.
+def divider_wall(name="divider_json.png", w=2000, h=1327):
+    bg, fg = (11, 18, 14), (24, 38, 29)
+    img = Image.new("RGB", (w, h), bg)
+    d = ImageDraw.Draw(img)
+    f = ImageFont.truetype(MONO, 21)
+    text = (REPO / "data" / "fhir" / "P0001.json").read_text().split("\n")
+    y, pad = 40, 34
+    for line in text:
+        if y > h - 30:
+            break
+        d.text((pad, y), line.rstrip(), font=f, fill=fg)
+        y += 24
+    img.save(OUT / name)
+    print("  ", name, img.size)
+
+
+divider_wall()
+
+# 2. Bundles -> rows, before and after.
+# Values are read out of patients.csv rather than typed, and the file count is
+# read off disk, so the card can never claim a table the repo does not hold.
+_n_files = len(list((REPO / "data" / "fhir").glob("*.json")))
+
+
+def _row(pid):
+    r = df[df["patient_id"] == pid].iloc[0]
+    tex = "NaN" if pid == "P0010" else f"{r['texture']:.2f}"
+    return (f"{pid}{r['radius']:>14.2f}{tex:>10}{int(r['malignant']):>12}",
+            "#E8B04B" if pid == "P0010" else "#D9E4DC", pid == "P0010")
+
+
 flat = [
-    ("data/fhir/", LIME, True),
+    (f"data/fhir/{_n_files:>26} files", LIME, True),
     ("  P0001.json    12 resources", "#D9E4DC", False),
     ("  P0002.json    12 resources", "#D9E4DC", False),
-    ("  P0003.json    12 resources", "#D9E4DC", False),
     ("  ...", GREY, False),
-    ("  P0010.json    11 resources", "#E8B04B", True),
+    ("  P0010.json    11 resources   <- one Observation missing", "#E8B04B", True),
+    ("  ...", GREY, False),
+    (f"  P{_n_files:04d}.json    12 resources", "#D9E4DC", False),
     ("", GREY, False),
     ("           |  01_fhir_to_table.py", GREY, False),
     ("           v", GREY, False),
     ("", GREY, False),
-    ("patient_id   radius   texture   malignant", LIME, True),
-    ("P0001         17.99     10.38           1", "#D9E4DC", False),
-    ("P0002         20.57     17.77           1", "#D9E4DC", False),
-    ("P0003         19.69     21.25           1", "#D9E4DC", False),
+    (f"patient_id   radius   texture   malignant{_n_files:>10} rows", LIME, True),
+    _row("P0001"),
+    _row("P0002"),
     ("...", GREY, False),
-    ("P0010         15.34       NaN           1", "#E8B04B", True),
+    _row("P0010"),
+    ("...", GREY, False),
+    _row(f"P{_n_files:04d}"),
 ]
 card("flatten.png", 1780, 1000, flat, title="Bundles become rows")
 
@@ -594,67 +630,6 @@ card(
 )
 
 
-# ------------------------------------------------ slide 5: what learning is
-# One idea, two pictures: we tried every rule, and we kept the best one.
-# No human-versus-machine comparison here - in two dimensions the hand rule
-# actually wins, and that fight belongs on the results slide, not this one.
-import itertools as _it
-
-
-def _rule_errors():
-    """Every candidate rule and how many patients it got wrong."""
-    hr = R["hand_rule"]
-    lab = df[TARGET].to_numpy()
-    grid = np.linspace(0.30, 0.90, 25)
-    counts = []
-    for f1, f2 in _it.combinations(RAW_FEATURES, 2):
-        for c1 in np.quantile(df[f1], grid):
-            hit1 = (df[f1] > c1).to_numpy()
-            for c2 in np.quantile(df[f2], grid):
-                pred = (hit1 & (df[f2] > c2).to_numpy()).astype(int)
-                counts.append(int((pred != lab).sum()))
-    return np.array(counts), hr
-
-
-def search(ax):
-    counts, hr = _rule_errors()
-    ax.hist(counts, bins=60, color="#D7E2CF")
-    ax.axvline(hr["wrong"], color=ALERT, lw=2.2)
-    ax.annotate(f"best: {hr['wrong']} wrong",
-                xy=(hr["wrong"], ax.get_ylim()[1] * 0.62),
-                xytext=(hr["wrong"] + (counts.max() - counts.min()) * 0.18,
-                        ax.get_ylim()[1] * 0.80),
-                fontsize=12, color=ALERT, fontweight="bold",
-                arrowprops=dict(arrowstyle="-|>", color=ALERT, lw=1.6))
-    ax.set_xlabel("patients the rule gets wrong", fontsize=11, color=MUTED)
-    ax.set_yticks([]); ax.grid(False)
-    ax.set_title(f"all {len(counts):,} rules we tried", fontsize=13,
-                 loc="left", color=INK)
-    for sp in ax.spines.values():
-        sp.set_visible(False)
-
-
-def winner(ax):
-    hr = R["hand_rule"]
-    f1, f2 = hr["feature_1"], hr["feature_2"]
-    x, y = df[f1].to_numpy(), df[f2].to_numpy()
-    lab = df[TARGET].to_numpy()
-    ax.scatter(x[lab == 0], y[lab == 0], s=13, c=LIME, linewidths=0, label="benign")
-    ax.scatter(x[lab == 1], y[lab == 1], s=13, c=DARK, linewidths=0, label="malignant")
-    ax.axvline(hr["cut_1"], color=ALERT, lw=2.2)
-    ax.axhline(hr["cut_2"], color=ALERT, lw=2.2)
-    ax.set_xlabel(f1, fontsize=12, color=MUTED)
-    ax.set_ylabel(f2, fontsize=12, color=MUTED)
-    ax.set_xticks([]); ax.set_yticks([]); ax.grid(False)
-    ax.legend(loc="upper left", frameon=False, fontsize=11)
-    ax.set_title(f"the one we kept:  {f1} > {hr['cut_1']}  and  "
-                 f"{f2} > {hr['cut_2']}", fontsize=13, loc="left", color=INK)
-    for sp in ax.spines.values():
-        sp.set_visible(False)
-
-
-fig("learning_search.png", 5.56, 3.13, search)
-fig("learning_rule.png", 8.73, 4.91, winner)
 
 
 # ------------------------------- where the data actually came from
@@ -662,54 +637,33 @@ fig("learning_rule.png", 8.73, 4.91, winner)
 # first and the Bundles were written from it. Draw that, rather than let a
 # student work it out and wonder what else was glossed over.
 def provenance(ax):
-    ax.axis("off"); ax.set_xlim(0, 100); ax.set_ylim(0, 58)
+    """One lane, left to right. Three boxes, one idea."""
+    ax.axis("off"); ax.set_xlim(0, 100); ax.set_ylim(0, 46)
 
-    ax.add_patch(plt.Rectangle((1, 32), 98, 24, color="#F1F4EF"))
-    ax.text(3, 52.6, "PREPARED BEFORE THE SESSION", fontsize=10,
-            color=MUTED, fontweight="bold")
-    ax.text(3, 25.2, "WHAT YOU RUN THIS AFTERNOON", fontsize=10,
-            color=DARK, fontweight="bold")
-
-    def box(x, y, w, title, sub, fill, fg, h=11):
-        ax.add_patch(plt.Rectangle((x, y), w, h, color=fill))
-        # long names get a smaller face so nothing spills over the edge
-        fs = 11.5 if len(title) <= 12 else 9.6
-        ax.text(x + w / 2, y + h * 0.63, title, ha="center", va="center",
+    def box(x, w, title, sub, fill, fg):
+        ax.add_patch(plt.Rectangle((x, 18), w, 15, color=fill))
+        fs = 13 if len(title) <= 13 else 11
+        ax.text(x + w / 2, 26.5, title, ha="center", va="center",
                 fontsize=fs, fontweight="bold", color=fg)
-        ax.text(x + w / 2, y + h * 0.25, sub, ha="center", va="center",
-                fontsize=8.5, color="#DDE7DB" if fg == "white" else MUTED)
+        ax.text(x + w / 2, 21.5, sub, ha="center", va="center",
+                fontsize=9.5, color="#DDE7DB" if fg == "white" else MUTED)
 
-    def arrow(x0, x1, y, colour=MUTED, lw=1.7):
-        ax.annotate("", xy=(x1, y), xytext=(x0, y),
-                    arrowprops=dict(arrowstyle="-|>", color=colour, lw=lw))
+    box(2, 26, "patients.csv", "a published dataset", "#E4EBE4", INK)
+    box(37, 26, "data/fhir/", "569 Bundles", LIME, INK)
+    box(72, 26, "a table", "569 rows, 12 columns", DARK, "white")
 
-    # ---- top lane: everything that already happened
-    box(3, 36, 20, "scikit-learn", "569 real patients", "#E4EBE4", INK)
-    arrow(23.6, 27.4, 41.5)
-    box(28, 36, 20, "patients.csv", "the training table", "#E4EBE4", INK)
-    arrow(48.6, 52.4, 41.5)
-    box(53, 36, 22, "00_build_dataset.py", "wrote 20 as FHIR", "#E4EBE4", INK)
-    arrow(75.6, 79.4, 41.5)
-    box(80, 36, 17, "data/fhir/", "20 Bundles", LIME, INK)
+    for x0, x1, label, when in ((28.4, 36.4, "we wrote these", "before today"),
+                                (63.4, 71.4, "Step 1", "you run this")):
+        ax.annotate("", xy=(x1, 25.5), xytext=(x0, 25.5),
+                    arrowprops=dict(arrowstyle="-|>", color=DARK, lw=2))
+        ax.text((x0 + x1) / 2, 29.5, label, ha="center", fontsize=10.5,
+                color=DARK, fontweight="bold")
+        ax.text((x0 + x1) / 2, 14.5, when, ha="center", fontsize=9.5, color=MUTED)
 
-    # the Bundles are the one thing that crosses into the room
-    ax.annotate("", xy=(88.5, 21.4), xytext=(88.5, 35.6),
-                arrowprops=dict(arrowstyle="-|>", color=DARK, lw=2.2))
-
-    # ---- bottom lane: read right to left, the direction the room works in
-    box(80, 10, 17, "data/fhir/", "20 Bundles", LIME, INK)
-    arrow(79.6, 75.4, 15.5, DARK, 1.9)
-    box(52, 10, 23, "01_fhir_to_table.py", "Step 1", DARK, "white")
-    arrow(51.6, 47.4, 15.5, DARK, 1.9)
-    box(30, 10, 17, "a table", "20 rows", "#E4EBE4", INK)
-
-    # ---- the round trip
-    ax.plot([38.5, 38.5], [21.3, 35.7], color=ALERT, lw=2, ls=(0, (4, 3)))
-    ax.text(41, 28.5, "must match\nexactly", fontsize=10.5, color=ALERT,
-            fontweight="bold", ha="left", va="center", linespacing=1.35)
-
-    ax.text(50, 3, "The measurements are real. The FHIR wrapping is ours.",
-            ha="center", fontsize=11, color=INK)
+    ax.text(50, 5,
+            "FHIR is one of the raw formats a model cannot read.\n"
+            "Step 1 is what turns it into one it can.",
+            ha="center", fontsize=12, color=INK, linespacing=1.5)
 
 
 fig("provenance.png", 8.73, 4.91, provenance)
@@ -726,3 +680,216 @@ card(
     ],
     title="The round-trip check", size=34, line_gap=2.0,
 )
+
+
+# ---------------------------------------- every command, on one wide card
+# The agenda page carries this so a student who only ever looks at the
+# projector can still see the whole afternoon as seven lines.
+card(
+    "every_command.png", 1600, 900,
+    [
+        ("    uv sync", MUTED, False),
+        ("1   uv run python scripts/01_fhir_to_table.py", LIME, True),
+        ("2   uv run python scripts/02_explore_data.py", LIME, True),
+        ("    uv run python scripts/03_train_model.py", "#D9E4DC", False),
+        ("    uv run python scripts/04_cluster_patients.py", "#D9E4DC", False),
+        ("3   uv run streamlit run app/streamlit_app.py", LIME, True),
+        ("    uv run uvicorn app.api:app --reload", "#D9E4DC", False),
+    ],
+    title="EVERY COMMAND", size=30, line_gap=2.05,
+)
+
+
+# ------------------------------ what the two failure modes do to the table
+# Slide 10 used to explain this in prose. A table showing the actual damage
+# says it in two seconds: one column deleted by a flag, one cell that was
+# never sent. Both drawn from the real flattened output.
+def broken_table(ax):
+    cols = ["patient_id", "radius", "texture", "perimeter", "area", "malignant"]
+    # the first few rows, then the neighbourhood of P0010 - the patient whose
+    # texture Observation was never sent. Without it the arrow points at nothing.
+    keep = ["P0001", "P0002", "P0003", "P0004", "P0008", "P0009", "P0010"]
+    rows = df[df["patient_id"].isin(keep)].set_index("patient_id").loc[keep].reset_index()
+
+    ax.axis("off")
+    n = len(rows)
+    ax.set_xlim(0, 100); ax.set_ylim(0, n + 4.2)
+    xs = [4, 24, 38, 52, 68, 84]
+
+    # the column --drop area removes
+    ax.add_patch(plt.Rectangle((xs[4] - 5, 0.4), 14, n + 1.5, color="#F6DCD2"))
+
+    for x, c in zip(xs, cols):
+        ax.text(x, n + 1.9, c, fontsize=11.5, color=MUTED, fontweight="bold",
+                ha="left" if c == "patient_id" else "center",
+                family="DejaVu Sans Mono")
+
+    for i, (_, r) in enumerate(rows.iterrows()):
+        y = n - i
+        gone = r["patient_id"] == "P0010"
+        ax.text(xs[0], y, r["patient_id"], fontsize=11.5, color=INK,
+                family="DejaVu Sans Mono")
+        if r["patient_id"] == "P0008":       # mark the gap in the sequence
+            ax.text(xs[0], y + 0.52, "...", fontsize=11.5, color=MUTED,
+                    family="DejaVu Sans Mono")
+        for x, c in zip(xs[1:], cols[1:]):
+            if gone and c == "texture":
+                ax.text(x, y, "NaN", fontsize=11.5, color=ALERT, ha="center",
+                        fontweight="bold", family="DejaVu Sans Mono")
+                continue
+            val = f"{r[c]:.0f}" if c == "malignant" else f"{r[c]:.2f}"
+            faded = c == "area"
+            ax.text(x, y, val, fontsize=11.5, ha="center",
+                    color="#C0938A" if faded else INK, family="DejaVu Sans Mono")
+
+    ax.annotate("--drop area\ndeleted this column",
+                xy=(xs[4], n + 2.6), xytext=(xs[4] + 4, n + 3.8),
+                fontsize=11, color=ALERT, fontweight="bold", ha="left",
+                linespacing=1.35,
+                arrowprops=dict(arrowstyle="-|>", color=ALERT, lw=1.6))
+    ax.annotate("this Observation was\nnever in the Bundle",
+                xy=(xs[2] + 4, 1.0), xytext=(xs[2] - 24, -0.4),
+                fontsize=11, color=ALERT, fontweight="bold", ha="left",
+                linespacing=1.35,
+                arrowprops=dict(arrowstyle="-|>", color=ALERT, lw=1.6))
+    ax.text(50, n + 3.9, "the script exits 0 either way",
+            fontsize=12, color=INK, ha="center", style="italic")
+
+
+fig("broken_table.png", 8.73, 4.91, broken_table)
+
+# The ten Observations, spelled out. The room has just been told an Observation
+# is "one measurement"; this says which ten, in words a clinician would use.
+# Codes are read from common.RAW_FEATURES so the list can never drift from the
+# table the model is actually trained on.
+FEATURE_MEANING = {
+    "radius": "average distance from the centre to the edge",
+    "texture": "how much the grey-scale varies inside it",
+    "perimeter": "length all the way round the boundary",
+    "area": "area enclosed by that boundary",
+    "smoothness": "how much the edge wobbles, locally",
+    "compactness": "perimeter squared over area — how tight it is",
+    "concavity": "how deep the dents in the edge go",
+    "concave_points": "how many dents there are",
+    "symmetry": "how alike the two halves are",
+    "fractal_dimension": "how ragged the edge is overall",
+}
+
+
+def features_table(ax):
+    """Observation.code -> what it actually measures. Ten rows, two columns."""
+    ax.axis("off"); ax.set_xlim(0, 100); ax.set_ylim(0, 100)
+    rows = [(c, FEATURE_MEANING[c]) for c in RAW_FEATURES]
+    top, h = 92.0, 8.2
+
+    ax.add_patch(plt.Rectangle((0, top - h), 100, h, color=DARK))
+    ax.text(3, top - h / 2, "Observation.code", va="center",
+            fontsize=12.5, fontweight="bold", color="white", family="DejaVu Sans Mono")
+    ax.text(37, top - h / 2, "what it measures on the cell nucleus", va="center",
+            fontsize=12.5, fontweight="bold", color="#D8E6C4")
+
+    y = top - h
+    for i, (code, meaning) in enumerate(rows):
+        y -= h
+        if i % 2 == 0:
+            ax.add_patch(plt.Rectangle((0, y), 100, h, color="#EFF3EE"))
+        ax.text(3, y + h / 2, code, va="center", fontsize=11.5,
+                color=DARK, family="DejaVu Sans Mono")
+        ax.text(37, y + h / 2, meaning, va="center", fontsize=11.5, color=INK)
+
+    ax.text(3, y - 5.5, "ten Observations, one Condition, one Patient  ->  "
+            "12 resources in P0001.json",
+            fontsize=10.5, color=MUTED, style="italic")
+
+
+fig("features_table.png", 10.00, 5.74, features_table)
+
+
+# Feature engineering made concrete. Two nuclei drawn with the SAME area and
+# very different outlines, so the ratio the room is about to meet has a picture
+# behind it. Both shapes and both numbers are computed here, not typed.
+def engineered(ax):
+    """Why a shape ratio exists: same size, different outline."""
+    ax.axis("off"); ax.set_xlim(0, 100); ax.set_ylim(0, 62)
+
+    def blob(cx, cy, lobes, amp, target_area, color):
+        t = np.linspace(0, 2 * np.pi, 720)
+        r = 1 + amp * np.cos(lobes * t)
+        area = 0.5 * np.trapezoid(r ** 2, t)          # polar area
+        k = np.sqrt(target_area / area)               # rescale to equal area
+        r = r * k
+        x, y = cx + r * np.cos(t) * 9, cy + r * np.sin(t) * 9
+        per = np.sum(np.hypot(np.diff(x), np.diff(y)))
+        ar = 0.5 * np.abs(np.sum(x[:-1] * y[1:] - x[1:] * y[:-1]))
+        ax.fill(x, y, color=color, alpha=0.9)
+        return per ** 2 / ar
+
+    a = blob(24, 38, 0, 0.0, np.pi, "#BFD8A8")
+    b = blob(74, 38, 7, 0.28, np.pi, "#7FA653")
+
+    for cx, label, val in ((24, "round", a), (74, "ragged", b)):
+        ax.text(cx, 17, label, ha="center", fontsize=13,
+                fontweight="bold", color=DARK)
+        ax.text(cx, 11, f"perimeter² / area = {val:.1f}", ha="center",
+                fontsize=12, color=INK, family="DejaVu Sans Mono")
+
+    ax.text(50, 57, "Same area. Different outline.", ha="center",
+            fontsize=13.5, fontweight="bold", color=INK)
+    ax.text(50, 3.0,
+            "radius, perimeter and area cannot separate these two on their own.\n"
+            "compactness_ratio can — and nobody sent it to us.",
+            ha="center", fontsize=11.5, color=MUTED, linespacing=1.6)
+
+
+fig("engineered.png", 8.73, 4.91, engineered)
+
+
+# The results page used to carry a ROC curve, which is a whole concept nobody
+# defined. What the page is actually about is the disagreement: identical
+# accuracy, different recall. Draw that instead. Numbers come from results.json.
+def two_models_compare(ax):
+    """The whole point of the results page: identical accuracy, different recall."""
+    m = R["models"]
+    logit, forest = m["logit"], m["forest"]
+    ax.axis("off"); ax.set_xlim(0, 100); ax.set_ylim(0, 100)
+
+    xa, xb = 52, 82
+    ax.text(50, 94, "Same accuracy.", ha="center", fontsize=15,
+            fontweight="bold", color=INK)
+    ax.text(50, 87, "Different recall.", ha="center", fontsize=15,
+            fontweight="bold", color=DARK)
+
+    for x, name in ((xa, logit["name"]), (xb, forest["name"])):
+        for k, word in enumerate(name.split()):
+            ax.text(x, 74 - k * 5.5, word, ha="center", fontsize=11.5,
+                    fontweight="bold", color=DARK)
+
+    rows = [("accuracy", f"{logit['accuracy']:.3f}", f"{forest['accuracy']:.3f}",
+             "identical", "#EFF3EE"),
+            ("recall", f"{logit['recall']:.3f}", f"{forest['recall']:.3f}",
+             "the one that moved", None),
+            ("tumours missed", str(logit["confusion"]["fn"]),
+             str(forest["confusion"]["fn"]), "two more cancers", None)]
+
+    y = 58
+    for label, a, b, note, band in rows:
+        if band:
+            ax.add_patch(plt.Rectangle((2, y - 4.4), 96, 13, color=band))
+        ax.text(4, y + 2, label, fontsize=12, color=MUTED)
+        big = 21 if label == "tumours missed" else 19
+        col = ALERT if label != "accuracy" else INK
+        ax.text(xa, y, a, ha="center", fontsize=big, color=INK,
+                family="DejaVu Sans Mono")
+        ax.text(xb, y, b, ha="center", fontsize=big,
+                color=col if label != "accuracy" else INK,
+                family="DejaVu Sans Mono")
+        ax.text(4, y - 6.5, note, fontsize=10,
+                color=MUTED if label == "accuracy" else ALERT, style="italic")
+        y -= 20
+
+    ax.text(50, 2, "Report accuracy and these two models are the same.",
+            ha="center", fontsize=11, color=MUTED)
+
+
+fig("two_models_compare.png", 6.5, 6.72, two_models_compare)
+

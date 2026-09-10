@@ -2,23 +2,23 @@
   "resourceType": "Bundle",
   "id": "bundle-P0003",
   "type": "collection",
-  "timestamp": "1995-06-15T09:00:00+07:00",
+  "timestamp": "1995-06-15T14:00:00+07:00",
   "entry": [
     {
-      "fullUrl": "http://gip-nvsu.example.org/fhir/Patient/P0003",
+      "fullUrl": "http://fhir-ml-workshop.example.org/fhir/Patient/P0003",
       "resource": {
         "resourceType": "Patient",
         "id": "P0003",
         "identifier": [
           {
-            "system": "http://gip-nvsu.example.org/fhir/sid/workshop-mrn",
+            "system": "http://fhir-ml-workshop.example.org/fhir/sid/workshop-mrn",
             "value": "P0003"
           }
         ]
       }
     },
     {
-      "fullUrl": "http://gip-nvsu.example.org/fhir/Observation/P0003-radius",
+      "fullUrl": "http://fhir-ml-workshop.example.org/fhir/Observation/P0003-radius",
       "resource": {
         "resourceType": "Observation",
         "id": "P0003-radius",
@@ -37,7 +37,7 @@
         "code": {
           "coding": [
             {
-              "system": "http://gip-nvsu.example.org/fhir/CodeSystem/fna-morphometry",
+              "system": "http://fhir-ml-workshop.example.org/fhir/CodeSystem/fna-morphometry",
               "code": "radius",
               "display": "Nucleus radius (mean)"
             }
@@ -55,7 +55,7 @@
       }
     },
     {
-      "fullUrl": "http://gip-nvsu.example.org/fhir/Observation/P0003-texture",
+      "fullUrl": "http://fhir-ml-workshop.example.org/fhir/Observation/P0003-texture",
       "resource": {
         "resourceType": "Observation",
         "id": "P0003-texture",
@@ -74,7 +74,7 @@
         "code": {
           "coding": [
             {
-              "system": "http://gip-nvsu.example.org/fhir/CodeSystem/fna-morphometry",
+              "system": "http://fhir-ml-workshop.example.org/fhir/CodeSystem/fna-morphometry",
               "code": "texture",
               "display": "Nucleus texture, SD of grey-scale (mean)"
             }
@@ -94,7 +94,7 @@
       }
     },
     {
-      "fullUrl": "http://gip-nvsu.example.org/fhir/Observation/P0003-perimeter",
+      "fullUrl": "http://fhir-ml-workshop.example.org/fhir/Observation/P0003-perimeter",
       "resource": {
         "resourceType": "Observation",
         "id": "P0003-perimeter",
@@ -113,7 +113,7 @@
         "code": {
           "coding": [
             {
-              "system": "http://gip-nvsu.example.org/fhir/CodeSystem/fna-morphometry",
+              "system": "http://fhir-ml-workshop.example.org/fhir/CodeSystem/fna-morphometry",
               "code": "perimeter",
               "display": "Nucleus perimeter (mean)"
             }
@@ -131,7 +131,7 @@
       }
     },
     {
-      "fullUrl": "http://gip-nvsu.example.org/fhir/Observation/P0003-area",
+      "fullUrl": "http://fhir-ml-workshop.example.org/fhir/Observation/P0003-area",
       "resource": {
         "resourceType": "Observation",
         "id": "P0003-area",
@@ -150,7 +150,7 @@
         "code": {
           "coding": [
             {
-              "system": "http://gip-nvsu.example.org/fhir/CodeSystem/fna-morphometry",
+              "system": "http://fhir-ml-workshop.example.org/fhir/CodeSystem/fna-morphometry",
               "code": "area",
               "display": "Nucleus area (mean)"
             }
@@ -168,7 +168,7 @@
       }
     },
     {
-      "fullUrl": "http://gip-nvsu.example.org/fhir/Observation/P0003-smoothness",
+      "fullUrl": "http://fhir-ml-workshop.example.org/fhir/Observation/P0003-smoothness",
       "resource": {
         "resourceType": "Observation",
         "id": "P0003-smoothness",
@@ -187,7 +187,7 @@
         "code": {
           "coding": [
             {
-              "system": "http://gip-nvsu.example.org/fhir/CodeSystem/fna-morphometry",
+              "system": "http://fhir-ml-workshop.example.org/fhir/CodeSystem/fna-morphometry",
               "code": "smoothness",
               "display": "Nucleus smoothness (mean)"
             }
@@ -207,7 +207,7 @@
       }
     },
     {
-      "fullUrl": "http://gip-nvsu.example.org/fhir/Observation/P0003-compactness",
+      "fullUrl": "http://fhir-ml-workshop.example.org/fhir/Observation/P0003-compactness",
       "resource": {
         "resourceType": "Observation",
         "id": "P0003-compactness",
@@ -226,7 +226,7 @@
         "code": {
           "coding": [
             {
-              "system": "http://gip-nvsu.example.org/fhir/CodeSystem/fna-morphometry",
+              "system": "http://fhir-ml-workshop.example.org/fhir/CodeSystem/fna-morphometry",
               "code": "compactness",
               "display": "Nucleus compactness (mean)"
             }
@@ -246,7 +246,7 @@
       }
     },
     {
-      "fullUrl": "http://gip-nvsu.example.org/fhir/Observation/P0003-concavity",
+      "fullUrl": "http://fhir-ml-workshop.example.org/fhir/Observation/P0003-concavity",
       "resource": {
         "resourceType": "Observation",
         "id": "P0003-concavity",
@@ -265,7 +265,7 @@
         "code": {
           "coding": [
             {
-              "system": "http://gip-nvsu.example.org/fhir/CodeSystem/fna-morphometry",
+              "system": "http://fhir-ml-workshop.example.org/fhir/CodeSystem/fna-morphometry",
               "code": "concavity",
               "display": "Nucleus concavity (mean)"
             }
@@ -285,7 +285,7 @@
       }
     },
     {
-      "fullUrl": "http://gip-nvsu.example.org/fhir/Observation/P0003-concave_points",
+      "fullUrl": "http://fhir-ml-workshop.example.org/fhir/Observation/P0003-concave_points",
       "resource": {
         "resourceType": "Observation",
         "id": "P0003-concave_points",
@@ -304,7 +304,7 @@
         "code": {
           "coding": [
             {
-              "system": "http://gip-nvsu.example.org/fhir/CodeSystem/fna-morphometry",
+              "system": "http://fhir-ml-workshop.example.org/fhir/CodeSystem/fna-morphometry",
               "code": "concave_points",
               "display": "Nucleus concave points (mean)"
             }
@@ -324,7 +324,7 @@
       }
     },
     {
-      "fullUrl": "http://gip-nvsu.example.org/fhir/Observation/P0003-symmetry",
+      "fullUrl": "http://fhir-ml-workshop.example.org/fhir/Observation/P0003-symmetry",
       "resource": {
         "resourceType": "Observation",
         "id": "P0003-symmetry",
@@ -343,7 +343,7 @@
         "code": {
           "coding": [
             {
-              "system": "http://gip-nvsu.example.org/fhir/CodeSystem/fna-morphometry",
+              "system": "http://fhir-ml-workshop.example.org/fhir/CodeSystem/fna-morphometry",
               "code": "symmetry",
               "display": "Nucleus symmetry (mean)"
             }
@@ -363,7 +363,7 @@
       }
     },
     {
-      "fullUrl": "http://gip-nvsu.example.org/fhir/Observation/P0003-fractal_dimension",
+      "fullUrl": "http://fhir-ml-workshop.example.org/fhir/Observation/P0003-fractal_dimension",
       "resource": {
         "resourceType": "Observation",
         "id": "P0003-fractal_dimension",
@@ -382,7 +382,7 @@
         "code": {
           "coding": [
             {
-              "system": "http://gip-nvsu.example.org/fhir/CodeSystem/fna-morphometry",
+              "system": "http://fhir-ml-workshop.example.org/fhir/CodeSystem/fna-morphometry",
               "code": "fractal_dimension",
               "display": "Nucleus fractal dimension (mean)"
             }
@@ -402,7 +402,7 @@
       }
     },
     {
-      "fullUrl": "http://gip-nvsu.example.org/fhir/Condition/P0003-dx",
+      "fullUrl": "http://fhir-ml-workshop.example.org/fhir/Condition/P0003-dx",
       "resource": {
         "resourceType": "Condition",
         "id": "P0003-dx",
@@ -425,7 +425,7 @@
         "code": {
           "coding": [
             {
-              "system": "http://gip-nvsu.example.org/fhir/CodeSystem/breast-mass-diagnosis",
+              "system": "http://fhir-ml-workshop.example.org/fhir/CodeSystem/breast-mass-diagnosis",
               "code": "malignant",
               "display": "Malignant breast mass (biopsy confirmed)"
             }
