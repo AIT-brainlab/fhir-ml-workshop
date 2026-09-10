@@ -182,7 +182,7 @@ def main() -> None:
             body = page.inner_text("body")
             print("  app_fhir.png       RiskAssessment shown:",
                   '"RiskAssessment"' in body,
-                  "| performer is a Device:", "#tumour-risk-model" in body)
+                  "| performer is a Device:", "#breast-mass-risk-model" in body)
 
             browser.close()
         for tmp in (OUT / "_app_raw.png", OUT / "_cost_lo.png", OUT / "_cost_hi.png"):

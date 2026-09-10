@@ -50,7 +50,7 @@ async def lifespan(_: FastAPI):
 
 
 app = FastAPI(
-    title="Tumour Risk API",
+    title="Breast Mass Risk API",
     description="Teaching prototype. Not a medical device.",
     version="0.1.0",
     lifespan=lifespan,
@@ -75,7 +75,7 @@ class Patient(BaseModel):
 @app.get("/")
 def root() -> dict:
     return {
-        "service": "Tumour Risk API",
+        "service": "Breast Mass Risk API",
         "status": "model loaded" if _bundle else "MODEL MISSING - run scripts/03_train_model.py",
         "try_this": "open /docs in your browser",
         "tip": "add ?threshold=0.2 to /predict or /sample/{id} and compare",

@@ -22,7 +22,7 @@ from common import RAW_FEATURES
 
 # Where a real deployment would POST this. Fictional host on purpose.
 FHIR_BASE = "https://hospital.example.org/fhir"
-MODEL_DEVICE_ID = "tumour-risk-model"
+MODEL_DEVICE_ID = "breast-mass-risk-model"
 
 # Our three bands mapped onto the code system FHIR expects here.
 # http://terminology.hl7.org/CodeSystem/risk-probability
@@ -56,7 +56,7 @@ def _device(model_name: str, version: str) -> dict:
         "id": MODEL_DEVICE_ID,
         "status": "active",
         "manufacturer": "Health AI workshop",
-        "deviceName": [{"name": f"Tumour Risk Assistant ({model_name})",
+        "deviceName": [{"name": f"Breast Mass Risk Assistant ({model_name})",
                         "type": "model-name"}],
         "version": [{"value": version}],
         "note": [{"text": "Teaching prototype. Not a medical device, not "

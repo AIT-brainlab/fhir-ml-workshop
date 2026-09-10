@@ -27,7 +27,7 @@ from common import (
 )
 from fhir_out import submission
 
-st.set_page_config(page_title="Tumour Risk Assistant", page_icon="+", layout="wide")
+st.set_page_config(page_title="Breast Mass Risk Assistant", page_icon="+", layout="wide")
 
 BAND_COLOR = {"HIGH": "#C64B4B", "MEDIUM": "#D9A03C", "LOW": "#4C9F70"}
 
@@ -61,7 +61,7 @@ def cohort_probabilities(_feature_names):
     return proba, df[TARGET].to_numpy()
 
 
-st.title("Tumour Risk Assistant")
+st.title("Breast Mass Risk Assistant")
 
 try:
     bundle = get_model()
@@ -134,7 +134,7 @@ for metric, value in bundle["metrics"].items():
 left, right = st.columns([3, 2], gap="large")
 
 with left:
-    st.subheader("Measurements from the cell sample")
+    st.subheader("Measurements from a fine-needle aspirate of a breast mass")
     measurements = {}
     cols = st.columns(2)
     for i, feature in enumerate(RAW_FEATURES):
